@@ -1,0 +1,71 @@
+initial state
+	y (exact/range)
+	vspeed
+	sjump (first frame only)
+	djump
+	walkoff
+	
+
+targets
+	all/any/fastest
+	rejump/landing/valign (exact/range)
+	
+
+sorting
+	length
+	alphabetical (somewhat?)
+	none
+	
+
+constraints
+	allow re-applying constraints on results like a filter or reevaluate? (may just extra option to re-run on results?)
+	window trick (0p)
+	cactus
+	low cancel
+	peak (min/max sjump/djump/overall length)
+	drop (min/max sjump/djump/overall length)
+	length (min/max sjump/djump/overall)
+	
+
+strat display
+	0f/1f convention
+	show peak?
+	
+
+settings
+	gravity
+	sjump
+	djump
+	min vspeed
+	max vspeed
+	release multiplier
+	hitbox and origin?
+	
+
+environment
+	floor/ceiling (solid/killer)
+	one-way toggle??
+	per jump state??
+	
+
+other
+	undo/redo
+	save settings
+	state machine-ish debug output?
+	reverse gravity?
+	engines?
+	max results?
+	max length?
+	long search warning
+	multithreading? (ui/search)
+	import/export results
+	use last results (same strats/extended strats)
+	
+
+
+
+
+
+
+
+
