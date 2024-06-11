@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "old bruteforcer rewrite 5", "old bruteforcer rewrite 5.csproj", "{0EFB4F85-C6D1-4731-8D2C-1FEB7F4B148F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0EFB4F85-C6D1-4731-8D2C-1FEB7F4B148F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EFB4F85-C6D1-4731-8D2C-1FEB7F4B148F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EFB4F85-C6D1-4731-8D2C-1FEB7F4B148F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EFB4F85-C6D1-4731-8D2C-1FEB7F4B148F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F69351F-A70E-4A16-8319-027FA0D12B0B}
+	EndGlobalSection
+EndGlobal
