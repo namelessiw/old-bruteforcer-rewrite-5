@@ -213,5 +213,31 @@ namespace old_bruteforcer_rewrite_5
         {
             return $"Y: {Y}\nVSpeed: {VSpeed}\nFrame: {Frame}\nHasDJump: {HasDJump}\nReleased: {Released}\nInputs:\n{string.Join("\n", Inputs)}";
         }
+
+        // based on https://github.com/namelessiw/Jump-Bruteforcer/blob/fe878d1c5a625660ca5baa6abc0e47100ad34116/Jump_Bruteforcer/SearchOutput.cs#L59 (12.06.2024)
+        public string GetMacro()
+        {
+            StringBuilder sb = new();
+
+            foreach (Input input in Inputs)
+            {
+                bool InputChanged = false;
+
+                if ((input & Input.Press) == Input.Press)
+                {
+                    sb.Append((InputChanged ? "," : "") + "J(PR)");
+
+                    InputChanged = true;
+                }
+                if ((input & Input.Release) == Input.Release)
+                {
+                    sb.Append((InputChanged ? "," : "") + "K(PR)");
+                }
+
+                sb.Append('>');
+            }
+
+            return sb.ToString();
+        }
     }
 }
