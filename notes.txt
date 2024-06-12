@@ -1,7 +1,7 @@
 initial state
 	y (exact/range)
 	vspeed
-	sjump (first frame only)
+	sjump (first frame only? alternatively within starting pixel or some given range (for example inside platform)?)
 	djump
 	walkoff
 	

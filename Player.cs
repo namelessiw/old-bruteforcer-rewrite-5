@@ -144,7 +144,7 @@ namespace old_bruteforcer_rewrite_5
             return true;
         }
 
-        public string GetStrat()
+        public string GetStrat(bool oneframeConvention)
         {
             StringBuilder sb = new();
             int frame = 0;
@@ -169,7 +169,7 @@ namespace old_bruteforcer_rewrite_5
                         }
                         else
                         {
-                            sb.Append($" {frame}f 0p");
+                            sb.Append($" {(oneframeConvention ? frame + 1 : frame)}f 0p");
                         }
                     }
 
@@ -184,7 +184,7 @@ namespace old_bruteforcer_rewrite_5
                     }
                     else
                     {
-                        sb.Append($" {frame}f");
+                        sb.Append($" {(oneframeConvention ? frame + 1 : frame)}f");
                     }
 
                     released = true;
@@ -202,7 +202,7 @@ namespace old_bruteforcer_rewrite_5
                 }
                 else
                 {
-                    sb.Append($" {frame}f");
+                    sb.Append($" {(oneframeConvention ? frame + 1 : frame)}f");
                 }
             }
 
