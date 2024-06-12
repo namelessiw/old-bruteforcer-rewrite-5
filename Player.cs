@@ -17,7 +17,7 @@ namespace old_bruteforcer_rewrite_5
     internal class Player
     {
         const int MAX_LENGTH = 1000; // TODO: global setting
-        static int Floor = 408, Ceiling = 384; // TODO: these should be of type double aswell (for farlands) but ensure integers
+        static int Floor = 408, Ceiling = 0; // TODO: these should be of type double aswell (for farlands) but ensure integers
         double Y, YPrevious, VSpeed; // TODO: YPrevious is used solely for collision, maybe not have it be a member variable
         int Frame;
         bool HasDJump, Released;
@@ -38,9 +38,14 @@ namespace old_bruteforcer_rewrite_5
             return new Player(Y, VSpeed, Frame, HasDJump, Released, Inputs);
         }
 
-        public bool CanJump()
+        public bool CanPress()
         {
             return Frame == 0 || HasDJump; // TODO: state variable?
+        }
+
+        public bool CanRelease()
+        {
+            return VSpeed < 0;
         }
 
         public bool IsStable()
@@ -151,6 +156,11 @@ namespace old_bruteforcer_rewrite_5
 
         public string GetStrat(bool oneframeConvention)
         {
+            if (Inputs.Count == 0)
+            {
+                return "";
+            }
+
             StringBuilder sb = new();
             int frame = 0;
             bool released = false; // dependant on starting vspeed to distinguish fixed vspeed jump and walkoff?
@@ -199,16 +209,13 @@ namespace old_bruteforcer_rewrite_5
                 frame++;
             }
 
-            if (frame > 0)
+            if (released)
             {
-                if (released)
-                {
-                    sb.Append($" {frame}p");
-                }
-                else
-                {
-                    sb.Append($" {(oneframeConvention ? frame + 1 : frame)}f");
-                }
+                sb.Append($" {frame}p");
+            }
+            else
+            {
+                sb.Append($" {(oneframeConvention ? frame + 1 : frame)}f");
             }
 
             return sb.ToString().Trim();
@@ -216,7 +223,7 @@ namespace old_bruteforcer_rewrite_5
 
         public override string ToString()
         {
-            return $"Y: {Y}\nVSpeed: {VSpeed}\nFrame: {Frame}\nHasDJump: {HasDJump}\nReleased: {Released}\nInputs:\n{string.Join("\n", Inputs)}";
+            return $"Y: {Y}\nVSpeed: {VSpeed}\nFrame: {Frame}\nHasDJump: {HasDJump}\nReleased: {Released}\n";
         }
 
         // based on https://github.com/namelessiw/Jump-Bruteforcer/blob/fe878d1c5a625660ca5baa6abc0e47100ad34116/Jump_Bruteforcer/SearchOutput.cs#L59 (12.06.2024)

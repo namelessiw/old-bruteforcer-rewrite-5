@@ -28,32 +28,99 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
+            BtnStep = new Button();
+            BtnToStable = new Button();
+            BtnNew = new Button();
+            ChkPress = new CheckBox();
+            ChkRelease = new CheckBox();
+            LblStats = new Label();
             SuspendLayout();
             // 
-            // button1
+            // BtnStep
             // 
-            button1.Location = new Point(327, 186);
-            button1.Name = "button1";
-            button1.Size = new Size(94, 29);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            BtnStep.Location = new Point(532, 303);
+            BtnStep.Name = "BtnStep";
+            BtnStep.Size = new Size(75, 23);
+            BtnStep.TabIndex = 0;
+            BtnStep.Text = "Step";
+            BtnStep.UseVisualStyleBackColor = true;
+            BtnStep.Click += BtnStep_Click;
+            // 
+            // BtnToStable
+            // 
+            BtnToStable.Location = new Point(613, 303);
+            BtnToStable.Name = "BtnToStable";
+            BtnToStable.Size = new Size(75, 23);
+            BtnToStable.TabIndex = 1;
+            BtnToStable.Text = "To Stable";
+            BtnToStable.UseVisualStyleBackColor = true;
+            BtnToStable.Click += BtnToStable_Click;
+            // 
+            // BtnNew
+            // 
+            BtnNew.Location = new Point(12, 303);
+            BtnNew.Name = "BtnNew";
+            BtnNew.Size = new Size(75, 23);
+            BtnNew.TabIndex = 2;
+            BtnNew.Text = "New";
+            BtnNew.UseVisualStyleBackColor = true;
+            BtnNew.Click += BtnNew_Click;
+            // 
+            // ChkPress
+            // 
+            ChkPress.AutoSize = true;
+            ChkPress.Location = new Point(12, 12);
+            ChkPress.Name = "ChkPress";
+            ChkPress.Size = new Size(53, 19);
+            ChkPress.TabIndex = 3;
+            ChkPress.Text = "Press";
+            ChkPress.UseVisualStyleBackColor = true;
+            // 
+            // ChkRelease
+            // 
+            ChkRelease.AutoSize = true;
+            ChkRelease.Location = new Point(12, 37);
+            ChkRelease.Name = "ChkRelease";
+            ChkRelease.Size = new Size(65, 19);
+            ChkRelease.TabIndex = 4;
+            ChkRelease.Text = "Release";
+            ChkRelease.UseVisualStyleBackColor = true;
+            // 
+            // LblStats
+            // 
+            LblStats.AutoSize = true;
+            LblStats.Location = new Point(88, 13);
+            LblStats.Name = "LblStats";
+            LblStats.Size = new Size(35, 15);
+            LblStats.TabIndex = 5;
+            LblStats.Text = "Stats:";
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(button1);
+            ClientSize = new Size(700, 338);
+            Controls.Add(LblStats);
+            Controls.Add(ChkRelease);
+            Controls.Add(ChkPress);
+            Controls.Add(BtnNew);
+            Controls.Add(BtnToStable);
+            Controls.Add(BtnStep);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
             Text = "Form1";
+            Load += Form1_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private Button button1;
+        private Button BtnStep;
+        private Button BtnToStable;
+        private Button BtnNew;
+        private CheckBox ChkPress;
+        private CheckBox ChkRelease;
+        private Label LblStats;
     }
 }
