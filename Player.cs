@@ -182,13 +182,20 @@ namespace old_bruteforcer_rewrite_5
                             input = Input.None;
                         }
 
-                        if (frame > 0)
+                        if (CanRelease() || (input & Input.Press) == Input.Press)
                         {
-                            pendingRelease = true;
+                            if (frame > 0)
+                            {
+                                pendingRelease = true;
+                            }
+                            else
+                            {
+                                input |= Input.Release;
+                                Step(input);
+                            }
                         }
                         else
                         {
-                            input |= Input.Release;
                             Step(input);
                         }
                     }
