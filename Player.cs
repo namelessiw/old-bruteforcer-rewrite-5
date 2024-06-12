@@ -16,7 +16,6 @@ namespace old_bruteforcer_rewrite_5
 
     internal class Player
     {
-        const double GRAVITY = 0.4, SJUMP = -8.5, DJUMP = -7, MAX_VSPEED = 9, RELEASE_MULTIPLIER = 0.45; // TODO: MIN_VSPEED, move out physics params
         static int Floor = 408, Ceiling = 384; // TODO: these should be of type double aswell (for farlands) but ensure integers
         double Y, YPrevious, VSpeed; // TODO: YPrevious is used solely for collision, maybe not have it be a member variable
         int Frame;
@@ -45,7 +44,7 @@ namespace old_bruteforcer_rewrite_5
 
         public bool IsStable()
         {
-            return VSpeed == 0 && Math.Round(Y + GRAVITY) >= Floor; // TODO: depends on one-way type
+            return VSpeed == 0 && Math.Round(Y + PhysicsParams.GRAVITY) >= Floor; // TODO: depends on one-way type
         }
 
         public bool Step(Input input) // TODO: floor, ceiling, killers, return, debug log?
@@ -55,11 +54,11 @@ namespace old_bruteforcer_rewrite_5
             {
                 if (Frame == 0) // TODO: state variable?
                 {
-                    VSpeed = SJUMP;
+                    VSpeed = PhysicsParams.SJUMP;
                 }
                 else if (HasDJump)
                 {
-                    VSpeed = DJUMP;
+                    VSpeed = PhysicsParams.DJUMP;
                     HasDJump = false;
                 }
                 else
@@ -77,7 +76,7 @@ namespace old_bruteforcer_rewrite_5
                     throw new Exception("Cannot release on this frame"); // TODO: remove
                 }
 
-                VSpeed *= RELEASE_MULTIPLIER;
+                VSpeed *= PhysicsParams.RELEASE_MULTIPLIER;
                 Released = true;
             }
             else if (!Released && VSpeed >= 0)
@@ -88,13 +87,13 @@ namespace old_bruteforcer_rewrite_5
             }
 
             // max vspeed
-            if (VSpeed > MAX_VSPEED)
+            if (VSpeed > PhysicsParams.MAX_VSPEED)
             {
-                VSpeed = MAX_VSPEED;
+                VSpeed = PhysicsParams.MAX_VSPEED;
             }
 
             // gravity
-            VSpeed += GRAVITY;
+            VSpeed += PhysicsParams.GRAVITY;
 
             // collision
             YPrevious = Y;

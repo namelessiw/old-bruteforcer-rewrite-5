@@ -19,7 +19,7 @@ namespace old_bruteforcer_rewrite_5
                 p.Step(p.CanJump() ? Input.Press : Input.None);
                 strats += p.GetStrat(oneframeConvention) + "\n";
             }
-            MessageBox.Show(strats+p.GetMacro());
+            MessageBox.Show(strats + p.GetMacro());
         }
     }
 }
