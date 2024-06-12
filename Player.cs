@@ -144,6 +144,71 @@ namespace old_bruteforcer_rewrite_5
             return true;
         }
 
+        public string GetStrat()
+        {
+            StringBuilder sb = new();
+            int frame = 0;
+            bool released = false; // dependant on starting vspeed to distinguish fixed vspeed jump and walkoff?
+
+            /*
+            1f 3p 4f 12p
+            3p 3f 3p
+            0f+1+1+1 10p
+            3f 0p 5f 14p
+            */
+
+            foreach (Input input in Inputs)
+            {
+                if ((input & Input.Press) == Input.Press)
+                {
+                    if (frame > 0)
+                    {
+                        if (released)
+                        {
+                            sb.Append($" {frame}p");
+                        }
+                        else
+                        {
+                            sb.Append($" {frame}f 0p");
+                        }
+                    }
+
+                    released = false;
+                    frame = 0;
+                }
+                if ((input & Input.Release) == Input.Release)
+                {
+                    if (released)
+                    {
+                        sb.Append($"+{frame}");
+                    }
+                    else
+                    {
+                        sb.Append($" {frame}f");
+                    }
+
+                    released = true;
+                    frame = 0;
+                }
+
+                frame++;
+            }
+
+            if (frame > 0)
+            {
+                if (released)
+                {
+                    sb.Append($" {frame}p");
+                }
+                else
+                {
+                    sb.Append($" {frame}f");
+                }
+            }
+
+            return sb.ToString().Trim();
+        }
+
         public override string ToString()
         {
             return $"Y: {Y}\nVSpeed: {VSpeed}\nFrame: {Frame}\nHasDJump: {HasDJump}\nReleased: {Released}\nInputs:\n{string.Join("\n", Inputs)}";
