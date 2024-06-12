@@ -47,7 +47,8 @@ settings
 environment
 	floor/ceiling (solid/killer)
 	one-way toggle?? (always solid seems useless but one-way always or only crossing boundary?)
-	per jump state??
+	per jump state (as in variable floor/ceiling heights)??
+	room bounaries? (like kill outside room => y < 0)
 	
 
 other

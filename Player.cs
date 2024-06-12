@@ -16,6 +16,7 @@ namespace old_bruteforcer_rewrite_5
 
     internal class Player
     {
+        const int MAX_LENGTH = 1000; // TODO: global setting
         static int Floor = 408, Ceiling = 384; // TODO: these should be of type double aswell (for farlands) but ensure integers
         double Y, YPrevious, VSpeed; // TODO: YPrevious is used solely for collision, maybe not have it be a member variable
         int Frame;
@@ -49,6 +50,11 @@ namespace old_bruteforcer_rewrite_5
 
         public bool Step(Input input) // TODO: floor, ceiling, killers, return, debug log?
         {
+            if (Frame >= MAX_LENGTH)
+            {
+                return false;
+            }
+
             // shift press
             if ((input & Input.Press) == Input.Press)
             {

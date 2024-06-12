@@ -14,10 +14,9 @@ namespace old_bruteforcer_rewrite_5
             string strats = p.GetStrat(oneframeConvention) + "\n";
             p.Step(Input.Press);
             strats += p.GetStrat(oneframeConvention) + "\n";
-            while (!p.IsStable())
+            while (p.Step(p.CanJump() ? Input.Press : Input.None))
             {
-                p.Step(p.CanJump() ? Input.Press : Input.None);
-                strats += p.GetStrat(oneframeConvention) + "\n";
+                strats = p.GetStrat(oneframeConvention) + "\n";
             }
             MessageBox.Show(strats + p.GetMacro());
         }
