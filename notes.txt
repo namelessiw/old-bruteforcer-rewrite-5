@@ -9,6 +9,7 @@ initial state
 targets
 	all/any/fastest
 	rejump/landing/valign (exact/range)
+	stop on solution?
 	
 
 sorting
@@ -30,6 +31,7 @@ constraints
 strat display
 	0f/1f convention
 	show peak?
+	generate macro
 	
 
 settings
@@ -44,7 +46,7 @@ settings
 
 environment
 	floor/ceiling (solid/killer)
-	one-way toggle??
+	one-way toggle?? (always solid seems useless but one-way always or only crossing boundary?)
 	per jump state??
 	
 
