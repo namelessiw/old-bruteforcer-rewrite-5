@@ -7,21 +7,7 @@ namespace old_bruteforcer_rewrite_5
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e) // TODO: remove
-        {
-            Player p = new Player(407, 0, 0, true, false, []);
-            bool oneframeConvention = true;
-            string strats = p.GetStrat(oneframeConvention) + "\n";
-            p.Step(Input.Press);
-            strats += p.GetStrat(oneframeConvention) + "\n";
-            while (p.Step(p.CanPress() ? Input.Press : Input.None))
-            {
-                strats = p.GetStrat(oneframeConvention) + "\n";
-            }
-            MessageBox.Show(strats + p.GetMacro());
-        }
-
-        Player p = new(407, 0, 0, true, false, []);
+        Player p = new(407.4, 0, 0, true, false, []);
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -35,7 +21,7 @@ namespace old_bruteforcer_rewrite_5
 
         private void BtnNew_Click(object sender, EventArgs e)
         {
-            p = new Player(407, 0, 0, true, false, []);
+            p = new Player(407.4, 0, 0, true, false, []);
             updateLabel();
         }
 
@@ -79,6 +65,13 @@ namespace old_bruteforcer_rewrite_5
                 p.Step(Input.None);
                 updateLabel();
             }
+        }
+
+        private void BtnDoStrat_Click(object sender, EventArgs e)
+        {
+            p = new Player(407.4, 0, 0, true, false, []);
+            p.DoStrat(TxtStrat.Text);
+            updateLabel();
         }
     }
 }

@@ -34,6 +34,8 @@
             ChkPress = new CheckBox();
             ChkRelease = new CheckBox();
             LblStats = new Label();
+            TxtStrat = new TextBox();
+            BtnDoStrat = new Button();
             SuspendLayout();
             // 
             // BtnStep
@@ -89,17 +91,36 @@
             // LblStats
             // 
             LblStats.AutoSize = true;
-            LblStats.Location = new Point(88, 13);
+            LblStats.Location = new Point(122, 16);
             LblStats.Name = "LblStats";
             LblStats.Size = new Size(35, 15);
             LblStats.TabIndex = 5;
             LblStats.Text = "Stats:";
+            // 
+            // TxtStrat
+            // 
+            TxtStrat.Location = new Point(12, 62);
+            TxtStrat.Name = "TxtStrat";
+            TxtStrat.Size = new Size(100, 23);
+            TxtStrat.TabIndex = 6;
+            // 
+            // BtnDoStrat
+            // 
+            BtnDoStrat.Location = new Point(12, 91);
+            BtnDoStrat.Name = "BtnDoStrat";
+            BtnDoStrat.Size = new Size(75, 23);
+            BtnDoStrat.TabIndex = 7;
+            BtnDoStrat.Text = "Do Strat";
+            BtnDoStrat.UseVisualStyleBackColor = true;
+            BtnDoStrat.Click += BtnDoStrat_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
+            Controls.Add(BtnDoStrat);
+            Controls.Add(TxtStrat);
             Controls.Add(LblStats);
             Controls.Add(ChkRelease);
             Controls.Add(ChkPress);
@@ -122,5 +143,7 @@
         private CheckBox ChkPress;
         private CheckBox ChkRelease;
         private Label LblStats;
+        private TextBox TxtStrat;
+        private Button BtnDoStrat;
     }
 }

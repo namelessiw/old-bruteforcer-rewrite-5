@@ -154,6 +154,51 @@ namespace old_bruteforcer_rewrite_5
             return true;
         }
 
+        public bool DoStrat(string strat)
+        {
+            strat = strat.Trim().ToLower();
+
+            string[] presses = strat.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            foreach (string press in presses)
+            {
+                string[] releases = press.Split('+');
+                foreach (string release in releases)
+                {
+                    if (release[^1] == 'f')
+                    {
+                        int frame = int.Parse(release[..^1]);
+                        Input input = Input.Press;
+                        for (int i = 0; i < frame; i++)
+                        {
+                            Step(input);
+                            input = Input.None;
+                        }
+                        input |= Input.Release;
+                        Step(input);
+                    }
+                    else if (release[^1] == 'p')
+                    {
+                        int frame = int.Parse(release[..^1]);
+                        for (int i = 0; i < frame - 1; i++)
+                        {
+                            Step(Input.None);
+                        }
+                    }
+                    else
+                    {
+                        int frame = int.Parse(release);
+                        for (int i = 0; i < frame - 1; i++)
+                        {
+                            Step(Input.None);
+                        }
+                        Step(Input.Release);
+                    }
+                }
+            }
+
+            return true;
+        }
+
         public string GetStrat(bool oneframeConvention)
         {
             if (Inputs.Count == 0)
