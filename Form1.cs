@@ -70,7 +70,14 @@ namespace old_bruteforcer_rewrite_5
         private void BtnDoStrat_Click(object sender, EventArgs e)
         {
             p = new Player(407.4, 0, 0, true, false, []);
-            p.DoStrat(TxtStrat.Text);
+            try
+            {
+                p.DoStrat(TxtStrat.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
             updateLabel();
         }
     }
