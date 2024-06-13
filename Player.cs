@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace old_bruteforcer_rewrite_5
 {
@@ -17,7 +18,7 @@ namespace old_bruteforcer_rewrite_5
     internal class Player
     {
         const int MAX_LENGTH = 1000; // TODO: global setting
-        static int Floor = 408, Ceiling = 0; // TODO: these should be of type double aswell (for farlands) but ensure integers
+        static double Floor = 408, Ceiling = 0;
         double Y, YPrevious, VSpeed; // TODO: YPrevious is used solely for collision, maybe not have it be a member variable
         int Frame;
         bool HasDJump, Released;
@@ -36,6 +37,16 @@ namespace old_bruteforcer_rewrite_5
         public Player Copy()
         {
             return new Player(Y, VSpeed, Frame, HasDJump, Released, Inputs);
+        }
+
+        public static void SetFloorY(string floorY)
+        {
+            Floor = Math.Round(double.Parse(floorY, CultureInfo.InvariantCulture));
+        }
+
+        public static void SetCeilingY(string ceilingY)
+        {
+            Ceiling = Math.Round(double.Parse(ceilingY, CultureInfo.InvariantCulture));
         }
 
         public bool CanPress()

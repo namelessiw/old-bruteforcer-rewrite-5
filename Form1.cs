@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace old_bruteforcer_rewrite_5
 {
     public partial class Form1 : Form
@@ -7,10 +9,17 @@ namespace old_bruteforcer_rewrite_5
             InitializeComponent();
         }
 
-        Player p = new(407.4, 0, 0, true, false, []);
+        Player p;
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            NewPlayer();
+        }
+
+        private void NewPlayer()
+        {
+            Player.SetFloorY(TxtFloorY.Text);
+            p = new(double.Parse(TxtPlayerY.Text, CultureInfo.InvariantCulture), 0, 0, true, false, []);
             updateLabel();
         }
 
@@ -21,8 +30,7 @@ namespace old_bruteforcer_rewrite_5
 
         private void BtnNew_Click(object sender, EventArgs e)
         {
-            p = new Player(407.4, 0, 0, true, false, []);
-            updateLabel();
+            NewPlayer();
         }
 
         private void BtnStep_Click(object sender, EventArgs e)
@@ -69,7 +77,7 @@ namespace old_bruteforcer_rewrite_5
 
         private void BtnDoStrat_Click(object sender, EventArgs e)
         {
-            p = new Player(407.4, 0, 0, true, false, []);
+            NewPlayer();
             try
             {
                 p.DoStrat(TxtStrat.Text);
