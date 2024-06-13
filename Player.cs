@@ -19,7 +19,7 @@ namespace old_bruteforcer_rewrite_5
     {
         const int MAX_LENGTH = 1000; // TODO: global setting
         static double Floor = 408, Ceiling = 0;
-        double Y, YPrevious, VSpeed; // TODO: YPrevious is used solely for collision, maybe not have it be a member variable
+        double Y, VSpeed;
         int Frame;
         bool HasDJump, Released;
         List<Input> Inputs;
@@ -118,7 +118,7 @@ namespace old_bruteforcer_rewrite_5
             VSpeed += PhysicsParams.GRAVITY;
 
             // collision
-            YPrevious = Y;
+            double YPrevious = Y;
             Y += VSpeed;
 
             // one-way floor/ceiling
@@ -127,16 +127,12 @@ namespace old_bruteforcer_rewrite_5
                 // ceiling collision
                 if (Math.Round(Y) <= Ceiling)
                 {
-                    // move_contact_solid
-                    Y = YPrevious;
-                    do
+                    double valign = YPrevious - Math.Truncate(YPrevious);
+                    Y = Ceiling + valign;
+                    if (Math.Round(Y) == Ceiling)
                     {
-                        YPrevious = Y;
-                        Y--;
+                        Y++;
                     }
-                    while (Math.Round(Y) > Ceiling);
-
-                    Y = YPrevious;
                     VSpeed = 0;
                 }
             }
@@ -145,16 +141,12 @@ namespace old_bruteforcer_rewrite_5
                 // floor collision
                 if (Math.Round(Y) >= Floor)
                 {
-                    // move_contact_solid
-                    Y = YPrevious;
-                    do
+                    double valign = YPrevious - Math.Truncate(YPrevious);
+                    Y = Floor - 1 + valign;
+                    if (Math.Round(Y) == Floor)
                     {
-                        YPrevious = Y;
-                        Y++;
+                        Y--;
                     }
-                    while (Math.Round(Y) < Floor);
-
-                    Y = YPrevious;
                     VSpeed = 0;
                 }
             }
