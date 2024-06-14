@@ -14,6 +14,9 @@ namespace old_bruteforcer_rewrite_5
         private void Form1_Load(object sender, EventArgs e)
         {
             NewPlayer();
+
+            List<(double upper, double lower)> ranges = PlayerRange.test(400.1, 408.3, 408, 3.6);
+            MessageBox.Show(string.Join(",\n", ranges.Select(r => $"[{r.upper}, {r.lower}]")));
         }
 
         private void NewPlayer()

@@ -40,6 +40,73 @@ namespace old_bruteforcer_rewrite_5
             Inputs = new List<Input>(inputs);
         }
 
+        public static List<(double upper, double lower)> test(double yUpper, double yLower, double floor, double vSpeed)
+        {
+            double highestCollision = floor - 0.5, highestCollisionValign = highestCollision % 1; ;
+            if (Math.Round(highestCollision) < floor)
+            {
+                highestCollision = double.BitIncrement(highestCollision);
+            }
+
+            double lowestCollisionFree = double.BitDecrement(highestCollision), lowestCollisionFreeValign = lowestCollisionFree % 1;
+
+            List<(double upper, double lower)> ranges = [];
+
+            // get stuck range
+            if (yLower >= highestCollision)
+            {
+                if (yUpper < highestCollision)
+                {
+                    // partially stuck
+                    ranges.Add((highestCollision, yLower));
+                    yLower = double.BitDecrement(highestCollision);
+                }
+                else
+                {
+                    // full range stuck
+                    return [(yUpper, yLower)];
+                }
+            }
+
+            // separate between collision and no collision
+            double highestCollisionAfterVspeed = highestCollision - vSpeed;
+            if (yLower >= highestCollisionAfterVspeed)
+            {
+                if (yUpper < highestCollisionAfterVspeed)
+                {
+                    // partial collision
+                    ranges.Add((yUpper, double.BitDecrement(highestCollisionAfterVspeed)));
+                    yUpper = highestCollisionAfterVspeed;
+                }
+                else
+                {
+                    // full range colliding
+                }
+            }
+
+            // split remaining range into collision range
+            double split = highestCollision - 1;
+            while (split >= yUpper)
+            {
+                if (split > yLower)
+                {
+                    split--;
+                    continue;
+                }
+
+                ranges.Add((split, yLower));
+                yLower = double.BitDecrement(split);
+                split--;
+            }
+
+            if (yUpper <= yLower)
+            {
+                ranges.Add((yUpper,yLower));
+            }
+
+            return ranges;
+        }
+
         public PlayerRange Copy()
         {
             return new PlayerRange(YUpper, YLower, VSpeed, Frame, HasDJump, Released, Inputs);
@@ -231,7 +298,7 @@ namespace old_bruteforcer_rewrite_5
                     VSpeed = 0;
                 }*/
             }
-            else
+            /*else
             {
                 // floor collision
                 if (Math.Round(Y) >= Floor)
@@ -244,7 +311,7 @@ namespace old_bruteforcer_rewrite_5
                     }
                     VSpeed = 0;
                 }
-            }
+            }*/
 
             return true;
         }
