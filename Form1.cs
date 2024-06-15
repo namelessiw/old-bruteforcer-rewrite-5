@@ -15,8 +15,10 @@ namespace old_bruteforcer_rewrite_5
         {
             NewPlayer();
 
-            List<(double upper, double lower)> ranges = PlayerRange.test(400.1, 408.3, 408, 3.6);
-            MessageBox.Show(string.Join(",\n", ranges.Select(r => $"[{r.upper}, {r.lower}]")));
+            PlayerRange2.SetFloor(408);
+            PlayerRange2 p = new(400.1, 408.3, 3.6);
+            List<PlayerRange2> ranges = PlayerRange2.test(p);
+            MessageBox.Show(string.Join(",\n", ranges.Select(r => r.ToString())));
         }
 
         private void NewPlayer()
