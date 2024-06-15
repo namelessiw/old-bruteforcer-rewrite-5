@@ -16,8 +16,9 @@ namespace old_bruteforcer_rewrite_5
             NewPlayer();
 
             PlayerRange2.SetFloor(408);
-            PlayerRange2 p = new(400.1, 408.3, 3.6);
-            List<PlayerRange2> ranges = PlayerRange2.test(p);
+            PlayerRange2.SetCeiling(363);
+            PlayerRange2 p = new(362.1, 367.4, -3.6);
+            List<PlayerRange2> ranges = PlayerRange2.CeilingCollision(p);
             MessageBox.Show(string.Join(",\n", ranges.Select(r => r.ToString())));
         }
 
