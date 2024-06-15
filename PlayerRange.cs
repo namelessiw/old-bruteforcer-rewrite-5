@@ -42,13 +42,11 @@ namespace old_bruteforcer_rewrite_5
 
         public static List<(double upper, double lower)> test(double yUpper, double yLower, double floor, double vSpeed)
         {
-            double highestCollision = floor - 0.5, highestCollisionValign = highestCollision % 1; ;
+            double highestCollision = floor - 0.5;
             if (Math.Round(highestCollision) < floor)
             {
                 highestCollision = double.BitIncrement(highestCollision);
             }
-
-            double lowestCollisionFree = double.BitDecrement(highestCollision), lowestCollisionFreeValign = lowestCollisionFree % 1;
 
             List<(double upper, double lower)> ranges = [];
 
