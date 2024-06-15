@@ -9,7 +9,7 @@ namespace old_bruteforcer_rewrite_5
     internal class PlayerRange2
     {
         double YUpper, YLower, VSpeed, StartYUpper, StartYLower;
-        static double Floor = 408;
+        static double Floor = 408, Ceiling = 363;
 
         public PlayerRange2(double yUpper, double yLower, double vSpeed)
         {
@@ -44,7 +44,19 @@ namespace old_bruteforcer_rewrite_5
             Floor = Math.Round(floor);
         }
 
-        public PlayerRange2 SplitOffLowerAt(double split, bool bitShiftUpper)
+        public static void SetCeiling(double ceiling)
+        {
+            Ceiling = Math.Round(ceiling);
+        }
+
+        // to make the two ranges disjoint after splitting, one of the ranges needs to be adjusted
+        enum BitShift
+        {
+            UpperRange,
+            LowerRange
+        }
+
+        PlayerRange2 SplitOffLowerAt(double split, BitShift range)
         {
             // split off lower range
             PlayerRange2 lower = new(StartYLower - YLower + split, StartYLower, split, YLower, VSpeed);
@@ -54,7 +66,7 @@ namespace old_bruteforcer_rewrite_5
             StartYLower = StartYUpper - YUpper + split;
 
             // make disjoint at split
-            if (bitShiftUpper)
+            if (range == BitShift.UpperRange)
             {
                 YLower = double.BitDecrement(YLower);
                 StartYLower = double.BitDecrement(StartYLower);
@@ -68,7 +80,7 @@ namespace old_bruteforcer_rewrite_5
             return lower;
         }
 
-        public PlayerRange2 SplitOffUpperAt(double split, bool bitShiftUpper)
+        PlayerRange2 SplitOffUpperAt(double split, BitShift range)
         {
             // split off upper range
             PlayerRange2 upper = new(StartYUpper, StartYUpper - YUpper + split, YUpper, split, VSpeed);
@@ -78,7 +90,7 @@ namespace old_bruteforcer_rewrite_5
             StartYUpper = StartYLower - YLower + split;
 
             // make disjoint at split
-            if (bitShiftUpper)
+            if (range == BitShift.UpperRange)
             {
                 upper.YLower = double.BitDecrement(upper.YLower);
                 upper.StartYLower = double.BitDecrement(upper.StartYLower);
@@ -92,7 +104,7 @@ namespace old_bruteforcer_rewrite_5
             return upper;
         }
 
-        public static List<PlayerRange2> test(PlayerRange2 p)
+        public static List<PlayerRange2> FloorCollision(PlayerRange2 p)
         {
             double highestCollision = Floor - 0.5;
             if (Math.Round(highestCollision) < Floor)
@@ -108,7 +120,7 @@ namespace old_bruteforcer_rewrite_5
                 if (p.YUpper < highestCollision)
                 {
                     // partially stuck
-                    PlayerRange2 lower = p.SplitOffLowerAt(highestCollision, true);
+                    PlayerRange2 lower = p.SplitOffLowerAt(highestCollision, BitShift.UpperRange);
                     lower.VSpeed = 0;
                     ranges.Add(lower);
                 }
@@ -127,7 +139,7 @@ namespace old_bruteforcer_rewrite_5
                 if (p.YUpper < highestCollisionAfterVspeed)
                 {
                     // partial collision after vspeed
-                    PlayerRange2 upper = p.SplitOffUpperAt(highestCollisionAfterVspeed, true);
+                    PlayerRange2 upper = p.SplitOffUpperAt(highestCollisionAfterVspeed, BitShift.UpperRange);
                     upper.YUpper += upper.VSpeed;
                     upper.YLower += upper.VSpeed;
                     ranges.Add(upper);
@@ -137,6 +149,14 @@ namespace old_bruteforcer_rewrite_5
                     // full range colliding after vspeed
                     // nothing more to do in this case
                 }
+            }
+            else
+            {
+                // full range free
+                p.YUpper += p.VSpeed;
+                p.YLower += p.VSpeed;
+                ranges.Add(p);
+                return ranges;
             }
 
             // the remaining range will land => vspeed = 0
@@ -148,7 +168,7 @@ namespace old_bruteforcer_rewrite_5
             {
                 if (p.YLower >= highestFloorReject)
                 {
-                    PlayerRange2 lower = p.SplitOffLowerAt(highestFloorReject, true);
+                    PlayerRange2 lower = p.SplitOffLowerAt(highestFloorReject, BitShift.UpperRange);
                     ranges.Add(lower);
                 }
                 p.YUpper += 1;
@@ -157,6 +177,87 @@ namespace old_bruteforcer_rewrite_5
 
             // add remaining range
             if (p.YUpper < highestCollision)
+            {
+                ranges.Add(p);
+            }
+
+            return ranges;
+        }
+
+        public static List<PlayerRange2> CeilingCollision(PlayerRange2 p)
+        {
+            double lowestCollision = Ceiling + 0.5;
+            if (Math.Round(lowestCollision) > Ceiling)
+            {
+                lowestCollision = double.BitDecrement(lowestCollision);
+            }
+
+            List<PlayerRange2> ranges = [];
+
+            // get stuck range
+            // TODO: im not actually sure how i wanna handle ranges stuck in ceiling rn huh
+            if (p.YUpper <= lowestCollision)
+            {
+                if (p.YLower > lowestCollision)
+                {
+                    // partially stuck
+                    PlayerRange2 upper = p.SplitOffUpperAt(lowestCollision, BitShift.LowerRange);
+                    upper.VSpeed = 0;
+                    ranges.Add(upper);
+                }
+                else
+                {
+                    // full range stuck
+                    p.VSpeed = 0;
+                    return [p];
+                }
+            }
+
+            // separate between collision and no collision
+            double lowestCollisionAfterVspeed = lowestCollision - p.VSpeed;
+            if (p.YUpper <= lowestCollisionAfterVspeed)
+            {
+                if (p.YLower > lowestCollisionAfterVspeed)
+                {
+                    // partial collision after vspeed
+                    PlayerRange2 lower = p.SplitOffLowerAt(lowestCollisionAfterVspeed, BitShift.LowerRange);
+                    lower.YUpper += lower.VSpeed;
+                    lower.YLower += lower.VSpeed;
+                    ranges.Add(lower);
+                }
+                else
+                {
+                    // full range colliding after vspeed
+                    // nothing more to do in this case
+                }
+            }
+            else
+            {
+                // full range free
+                p.YUpper += p.VSpeed;
+                p.YLower += p.VSpeed;
+                ranges.Add(p);
+                return ranges;
+            }
+
+            // the remaining range will land => vspeed = 0
+            p.VSpeed = 0;
+
+            // move_contact_solid
+            double lowestCeilingReject = lowestCollision + 1;
+            while (p.YLower > lowestCeilingReject)
+            {
+                if (p.YUpper <= lowestCeilingReject)
+                {
+                    PlayerRange2 upper = p.SplitOffUpperAt(lowestCeilingReject, BitShift.LowerRange);
+                    ranges.Add(upper);
+                }
+                p.YUpper -= 1;
+                p.YLower -= 1;
+            }
+
+            // add remaining range
+            if (p.YLower > lowestCollision)
             {
                 ranges.Add(p);
             }
