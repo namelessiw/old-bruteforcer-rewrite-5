@@ -14,12 +14,13 @@ namespace old_bruteforcer_rewrite_5
         private void Form1_Load(object sender, EventArgs e)
         {
             NewPlayer();
+            CreatePlayerRange();
 
-            PlayerRange2.SetFloor(408);
+            /*PlayerRange2.SetFloor(408);
             PlayerRange2.SetCeiling(363);
             PlayerRange2 p = new(362.1, 367.4, -3.6);
             List<PlayerRange2> ranges = PlayerRange2.CeilingCollision(p);
-            MessageBox.Show(string.Join(",\n", ranges.Select(r => r.ToString())));
+            MessageBox.Show(string.Join(",\n", ranges.Select(r => r.ToString())));*/
         }
 
         private void NewPlayer()
@@ -31,7 +32,7 @@ namespace old_bruteforcer_rewrite_5
 
         private void updateLabel()
         {
-            LblStats.Text = p.ToString() + "\n" + p.GetStrat(false) + "\n" + p.GetMacro();
+            LblInfo.Text = "Info:\n" + p.ToString() + "\n" + p.GetStrat(false) + "\n" + p.GetMacro();
         }
 
         private void BtnNew_Click(object sender, EventArgs e)
@@ -93,6 +94,34 @@ namespace old_bruteforcer_rewrite_5
                 MessageBox.Show(ex.Message);
             }
             updateLabel();
+        }
+
+        PlayerRange2 pr;
+
+        private void UpdateLabelRange(List<PlayerRange2> ranges)
+        {
+            LblInfo.Text = "Info:\n" + string.Join("\n", ranges.Select(r => r.ToString()));
+        }
+
+        private void CreatePlayerRange()
+        {
+            PlayerRange2.SetFloor(double.Parse(TxtFloorY.Text, CultureInfo.InvariantCulture));
+            PlayerRange2.SetCeiling(double.Parse(TxtCeiling.Text, CultureInfo.InvariantCulture));
+            pr = new(double.Parse(TxtYUpper.Text, CultureInfo.InvariantCulture), double.Parse(TxtYLower.Text, CultureInfo.InvariantCulture), double.Parse(TxtVSpeed.Text, CultureInfo.InvariantCulture));
+        }
+
+        private void BtnFloorCollision_Click(object sender, EventArgs e)
+        {
+            CreatePlayerRange();
+            List<PlayerRange2> ranges = PlayerRange2.FloorCollision(pr);
+            UpdateLabelRange(ranges);
+        }
+
+        private void BtnCeilingCollision_Click(object sender, EventArgs e)
+        {
+            CreatePlayerRange();
+            List<PlayerRange2> ranges = PlayerRange2.CeilingCollision(pr);
+            UpdateLabelRange(ranges);
         }
     }
 }

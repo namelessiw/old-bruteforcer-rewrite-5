@@ -33,7 +33,7 @@
             BtnNew = new Button();
             ChkPress = new CheckBox();
             ChkRelease = new CheckBox();
-            LblStats = new Label();
+            LblInfo = new Label();
             TxtStrat = new TextBox();
             BtnDoStrat = new Button();
             TxtPlayerY = new TextBox();
@@ -41,6 +41,16 @@
             label2 = new Label();
             label3 = new Label();
             TxtFloorY = new TextBox();
+            TxtCeiling = new TextBox();
+            label4 = new Label();
+            label5 = new Label();
+            label6 = new Label();
+            TxtYUpper = new TextBox();
+            TxtYLower = new TextBox();
+            BtnFloorCollision = new Button();
+            BtnCeilingCollision = new Button();
+            label7 = new Label();
+            TxtVSpeed = new TextBox();
             SuspendLayout();
             // 
             // BtnStep
@@ -93,14 +103,14 @@
             ChkRelease.Text = "Release";
             ChkRelease.UseVisualStyleBackColor = true;
             // 
-            // LblStats
+            // LblInfo
             // 
-            LblStats.AutoSize = true;
-            LblStats.Location = new Point(118, 9);
-            LblStats.Name = "LblStats";
-            LblStats.Size = new Size(35, 15);
-            LblStats.TabIndex = 5;
-            LblStats.Text = "Stats:";
+            LblInfo.AutoSize = true;
+            LblInfo.Location = new Point(219, 9);
+            LblInfo.Name = "LblInfo";
+            LblInfo.Size = new Size(31, 15);
+            LblInfo.TabIndex = 5;
+            LblInfo.Text = "Info:";
             // 
             // TxtStrat
             // 
@@ -162,11 +172,109 @@
             TxtFloorY.TabIndex = 12;
             TxtFloorY.Text = "408";
             // 
+            // TxtCeiling
+            // 
+            TxtCeiling.Location = new Point(118, 71);
+            TxtCeiling.Name = "TxtCeiling";
+            TxtCeiling.Size = new Size(100, 23);
+            TxtCeiling.TabIndex = 13;
+            TxtCeiling.Text = "363";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(118, 53);
+            label4.Name = "label4";
+            label4.Size = new Size(44, 15);
+            label4.TabIndex = 14;
+            label4.Text = "Ceiling";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(118, 97);
+            label5.Name = "label5";
+            label5.Size = new Size(49, 15);
+            label5.TabIndex = 15;
+            label5.Text = "Y Upper";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(118, 141);
+            label6.Name = "label6";
+            label6.Size = new Size(49, 15);
+            label6.TabIndex = 16;
+            label6.Text = "Y Lower";
+            // 
+            // TxtYUpper
+            // 
+            TxtYUpper.Location = new Point(118, 115);
+            TxtYUpper.Name = "TxtYUpper";
+            TxtYUpper.Size = new Size(100, 23);
+            TxtYUpper.TabIndex = 17;
+            TxtYUpper.Text = "406.5";
+            // 
+            // TxtYLower
+            // 
+            TxtYLower.Location = new Point(118, 159);
+            TxtYLower.Name = "TxtYLower";
+            TxtYLower.Size = new Size(100, 23);
+            TxtYLower.TabIndex = 18;
+            TxtYLower.Text = "407.5";
+            // 
+            // BtnFloorCollision
+            // 
+            BtnFloorCollision.Location = new Point(118, 231);
+            BtnFloorCollision.Name = "BtnFloorCollision";
+            BtnFloorCollision.Size = new Size(100, 23);
+            BtnFloorCollision.TabIndex = 19;
+            BtnFloorCollision.Text = "Floor Collision";
+            BtnFloorCollision.UseVisualStyleBackColor = true;
+            BtnFloorCollision.Click += BtnFloorCollision_Click;
+            // 
+            // BtnCeilingCollision
+            // 
+            BtnCeilingCollision.Location = new Point(118, 259);
+            BtnCeilingCollision.Name = "BtnCeilingCollision";
+            BtnCeilingCollision.Size = new Size(100, 23);
+            BtnCeilingCollision.TabIndex = 20;
+            BtnCeilingCollision.Text = "Ceil Collision";
+            BtnCeilingCollision.UseVisualStyleBackColor = true;
+            BtnCeilingCollision.Click += BtnCeilingCollision_Click;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(118, 185);
+            label7.Name = "label7";
+            label7.Size = new Size(46, 15);
+            label7.TabIndex = 21;
+            label7.Text = "VSpeed";
+            // 
+            // TxtVSpeed
+            // 
+            TxtVSpeed.Location = new Point(118, 203);
+            TxtVSpeed.Name = "TxtVSpeed";
+            TxtVSpeed.Size = new Size(100, 23);
+            TxtVSpeed.TabIndex = 22;
+            TxtVSpeed.Text = "0";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
+            Controls.Add(TxtVSpeed);
+            Controls.Add(label7);
+            Controls.Add(BtnCeilingCollision);
+            Controls.Add(BtnFloorCollision);
+            Controls.Add(TxtYLower);
+            Controls.Add(TxtYUpper);
+            Controls.Add(label6);
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(TxtCeiling);
             Controls.Add(TxtFloorY);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -174,7 +282,7 @@
             Controls.Add(TxtPlayerY);
             Controls.Add(BtnDoStrat);
             Controls.Add(TxtStrat);
-            Controls.Add(LblStats);
+            Controls.Add(LblInfo);
             Controls.Add(ChkRelease);
             Controls.Add(ChkPress);
             Controls.Add(BtnNew);
@@ -195,7 +303,7 @@
         private Button BtnNew;
         private CheckBox ChkPress;
         private CheckBox ChkRelease;
-        private Label LblStats;
+        private Label LblInfo;
         private TextBox TxtStrat;
         private Button BtnDoStrat;
         private TextBox TxtPlayerY;
@@ -203,5 +311,15 @@
         private Label label2;
         private Label label3;
         private TextBox TxtFloorY;
+        private TextBox TxtCeiling;
+        private Label label4;
+        private Label label5;
+        private Label label6;
+        private TextBox TxtYUpper;
+        private TextBox TxtYLower;
+        private Button BtnFloorCollision;
+        private Button BtnCeilingCollision;
+        private Label label7;
+        private TextBox TxtVSpeed;
     }
 }
