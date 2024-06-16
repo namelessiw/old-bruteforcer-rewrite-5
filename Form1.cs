@@ -96,31 +96,31 @@ namespace old_bruteforcer_rewrite_5
             updateLabel();
         }
 
-        PlayerRange2 pr;
+        PlayerRange pr;
 
-        private void UpdateLabelRange(List<PlayerRange2> ranges)
+        private void UpdateLabelRange(List<PlayerRange> ranges)
         {
             LblInfo.Text = "Info:\n" + string.Join("\n", ranges.Select(r => r.ToString()));
         }
 
         private void CreatePlayerRange()
         {
-            PlayerRange2.SetFloor(double.Parse(TxtFloorY.Text, CultureInfo.InvariantCulture));
-            PlayerRange2.SetCeiling(double.Parse(TxtCeiling.Text, CultureInfo.InvariantCulture));
-            pr = new(double.Parse(TxtYUpper.Text, CultureInfo.InvariantCulture), double.Parse(TxtYLower.Text, CultureInfo.InvariantCulture), double.Parse(TxtVSpeed.Text, CultureInfo.InvariantCulture));
+            /*PlayerRange.SetFloor(double.Parse(TxtFloorY.Text, CultureInfo.InvariantCulture));
+            PlayerRange.SetCeiling(double.Parse(TxtCeiling.Text, CultureInfo.InvariantCulture));
+            pr = new(double.Parse(TxtYUpper.Text, CultureInfo.InvariantCulture), double.Parse(TxtYLower.Text, CultureInfo.InvariantCulture), double.Parse(TxtVSpeed.Text, CultureInfo.InvariantCulture));*/
         }
 
         private void BtnFloorCollision_Click(object sender, EventArgs e)
         {
             CreatePlayerRange();
-            List<PlayerRange2> ranges = PlayerRange2.FloorCollision(pr);
+            List<PlayerRange> ranges = PlayerRange.FloorCollision(pr);
             UpdateLabelRange(ranges);
         }
 
         private void BtnCeilingCollision_Click(object sender, EventArgs e)
         {
             CreatePlayerRange();
-            List<PlayerRange2> ranges = PlayerRange2.CeilingCollision(pr);
+            List<PlayerRange> ranges = PlayerRange.CeilingCollision(pr);
             UpdateLabelRange(ranges);
         }
     }
