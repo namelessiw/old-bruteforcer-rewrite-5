@@ -16,6 +16,53 @@ namespace old_bruteforcer_rewrite_5
             NewPlayer();
             CreatePlayerRange();
 
+            List<PlayerRange> ranges = [new(406.5, double.BitDecrement(407.5), 0, true)];
+
+            List<Input> inputs = [Input.Press, Input.None, Input.None, Input.None, Input.None, Input.Release, Input.None, Input.None, Input.None, Input.None, Input.None, Input.Press, Input.None, 
+                Input.None, Input.None, Input.None, Input.Release, Input.None,];
+
+            MessageBox.Show(p.ToString());
+            for (int i = 0; i < inputs.Count; i++)
+            {
+                int size = ranges.Count;
+                for (int j = 0; j < size; j++)
+                {
+                    List<PlayerRange> newRanges = ranges[j].Step(inputs[i]);
+                    foreach (PlayerRange newRange in newRanges)
+                    {
+                        ranges.Add(newRange);
+                    }
+
+                    MessageBox.Show($"Input: {inputs[i]}\nRange: {j}\n" + ranges[j].ToString());
+                }
+            }
+
+            while (ranges.Count > 0)
+            {
+                int size = ranges.Count;
+                for (int j = 0; j < size; j++)
+                {
+                    List<PlayerRange> newRanges = ranges[j].Step(Input.None);
+                    foreach (PlayerRange newRange in newRanges)
+                    {
+                        ranges.Add(newRange);
+                    }
+
+                    MessageBox.Show($"To STable:\nRange: {j}\n" + ranges[j].ToString());
+
+                    if (ranges[j].IsStable())
+                    {
+                        PlayerRange stable = ranges[j].SplitOffStable();
+                        if (ranges[j] == stable)
+                        {
+                            ranges.RemoveAt(j);
+                            size--;
+                            j--;
+                        }
+                    }
+                }
+            }
+
             /*PlayerRange2.SetFloor(408);
             PlayerRange2.SetCeiling(363);
             PlayerRange2 p = new(362.1, 367.4, -3.6);
@@ -113,15 +160,15 @@ namespace old_bruteforcer_rewrite_5
         private void BtnFloorCollision_Click(object sender, EventArgs e)
         {
             CreatePlayerRange();
-            List<PlayerRange> ranges = PlayerRange.FloorCollision(pr);
-            UpdateLabelRange(ranges);
+            /*List<PlayerRange> ranges = PlayerRange.FloorCollision(pr);
+            UpdateLabelRange(ranges);*/
         }
 
         private void BtnCeilingCollision_Click(object sender, EventArgs e)
         {
             CreatePlayerRange();
-            List<PlayerRange> ranges = PlayerRange.CeilingCollision(pr);
-            UpdateLabelRange(ranges);
+            /*List<PlayerRange> ranges = PlayerRange.CeilingCollision(pr);
+            UpdateLabelRange(ranges);*/
         }
     }
 }
