@@ -699,10 +699,12 @@ namespace old_bruteforcer_rewrite_5
             return sb.ToString().Trim();
         }
 
-        public override string ToString()
+        /*public override string ToString()
         {
             return $"YUpper: {YUpper}\nYLower: {YLower}\nVSpeed: {VSpeed}\nFrame: {Frame}\nHasDJump: {HasDJump}\nReleased: {Released}\n{GetStrat(false)}\n{GetMacro()}\n";
-        }
+        }*/
+
+        public override string ToString() => $"[{StartYUpper}, {StartYLower}] => [{YUpper}, {YLower}] ({VSpeed})";
 
         // based on https://github.com/namelessiw/Jump-Bruteforcer/blob/fe878d1c5a625660ca5baa6abc0e47100ad34116/Jump_Bruteforcer/SearchOutput.cs#L59 (12.06.2024)
         public string GetMacro()
