@@ -20,11 +20,11 @@ namespace old_bruteforcer_rewrite_5
         static double Floor = 408, Ceiling = 0;
         static Stack<PlayerRange> PlayerRanges = new();
         double StartYUpper, StartYLower, YUpper, YLower, VSpeed;
-        int Frame;
-        bool HasDJump, Released, Alive;
+        public int Frame;
+        bool HasSJump, HasDJump, Released, Alive;
         List<Input> Inputs;
 
-        public PlayerRange(double yUpper, double yLower, double vspeed, bool hasDJump)
+        public PlayerRange(double yUpper, double yLower, double vspeed, bool hasSJump, bool hasDJump)
         {
             if (yUpper > yLower)
             {
@@ -37,11 +37,12 @@ namespace old_bruteforcer_rewrite_5
             VSpeed = vspeed;
             Frame = 0;
             HasDJump = hasDJump;
-            Released = false;
+            HasSJump = hasSJump;
+            Released = VSpeed >= 0; // avoid automatic release on first frame
             Inputs = [];
         }
 
-        public PlayerRange(double startYUpper, double startYLower, double yUpper, double yLower, double vspeed, int frame, bool hasDJump, bool released, bool alive, List<Input> inputs)
+        public PlayerRange(double startYUpper, double startYLower, double yUpper, double yLower, double vspeed, int frame, bool hasSJump, bool hasDJump, bool released, bool alive, List<Input> inputs)
         {
             if (startYUpper > startYLower)
             {
@@ -60,6 +61,7 @@ namespace old_bruteforcer_rewrite_5
             VSpeed = vspeed;
             Frame = frame;
             HasDJump = hasDJump;
+            HasSJump = hasSJump;
             Released = released;
             Inputs = new List<Input>(inputs);
         }
@@ -67,13 +69,13 @@ namespace old_bruteforcer_rewrite_5
         // create a copy of this PlayerRange
         public PlayerRange Copy()
         {
-            return new PlayerRange(StartYUpper, StartYLower, YUpper, YLower, VSpeed, Frame, HasDJump, Released, Alive, Inputs);
+            return new PlayerRange(StartYUpper, StartYLower, YUpper, YLower, VSpeed, Frame, HasSJump, HasDJump, Released, Alive, Inputs);
         }
 
         // create a copy of this PlayerRange with a different range
         public PlayerRange Copy(double newStartYUpper, double newStartYLower, double newYUpper, double newYLower, double newVSpeed)
         {
-            return new PlayerRange(newStartYUpper, newStartYLower, newYUpper, newYLower, newVSpeed, Frame, HasDJump, Released, Alive, Inputs);
+            return new PlayerRange(newStartYUpper, newStartYLower, newYUpper, newYLower, newVSpeed, Frame, HasSJump, HasDJump, Released, Alive, Inputs);
         }
 
         public static void ClearPlayerRanges()
@@ -93,7 +95,7 @@ namespace old_bruteforcer_rewrite_5
 
         public bool CanPress()
         {
-            return Frame == 0 || HasDJump; // TODO: state variable?
+            return HasSJump || HasDJump;
         }
 
         public bool CanRelease()
@@ -180,7 +182,7 @@ namespace old_bruteforcer_rewrite_5
 
         public bool IsStable()
         {
-            return VSpeed == 0 && Math.Round(YLower + PhysicsParams.GRAVITY) >= Floor;
+            return Frame > 0 && VSpeed == 0 && Math.Round(YLower + PhysicsParams.GRAVITY) >= Floor;
         }
 
         public PlayerRange SplitOffStable()
@@ -217,10 +219,11 @@ namespace old_bruteforcer_rewrite_5
                 return [];
             }
 
+            bool press = (input & Input.Press) == Input.Press;
             // shift press
-            if ((input & Input.Press) == Input.Press)
+            if (press)
             {
-                if (Frame == 0) // TODO: state variable?
+                if (HasSJump)
                 {
                     VSpeed = PhysicsParams.SJUMP;
                 }
@@ -234,6 +237,23 @@ namespace old_bruteforcer_rewrite_5
                     throw new Exception("Cannot press on this frame"); // TODO: remove
                 }
                 Released = false;
+            }
+
+            // TODO: what if use last results?
+            if (Frame == 0)
+            {
+                // HasSJump is still true even if used so set to false here
+                if (HasSJump)
+                {
+                    HasSJump = false;
+                    // TODO: i think this behaviour should be optional, walkoff djump is not wrong in general
+                    HasDJump &= press; // if not pressed, also remove djump
+                }
+                else
+                {
+                    // if djump not used on first frame and sjump not availble, remove
+                    HasDJump = false;
+                }
             }
 
             // shift release or automatic release
@@ -641,7 +661,7 @@ namespace old_bruteforcer_rewrite_5
 
             StringBuilder sb = new();
             int frame = 0;
-            bool released = false; // dependant on starting vspeed to distinguish fixed vspeed jump and walkoff?
+            bool released = true; // dependant on starting vspeed to distinguish fixed vspeed jump and walkoff?
 
             /*
             1f 3p 4f 12p
@@ -704,7 +724,7 @@ namespace old_bruteforcer_rewrite_5
             return $"YUpper: {YUpper}\nYLower: {YLower}\nVSpeed: {VSpeed}\nFrame: {Frame}\nHasDJump: {HasDJump}\nReleased: {Released}\n{GetStrat(false)}\n{GetMacro()}\n";
         }*/
 
-        public override string ToString() => $"[{StartYUpper}, {StartYLower}] => [{YUpper}, {YLower}] ({VSpeed})";
+        public override string ToString() => $"({Frame}) {GetStrat(false)} [{StartYUpper}, {StartYLower}] => [{YUpper}, {YLower}]";
 
         // based on https://github.com/namelessiw/Jump-Bruteforcer/blob/fe878d1c5a625660ca5baa6abc0e47100ad34116/Jump_Bruteforcer/SearchOutput.cs#L59 (12.06.2024)
         public string GetMacro()

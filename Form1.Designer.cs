@@ -51,6 +51,8 @@
             BtnCeilingCollision = new Button();
             label7 = new Label();
             TxtVSpeed = new TextBox();
+            LstResults = new ListBox();
+            label8 = new Label();
             SuspendLayout();
             // 
             // BtnStep
@@ -106,7 +108,7 @@
             // LblInfo
             // 
             LblInfo.AutoSize = true;
-            LblInfo.Location = new Point(219, 9);
+            LblInfo.Location = new Point(224, 9);
             LblInfo.Name = "LblInfo";
             LblInfo.Size = new Size(31, 15);
             LblInfo.TabIndex = 5;
@@ -260,11 +262,31 @@
             TxtVSpeed.TabIndex = 22;
             TxtVSpeed.Text = "0";
             // 
+            // LstResults
+            // 
+            LstResults.FormattingEnabled = true;
+            LstResults.ItemHeight = 15;
+            LstResults.Location = new Point(224, 70);
+            LstResults.Name = "LstResults";
+            LstResults.Size = new Size(464, 259);
+            LstResults.TabIndex = 23;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(224, 53);
+            label8.Name = "label8";
+            label8.Size = new Size(44, 15);
+            label8.TabIndex = 24;
+            label8.Text = "Results";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
+            Controls.Add(label8);
+            Controls.Add(LstResults);
             Controls.Add(TxtVSpeed);
             Controls.Add(label7);
             Controls.Add(BtnCeilingCollision);
@@ -321,5 +343,7 @@
         private Button BtnCeilingCollision;
         private Label label7;
         private TextBox TxtVSpeed;
+        private ListBox LstResults;
+        private Label label8;
     }
 }

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Globalization;
 
 namespace old_bruteforcer_rewrite_5
@@ -16,54 +17,8 @@ namespace old_bruteforcer_rewrite_5
             NewPlayer();
             CreatePlayerRange();
 
-            List<PlayerRange> ranges = [new(406.5, double.BitDecrement(407.5), 0, true)];
-
-            List<Input> inputs = [Input.Press, Input.None, Input.None, Input.None, Input.None, Input.Release, Input.None, Input.None, Input.None, Input.None, Input.None, Input.Press, Input.None, 
-                Input.None, Input.None, Input.None, Input.Release, Input.None,];
-
-            MessageBox.Show(ranges[0].ToString());
-
-            for (int i = 0; true; i++)
-            {
-                int size = ranges.Count;
-
-                // next input
-                for (int j = 0; j < size; j++)
-                {
-                    PlayerRange p = ranges[j];
-                    List<PlayerRange> newRanges = p.Step(i >= inputs.Count ? Input.None : inputs[i]);
-
-                    foreach (PlayerRange newRange in newRanges)
-                    {
-                        ranges.Add(newRange);
-                    }
-                }
-
-                // split off stable
-                for (int j = 0; j < size; j++)
-                {
-                    PlayerRange p = ranges[j];
-                    if (p.IsStable())
-                    {
-                        PlayerRange stable = p.SplitOffStable();
-                        if (p != stable)
-                        {
-                            ranges.Add(stable);
-                        }
-                    }
-                }
-
-                // print
-                string strat = ranges[0].GetStrat(false), macro = ranges[0].GetMacro();
-                MessageBox.Show(strat + "\n" + macro + "\n" + ranges[0].GetStrat(false) + "\n" + string.Join("\n", ranges.Select(r => r.ToString())));
-
-                // all stable?
-                if (ranges.All(r => r.IsStable()))
-                {
-                    break;
-                }
-            }
-
+            test();
+            
             /*MessageBox.Show(p.ToString());
             for (int i = 0; i < inputs.Count; i++)
             {
@@ -111,6 +66,137 @@ namespace old_bruteforcer_rewrite_5
             PlayerRange2 p = new(362.1, 367.4, -3.6);
             List<PlayerRange2> ranges = PlayerRange2.CeilingCollision(p);
             MessageBox.Show(string.Join(",\n", ranges.Select(r => r.ToString())));*/
+        }
+
+        private void test()
+        {
+            Stopwatch sw = new();
+            sw.Start();
+
+            Stack<PlayerRange> activeRanges = new([new(406.5, 406.5, 0, true, true)]);
+
+            List<PlayerRange> results = [], ranges;
+
+            while (activeRanges.Count > 0)
+            {
+                PlayerRange p = activeRanges.Peek(), temp;
+
+                if (p.IsStable())
+                {
+                    PlayerRange stable = p.SplitOffStable();
+
+                    if (p == stable)
+                    {
+                        activeRanges.Pop();
+                        results.Add(p);
+                        continue;
+                    }
+                    else
+                    {
+                        results.Add(stable);
+                    }
+                }
+
+                if (p.CanPress())
+                {
+                    temp = p.Copy();
+                    ranges = temp.Step(Input.Press);
+                    foreach (PlayerRange range in ranges)
+                    {
+                        activeRanges.Push(range);
+                    }
+                    activeRanges.Push(temp);
+
+                    temp = p.Copy();
+                    ranges = temp.Step(Input.Press | Input.Release);
+                    foreach (PlayerRange range in ranges)
+                    {
+                        activeRanges.Push(range);
+                    }
+                    activeRanges.Push(temp);
+                }
+
+                if (p.CanRelease())
+                {
+                    temp = p.Copy();
+                    ranges = temp.Step(Input.Release);
+                    foreach (PlayerRange range in ranges)
+                    {
+                        activeRanges.Push(range);
+                    }
+                    activeRanges.Push(temp);
+                }
+
+                ranges = p.Step(Input.None);
+                foreach (PlayerRange range in ranges)
+                {
+                    activeRanges.Push(range);
+                }
+            }
+
+            sw.Stop();
+
+            LblInfo.Text = "Info:\n" + $"{results.Count} results in {sw.Elapsed}";
+
+            results.Sort(new Comparison<PlayerRange>((a, b) => a.Frame == b.Frame ? 0 : a.Frame - b.Frame));
+
+            LstResults.Items.Clear();
+
+            int elements = Math.Min(results.Count, 10000);
+            foreach (PlayerRange range in results[..elements])
+            {
+                LstResults.Items.Add(range);
+            }
+
+
+
+            /*List<PlayerRange> ranges = [new(406.5, double.BitDecrement(407.5), 0, true)];
+
+            List<Input> inputs = [Input.Press, Input.None, Input.None, Input.None, Input.None, Input.Release, Input.None, Input.None, Input.None, Input.None, Input.None, Input.Press, Input.None, 
+                Input.None, Input.None, Input.None, Input.Release, Input.None,];
+
+            MessageBox.Show(ranges[0].ToString());
+
+            for (int i = 0; true; i++)
+            {
+                int size = ranges.Count;
+
+                // next input
+                for (int j = 0; j < size; j++)
+                {
+                    PlayerRange p = ranges[j];
+                    List<PlayerRange> newRanges = p.Step(i >= inputs.Count ? Input.None : inputs[i]);
+
+                    foreach (PlayerRange newRange in newRanges)
+                    {
+                        ranges.Add(newRange);
+                    }
+                }
+
+                // split off stable
+                for (int j = 0; j < size; j++)
+                {
+                    PlayerRange p = ranges[j];
+                    if (p.IsStable())
+                    {
+                        PlayerRange stable = p.SplitOffStable();
+                        if (p != stable)
+                        {
+                            ranges.Add(stable);
+                        }
+                    }
+                }
+
+                // print
+                string strat = ranges[0].GetStrat(false), macro = ranges[0].GetMacro();
+                MessageBox.Show(strat + "\n" + macro + "\n" + ranges[0].GetStrat(false) + "\n" + string.Join("\n", ranges.Select(r => r.ToString())));
+
+                // all stable?
+                if (ranges.All(r => r.IsStable()))
+                {
+                    break;
+                }
+            }*/
         }
 
         private void NewPlayer()
