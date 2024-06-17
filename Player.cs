@@ -64,7 +64,7 @@ namespace old_bruteforcer_rewrite_5
             return VSpeed == 0 && Math.Round(Y + PhysicsParams.GRAVITY) >= Floor; // TODO: depends on one-way type
         }
 
-        public bool Step(Input input) // TODO: floor, ceiling, killers, return, debug log?
+        public bool Step(Input input) // TODO: killers, return, debug log?
         {
             if (Frame >= MAX_LENGTH)
             {
