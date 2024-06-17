@@ -21,7 +21,50 @@ namespace old_bruteforcer_rewrite_5
             List<Input> inputs = [Input.Press, Input.None, Input.None, Input.None, Input.None, Input.Release, Input.None, Input.None, Input.None, Input.None, Input.None, Input.Press, Input.None, 
                 Input.None, Input.None, Input.None, Input.Release, Input.None,];
 
-            MessageBox.Show(p.ToString());
+            MessageBox.Show(ranges[0].ToString());
+
+            for (int i = 0; true; i++)
+            {
+                int size = ranges.Count;
+
+                // next input
+                for (int j = 0; j < size; j++)
+                {
+                    PlayerRange p = ranges[j];
+                    List<PlayerRange> newRanges = p.Step(i >= inputs.Count ? Input.None : inputs[i]);
+
+                    foreach (PlayerRange newRange in newRanges)
+                    {
+                        ranges.Add(newRange);
+                    }
+                }
+
+                // split off stable
+                for (int j = 0; j < size; j++)
+                {
+                    PlayerRange p = ranges[j];
+                    if (p.IsStable())
+                    {
+                        PlayerRange stable = p.SplitOffStable();
+                        if (p != stable)
+                        {
+                            ranges.Add(stable);
+                        }
+                    }
+                }
+
+                // print
+                string strat = ranges[0].GetStrat(false), macro = ranges[0].GetMacro();
+                MessageBox.Show(strat + "\n" + macro + "\n" + ranges[0].GetStrat(false) + "\n" + string.Join("\n", ranges.Select(r => r.ToString())));
+
+                // all stable?
+                if (ranges.All(r => r.IsStable()))
+                {
+                    break;
+                }
+            }
+
+            /*MessageBox.Show(p.ToString());
             for (int i = 0; i < inputs.Count; i++)
             {
                 int size = ranges.Count;
@@ -61,7 +104,7 @@ namespace old_bruteforcer_rewrite_5
                         }
                     }
                 }
-            }
+            }*/
 
             /*PlayerRange2.SetFloor(408);
             PlayerRange2.SetCeiling(363);
