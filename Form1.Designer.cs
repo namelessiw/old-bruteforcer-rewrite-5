@@ -53,6 +53,8 @@
             TxtVSpeed = new TextBox();
             LstResults = new ListBox();
             label8 = new Label();
+            BtnSearchExact = new Button();
+            BtnSearchRange = new Button();
             SuspendLayout();
             // 
             // BtnStep
@@ -280,11 +282,33 @@
             label8.TabIndex = 24;
             label8.Text = "Results";
             // 
+            // BtnSearchExact
+            // 
+            BtnSearchExact.Location = new Point(504, 12);
+            BtnSearchExact.Name = "BtnSearchExact";
+            BtnSearchExact.Size = new Size(89, 23);
+            BtnSearchExact.TabIndex = 25;
+            BtnSearchExact.Text = "Search Exact";
+            BtnSearchExact.UseVisualStyleBackColor = true;
+            BtnSearchExact.Click += BtnSearchExact_Click;
+            // 
+            // BtnSearchRange
+            // 
+            BtnSearchRange.Location = new Point(599, 12);
+            BtnSearchRange.Name = "BtnSearchRange";
+            BtnSearchRange.Size = new Size(89, 23);
+            BtnSearchRange.TabIndex = 26;
+            BtnSearchRange.Text = "Search Range";
+            BtnSearchRange.UseVisualStyleBackColor = true;
+            BtnSearchRange.Click += BtnSearchRange_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
+            Controls.Add(BtnSearchRange);
+            Controls.Add(BtnSearchExact);
             Controls.Add(label8);
             Controls.Add(LstResults);
             Controls.Add(TxtVSpeed);
@@ -345,5 +369,7 @@
         private TextBox TxtVSpeed;
         private ListBox LstResults;
         private Label label8;
+        private Button BtnSearchExact;
+        private Button BtnSearchRange;
     }
 }
