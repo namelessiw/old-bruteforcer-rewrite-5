@@ -20,15 +20,27 @@ namespace old_bruteforcer_rewrite_5
         const int MAX_LENGTH = 1000; // TODO: global setting
         static double Floor = 408, Ceiling = 0;
         double Y, VSpeed;
-        int Frame;
-        bool HasDJump, Released;
+        public int Frame;
+        bool HasSJump, HasDJump, Released;
         List<Input> Inputs;
 
-        public Player(double y, double vspeed, int frame, bool hasDJump, bool released, List<Input> inputs)
+        public Player(double y, double vspeed, bool hasSJump, bool hasDJump)
+        {
+            Y = y;
+            VSpeed = vspeed;
+            Frame = 0;
+            HasSJump = hasSJump;
+            HasDJump = hasDJump;
+            Released = VSpeed >= 0; // avoid automatic release on first frame
+            Inputs = new List<Input>();
+        }
+
+        public Player(double y, double vspeed, int frame, bool hasSJump, bool hasDJump, bool released, List<Input> inputs)
         {
             Y = y;
             VSpeed = vspeed;
             Frame = frame;
+            HasSJump = hasSJump;
             HasDJump = hasDJump;
             Released = released;
             Inputs = new List<Input>(inputs);
@@ -36,7 +48,7 @@ namespace old_bruteforcer_rewrite_5
 
         public Player Copy()
         {
-            return new Player(Y, VSpeed, Frame, HasDJump, Released, Inputs);
+            return new Player(Y, VSpeed, Frame, HasSJump, HasDJump, Released, Inputs);
         }
 
         public static void SetFloorY(string floorY)
@@ -71,10 +83,11 @@ namespace old_bruteforcer_rewrite_5
                 return false;
             }
 
+            bool press = (input & Input.Press) == Input.Press;
             // shift press
-            if ((input & Input.Press) == Input.Press)
+            if (press)
             {
-                if (Frame == 0) // TODO: state variable?
+                if (HasSJump)
                 {
                     VSpeed = PhysicsParams.SJUMP;
                 }
@@ -88,6 +101,23 @@ namespace old_bruteforcer_rewrite_5
                     throw new Exception("Cannot press on this frame"); // TODO: remove
                 }
                 Released = false;
+            }
+
+            // TODO: what if use last results?
+            if (Frame == 0)
+            {
+                // HasSJump is still true even if used so set to false here
+                if (HasSJump)
+                {
+                    HasSJump = false;
+                    // TODO: i think this behaviour should be optional, walkoff djump is not wrong in general
+                    HasDJump &= press; // if not pressed, also remove djump
+                }
+                else
+                {
+                    // if djump not used on first frame and sjump not availble, remove
+                    HasDJump = false;
+                }
             }
 
             // shift release or automatic release
@@ -254,7 +284,7 @@ namespace old_bruteforcer_rewrite_5
 
             StringBuilder sb = new();
             int frame = 0;
-            bool released = false; // dependant on starting vspeed to distinguish fixed vspeed jump and walkoff?
+            bool released = true; // dependant on starting vspeed to distinguish fixed vspeed jump and walkoff?
 
             /*
             1f 3p 4f 12p
@@ -312,10 +342,12 @@ namespace old_bruteforcer_rewrite_5
             return sb.ToString().Trim();
         }
 
-        public override string ToString()
+        /*public override string ToString()
         {
             return $"Y: {Y}\nVSpeed: {VSpeed}\nFrame: {Frame}\nHasDJump: {HasDJump}\nReleased: {Released}\n";
-        }
+        }*/
+
+        public override string ToString() => $"({Frame}) {GetStrat(false)} [{Y}]";
 
         // based on https://github.com/namelessiw/Jump-Bruteforcer/blob/fe878d1c5a625660ca5baa6abc0e47100ad34116/Jump_Bruteforcer/SearchOutput.cs#L59 (12.06.2024)
         public string GetMacro()

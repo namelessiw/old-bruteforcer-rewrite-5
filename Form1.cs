@@ -17,8 +17,8 @@ namespace old_bruteforcer_rewrite_5
             NewPlayer();
             CreatePlayerRange();
 
-            test();
-            
+            //test();
+
             /*MessageBox.Show(p.ToString());
             for (int i = 0; i < inputs.Count; i++)
             {
@@ -73,66 +73,7 @@ namespace old_bruteforcer_rewrite_5
             Stopwatch sw = new();
             sw.Start();
 
-            Stack<PlayerRange> activeRanges = new([new(406.5, 406.5, 0, true, true)]);
-
-            List<PlayerRange> results = [], ranges;
-
-            while (activeRanges.Count > 0)
-            {
-                PlayerRange p = activeRanges.Peek(), temp;
-
-                if (p.IsStable())
-                {
-                    PlayerRange stable = p.SplitOffStable();
-
-                    if (p == stable)
-                    {
-                        activeRanges.Pop();
-                        results.Add(p);
-                        continue;
-                    }
-                    else
-                    {
-                        results.Add(stable);
-                    }
-                }
-
-                if (p.CanPress())
-                {
-                    temp = p.Copy();
-                    ranges = temp.Step(Input.Press);
-                    foreach (PlayerRange range in ranges)
-                    {
-                        activeRanges.Push(range);
-                    }
-                    activeRanges.Push(temp);
-
-                    temp = p.Copy();
-                    ranges = temp.Step(Input.Press | Input.Release);
-                    foreach (PlayerRange range in ranges)
-                    {
-                        activeRanges.Push(range);
-                    }
-                    activeRanges.Push(temp);
-                }
-
-                if (p.CanRelease())
-                {
-                    temp = p.Copy();
-                    ranges = temp.Step(Input.Release);
-                    foreach (PlayerRange range in ranges)
-                    {
-                        activeRanges.Push(range);
-                    }
-                    activeRanges.Push(temp);
-                }
-
-                ranges = p.Step(Input.None);
-                foreach (PlayerRange range in ranges)
-                {
-                    activeRanges.Push(range);
-                }
-            }
+            List<PlayerRange> results = Search.SearchRange();
 
             sw.Stop();
 
@@ -202,7 +143,7 @@ namespace old_bruteforcer_rewrite_5
         private void NewPlayer()
         {
             Player.SetFloorY(TxtFloorY.Text);
-            p = new(double.Parse(TxtPlayerY.Text, CultureInfo.InvariantCulture), 0, 0, true, false, []);
+            p = new(double.Parse(TxtPlayerY.Text, CultureInfo.InvariantCulture), 0, 0, true, true, false, []);
             updateLabel();
         }
 
@@ -298,6 +239,50 @@ namespace old_bruteforcer_rewrite_5
             CreatePlayerRange();
             /*List<PlayerRange> ranges = PlayerRange.CeilingCollision(pr);
             UpdateLabelRange(ranges);*/
+        }
+
+        private void BtnSearchExact_Click(object sender, EventArgs e)
+        {
+            Stopwatch sw = new();
+            sw.Start();
+
+            List<Player> results = Search.SearchExact();
+
+            sw.Stop();
+
+            LblInfo.Text = "Info:\n" + $"{results.Count} results in {sw.Elapsed}";
+
+            results.Sort(new Comparison<Player>((a, b) => a.Frame == b.Frame ? 0 : a.Frame - b.Frame));
+
+            LstResults.Items.Clear();
+
+            int elements = Math.Min(results.Count, 10000);
+            foreach (Player player in results[..elements])
+            {
+                LstResults.Items.Add(player);
+            }
+        }
+
+        private void BtnSearchRange_Click(object sender, EventArgs e)
+        {
+            Stopwatch sw = new();
+            sw.Start();
+
+            List<PlayerRange> results = Search.SearchRange();
+
+            sw.Stop();
+
+            LblInfo.Text = "Info:\n" + $"{results.Count} results in {sw.Elapsed}";
+
+            results.Sort(new Comparison<PlayerRange>((a, b) => a.Frame == b.Frame ? 0 : a.Frame - b.Frame));
+
+            LstResults.Items.Clear();
+
+            int elements = Math.Min(results.Count, 10000);
+            foreach (PlayerRange range in results[..elements])
+            {
+                LstResults.Items.Add(range);
+            }
         }
     }
 }
