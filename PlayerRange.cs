@@ -159,27 +159,6 @@ namespace old_bruteforcer_rewrite_5
             return upper;
         }
 
-        // temporary solution
-        // TODO: need some way to split the range
-        // TODO: return sets of player ranges stable, unstable?
-        /*public StableRange IsStable()
-        {
-            // TODO: depends on one-way type
-            if (VSpeed == 0)
-            {
-                if (Math.Round(YUpper + PhysicsParams.GRAVITY) >= Floor)
-                {
-                    if (Math.Round(YLower + PhysicsParams.GRAVITY) >= Floor)
-                    {
-                        return StableRange.Both;
-                    }
-                    return StableRange.Upper;
-                }
-                return StableRange.None;
-            }
-            return StableRange.None;
-        }*/
-
         public bool IsStable()
         {
             return Frame > 0 && VSpeed == 0 && Math.Round(YLower + PhysicsParams.GRAVITY) >= Floor;
@@ -287,32 +266,6 @@ namespace old_bruteforcer_rewrite_5
             // gravity
             VSpeed += PhysicsParams.GRAVITY;
 
-            // collision
-            //double YUpperPrevious = YUpper;
-            //double YLowerPrevious = YLower;
-            //YUpper += VSpeed;
-            //YLower += VSpeed;
-
-            /*
-            // higher, lower
-            // stuck, free
-            ceil
-            342
-            [341.5, 343.5] => [341.5, 342.5], (342.5, 343.5]
-
-            343
-            [342.5, 344.5] => [342.5, 343.5), [343.5, 344.5]
-
-
-            // free, stuck
-            floor
-            408
-            [406.5, 408.5] => [406.5, 407.5), [407.5, 408.5]
-
-            409
-            [407.5, 409.5] => [407.5, 408.5], (408.5, 409.5] 
-            */
-
             List<PlayerRange> ranges;
 
             // one-way floor/ceiling
@@ -320,73 +273,11 @@ namespace old_bruteforcer_rewrite_5
             {
                 // ceiling collision
                 ranges = CeilingCollision();
-                /*if (Math.Round(YUpper) <= Ceiling)
-                {
-                    // TODO: have to do this differently!!
-                    // first split, then eject?
-                    double valign = YUpperPrevious - Math.Truncate(YUpperPrevious);
-                    YUpper = Ceiling + valign;
-                    if (Math.Round(YUpper) == Ceiling)
-                    {
-                        YUpper++;
-                    }
-
-                    if (Math.Round(YLower) <= Ceiling)
-                    {
-                        valign = YLowerPrevious - Math.Truncate(YLowerPrevious);
-                        YLower = Ceiling + valign;
-                        if (Math.Round(YLower) == Ceiling)
-                        {
-                            YLower++;
-                        }
-
-                        VSpeed = 0;
-
-                        // if YUpper < YLower after collision, separated but both vspeed 0
-                        if (YUpper < YLower)
-                        {
-                            // separate
-
-                        }
-                    }
-                    else
-                    {
-                        // separate
-
-
-
-                        VSpeed = 0;
-                    }
-                }*/
-
-
-
-                // ceiling collision
-                /*if (Math.Round(Y) <= Ceiling)
-                {
-                    double valign = YPrevious - Math.Truncate(YPrevious);
-                    Y = Ceiling + valign;
-                    if (Math.Round(Y) == Ceiling)
-                    {
-                        Y++;
-                    }
-                    VSpeed = 0;
-                }*/
             }
             else
             {
                 // floor collision
                 ranges = FloorCollision();
-                /*if (Math.Round(Y) >= Floor)
-                {
-                    double valign = YPrevious - Math.Truncate(YPrevious);
-                    Y = Floor - 1 + valign;
-                    if (Math.Round(Y) == Floor)
-                    {
-                        Y--;
-                    }
-                    VSpeed = 0;
-                }*/
             }
 
             return ranges;
@@ -543,27 +434,6 @@ namespace old_bruteforcer_rewrite_5
             return ranges;
         }
 
-        // separate current PlayerRange at pixel boundary depending on Y parity of solid
-        // positionally lower: this, upper: other
-        /*PlayerRange Separate(bool Floor)
-        {
-            PlayerRange other = Copy();
-
-            other.YLower = Math.Round(YUpper) + 0.5;
-            YUpper = Math.Round(YLower) - 0.5;
-
-            if (Floor)
-            {
-
-            }
-            else
-            {
-
-            }
-
-            return other;
-        }*/
-
         public bool DoStrat(string strat)
         {
             strat = strat.Trim().ToLower();
@@ -718,11 +588,6 @@ namespace old_bruteforcer_rewrite_5
 
             return sb.ToString().Trim();
         }
-
-        /*public override string ToString()
-        {
-            return $"YUpper: {YUpper}\nYLower: {YLower}\nVSpeed: {VSpeed}\nFrame: {Frame}\nHasDJump: {HasDJump}\nReleased: {Released}\n{GetStrat(false)}\n{GetMacro()}\n";
-        }*/
 
         public override string ToString() => $"({Frame}) {GetStrat(false)} [{StartYUpper}, {StartYLower}] => [{YUpper}, {YLower}]";
 
