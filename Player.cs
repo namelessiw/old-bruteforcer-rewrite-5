@@ -148,7 +148,7 @@ namespace old_bruteforcer_rewrite_5
             VSpeed += PhysicsParams.GRAVITY;
 
             // collision
-            double YPrevious = Y;
+            double yPrevious = Y;
             Y += VSpeed;
 
             // one-way floor/ceiling
@@ -157,13 +157,21 @@ namespace old_bruteforcer_rewrite_5
                 // ceiling collision
                 if (Math.Round(Y) <= Ceiling)
                 {
-                    double valign = YPrevious - Math.Truncate(YPrevious);
-                    Y = Ceiling + valign;
-                    if (Math.Round(Y) == Ceiling)
+                    if (Math.Round(yPrevious) <= Ceiling)
                     {
-                        Y++;
+                        Y = yPrevious;
+                        VSpeed = 0;
                     }
-                    VSpeed = 0;
+                    else
+                    {
+                        double valign = yPrevious - Math.Truncate(yPrevious);
+                        Y = Ceiling + valign;
+                        if (Math.Round(Y) == Ceiling)
+                        {
+                            Y++;
+                        }
+                        VSpeed = 0;
+                    }
                 }
             }
             else
@@ -171,13 +179,21 @@ namespace old_bruteforcer_rewrite_5
                 // floor collision
                 if (Math.Round(Y) >= Floor)
                 {
-                    double valign = YPrevious - Math.Truncate(YPrevious);
-                    Y = Floor - 1 + valign;
-                    if (Math.Round(Y) == Floor)
+                    if (Math.Round(yPrevious) >= Floor)
                     {
-                        Y--;
+                        Y = yPrevious;
+                        VSpeed = 0;
                     }
-                    VSpeed = 0;
+                    else
+                    {
+                        double valign = yPrevious - Math.Truncate(yPrevious);
+                        Y = Floor - 1 + valign;
+                        if (Math.Round(Y) == Floor)
+                        {
+                            Y--;
+                        }
+                        VSpeed = 0;
+                    }
                 }
             }
 
