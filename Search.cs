@@ -9,9 +9,11 @@ namespace old_bruteforcer_rewrite_5
 {
     internal static class Search
     {
-        public static List<PlayerRange> SearchRange()
+        public static List<PlayerRange> SearchRange(string floor, string ceiling, double yUpper, double yLower, double vspeed, bool sjump, bool djump)
         {
-            Stack<PlayerRange> activeRanges = new([new(406.5, 406.5, 0, true, true)]);
+            PlayerRange.SetFloorY(floor);
+            PlayerRange.SetCeilingY(ceiling);
+            Stack<PlayerRange> activeRanges = new([new(yUpper, yLower, vspeed, sjump, djump)]);
 
             List<PlayerRange> results = [], ranges;
 
@@ -75,9 +77,12 @@ namespace old_bruteforcer_rewrite_5
             return results;
         }
 
-        public static List<Player> SearchExact()
+        // TODO: take string arguments and forward to first player instance for parsing, then do error handling
+        public static List<Player> SearchExact(string floor, string ceiling, double y, double vspeed, bool sjump, bool djump)
         {
-            Stack<Player> activePlayers = new([new(406.5, 0, true, true)]);
+            Player.SetFloorY(floor);
+            Player.SetCeilingY(ceiling);
+            Stack<Player> activePlayers = new([new(y, vspeed, sjump, djump)]);
 
             List<Player> results = [];
 
