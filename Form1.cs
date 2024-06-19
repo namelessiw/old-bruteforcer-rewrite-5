@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Globalization;
+using System.Numerics;
 
 namespace old_bruteforcer_rewrite_5
 {
@@ -38,7 +39,7 @@ namespace old_bruteforcer_rewrite_5
             int elements = Math.Min(results.Count, 10000);
             foreach (Player player in results[..elements])
             {
-                LstResults.Items.Add(player);
+                LstResults.Items.Add($"({player.Frame}) {player.GetStrat(Chk1fConvention.Checked)} {player}");
             }
         }
 
@@ -64,7 +65,7 @@ namespace old_bruteforcer_rewrite_5
             int elements = Math.Min(results.Count, 10000);
             foreach (PlayerRange range in results[..elements])
             {
-                LstResults.Items.Add(range);
+                LstResults.Items.Add($"({range.Frame}) {range.GetStrat(Chk1fConvention.Checked)} {range}");
             }
         }
     }

@@ -47,6 +47,7 @@
             BtnSearchRange = new Button();
             ChkSinglejump = new CheckBox();
             ChkDoublejump = new CheckBox();
+            Chk1fConvention = new CheckBox();
             SuspendLayout();
             // 
             // LblInfo
@@ -201,6 +202,8 @@
             // ChkSinglejump
             // 
             ChkSinglejump.AutoSize = true;
+            ChkSinglejump.Checked = true;
+            ChkSinglejump.CheckState = CheckState.Checked;
             ChkSinglejump.Location = new Point(224, 90);
             ChkSinglejump.Name = "ChkSinglejump";
             ChkSinglejump.Size = new Size(86, 19);
@@ -211,6 +214,8 @@
             // ChkDoublejump
             // 
             ChkDoublejump.AutoSize = true;
+            ChkDoublejump.Checked = true;
+            ChkDoublejump.CheckState = CheckState.Checked;
             ChkDoublejump.Location = new Point(316, 90);
             ChkDoublejump.Name = "ChkDoublejump";
             ChkDoublejump.Size = new Size(92, 19);
@@ -218,11 +223,22 @@
             ChkDoublejump.Text = "Doublejump";
             ChkDoublejump.UseVisualStyleBackColor = true;
             // 
+            // Chk1fConvention
+            // 
+            Chk1fConvention.AutoSize = true;
+            Chk1fConvention.Location = new Point(224, 65);
+            Chk1fConvention.Name = "Chk1fConvention";
+            Chk1fConvention.Size = new Size(101, 19);
+            Chk1fConvention.TabIndex = 29;
+            Chk1fConvention.Text = "1f Convention";
+            Chk1fConvention.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
+            Controls.Add(Chk1fConvention);
             Controls.Add(ChkDoublejump);
             Controls.Add(ChkSinglejump);
             Controls.Add(BtnSearchRange);
@@ -270,5 +286,6 @@
         private Button BtnSearchRange;
         private CheckBox ChkSinglejump;
         private CheckBox ChkDoublejump;
+        private CheckBox Chk1fConvention;
     }
 }
