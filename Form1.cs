@@ -14,13 +14,13 @@ namespace old_bruteforcer_rewrite_5
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            NewPlayer();
-            CreatePlayerRange();
+            //NewPlayer();
+            //CreatePlayerRange();
         }
 
         private void test()
         {
-            Stopwatch sw = new();
+            /*Stopwatch sw = new();
             sw.Start();
 
             List<PlayerRange> results = Search.SearchRange();
@@ -37,29 +37,29 @@ namespace old_bruteforcer_rewrite_5
             foreach (PlayerRange range in results[..elements])
             {
                 LstResults.Items.Add(range);
-            }
+            }*/
         }
 
         private void NewPlayer()
         {
-            Player.SetFloorY(TxtFloorY.Text);
+            /*Player.SetFloorY(TxtFloorY.Text);
             p = new(double.Parse(TxtPlayerY.Text, CultureInfo.InvariantCulture), 0, 0, true, true, false, []);
-            updateLabel();
+            updateLabel();*/
         }
 
         private void updateLabel()
         {
-            LblInfo.Text = "Info:\n" + p.ToString() + "\n" + p.GetStrat(false) + "\n" + p.GetMacro();
+            //LblInfo.Text = "Info:\n" + p.ToString() + "\n" + p.GetStrat(false) + "\n" + p.GetMacro();
         }
 
         private void BtnNew_Click(object sender, EventArgs e)
         {
-            NewPlayer();
+            //NewPlayer();
         }
 
         private void BtnStep_Click(object sender, EventArgs e)
         {
-            Input i = Input.None;
+            /*Input i = Input.None;
 
             if (ChkPress.Checked)
             {
@@ -87,21 +87,21 @@ namespace old_bruteforcer_rewrite_5
             }
 
             p.Step(i);
-            updateLabel();
+            updateLabel();*/
         }
 
         private void BtnToStable_Click(object sender, EventArgs e)
         {
-            while (!p.IsStable())
+            /*while (!p.IsStable())
             {
                 p.Step(Input.None);
                 updateLabel();
-            }
+            }*/
         }
 
         private void BtnDoStrat_Click(object sender, EventArgs e)
         {
-            NewPlayer();
+            /*NewPlayer();
             try
             {
                 p.DoStrat(TxtStrat.Text);
@@ -110,14 +110,14 @@ namespace old_bruteforcer_rewrite_5
             {
                 MessageBox.Show(ex.Message);
             }
-            updateLabel();
+            updateLabel();*/
         }
 
         PlayerRange pr;
 
         private void UpdateLabelRange(List<PlayerRange> ranges)
         {
-            LblInfo.Text = "Info:\n" + string.Join("\n", ranges.Select(r => r.ToString()));
+            //LblInfo.Text = "Info:\n" + string.Join("\n", ranges.Select(r => r.ToString()));
         }
 
         private void CreatePlayerRange()
@@ -129,24 +129,29 @@ namespace old_bruteforcer_rewrite_5
 
         private void BtnFloorCollision_Click(object sender, EventArgs e)
         {
-            CreatePlayerRange();
+            //CreatePlayerRange();
             /*List<PlayerRange> ranges = PlayerRange.FloorCollision(pr);
             UpdateLabelRange(ranges);*/
         }
 
         private void BtnCeilingCollision_Click(object sender, EventArgs e)
         {
-            CreatePlayerRange();
+            //CreatePlayerRange();
             /*List<PlayerRange> ranges = PlayerRange.CeilingCollision(pr);
             UpdateLabelRange(ranges);*/
         }
+
+        private double Parse(string s) => double.Parse(s, CultureInfo.InvariantCulture);
 
         private void BtnSearchExact_Click(object sender, EventArgs e)
         {
             Stopwatch sw = new();
             sw.Start();
 
-            List<Player> results = Search.SearchExact();
+            double y = Parse(TxtPlayerY.Text);
+            double vspeed = Parse(TxtVSpeed.Text);
+
+            List<Player> results = Search.SearchExact(TxtFloorY.Text, TxtCeiling.Text, y, vspeed, true, true);
 
             sw.Stop();
 
@@ -168,7 +173,11 @@ namespace old_bruteforcer_rewrite_5
             Stopwatch sw = new();
             sw.Start();
 
-            List<PlayerRange> results = Search.SearchRange();
+            double yUpper = Parse(TxtYUpper.Text);
+            double yLower = Parse(TxtYLower.Text);
+            double vspeed = Parse(TxtVSpeed.Text);
+
+            List<PlayerRange> results = Search.SearchRange(TxtFloorY.Text, TxtCeiling.Text, yUpper, yLower, vspeed, true, true);
 
             sw.Stop();
 
