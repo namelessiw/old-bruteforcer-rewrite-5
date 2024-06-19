@@ -63,7 +63,7 @@ namespace old_bruteforcer_rewrite_5
 
         public bool CanPress()
         {
-            return Frame == 0 || HasDJump; // TODO: state variable?
+            return HasSJump || HasDJump; // TODO: state variable?
         }
 
         public bool CanRelease()
