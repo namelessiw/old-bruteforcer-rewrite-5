@@ -3,3 +3,4 @@ TestBrute/obj
 .vs/
 bin/
 obj/
+*.xlsx
