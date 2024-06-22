@@ -73,7 +73,7 @@ namespace old_bruteforcer_rewrite_5
 
         public bool IsStable()
         {
-            return Frame > 0 && VSpeed == 0 && Math.Round(Y + PhysicsParams.GRAVITY) >= Floor; // TODO: depends on one-way type
+            return VSpeed == 0 && Math.Round(Y + PhysicsParams.GRAVITY) >= Floor; // TODO: depends on one-way type
         }
 
         public bool Step(Input input) // TODO: killers, return, debug log?

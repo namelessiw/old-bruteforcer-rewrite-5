@@ -16,10 +16,16 @@ namespace old_bruteforcer_rewrite_5
             Stack<PlayerRange> activeRanges = new([new(yUpper, yLower, vspeed, sjump, djump)]);
 
             List<PlayerRange> results = [], ranges;
+            PlayerRange p, temp;
 
+            // first frame
+            p = activeRanges.Peek();
+            SimulateStep(p);
+
+            // simulate until stable
             while (activeRanges.Count > 0)
             {
-                PlayerRange p = activeRanges.Peek(), temp;
+                p = activeRanges.Peek();
 
                 if (p.IsStable())
                 {
@@ -37,6 +43,11 @@ namespace old_bruteforcer_rewrite_5
                     }
                 }
 
+                SimulateStep(p);
+            }
+
+            void SimulateStep(PlayerRange p)
+            {
                 if (p.CanPress())
                 {
                     temp = p.Copy();
@@ -85,10 +96,16 @@ namespace old_bruteforcer_rewrite_5
             Stack<Player> activePlayers = new([new(y, vspeed, sjump, djump)]);
 
             List<Player> results = [];
+            Player p, temp;
 
+            // first frame
+            p = activePlayers.Peek();
+            SimulateStep(p);
+
+            // simulate until stable
             while (activePlayers.Count > 0)
             {
-                Player p = activePlayers.Peek(), temp;
+                p = activePlayers.Peek();
 
                 if (p.IsStable())
                 {
@@ -97,6 +114,11 @@ namespace old_bruteforcer_rewrite_5
                     continue;
                 }
 
+                SimulateStep(p);
+            }
+
+            void SimulateStep(Player p)
+            {
                 if (p.CanPress())
                 {
                     temp = p.Copy();

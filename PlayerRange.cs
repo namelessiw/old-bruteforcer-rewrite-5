@@ -161,7 +161,7 @@ namespace old_bruteforcer_rewrite_5
 
         public bool IsStable()
         {
-            return Frame > 0 && VSpeed == 0 && Math.Round(YLower + PhysicsParams.GRAVITY) >= Floor;
+            return VSpeed == 0 && Math.Round(YLower + PhysicsParams.GRAVITY) >= Floor;
         }
 
         public PlayerRange SplitOffStable()
