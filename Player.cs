@@ -76,6 +76,11 @@ namespace old_bruteforcer_rewrite_5
             return VSpeed == 0 && Math.Round(Y + PhysicsParams.GRAVITY) >= Floor; // TODO: depends on one-way type
         }
 
+        public bool CanRejump()
+        {
+            return Math.Round(Y + 1) >= Floor; // TODO: floor type matters
+        }
+
         public bool Step(Input input) // TODO: killers, return, debug log?
         {
             if (Frame >= MAX_LENGTH)
@@ -116,6 +121,7 @@ namespace old_bruteforcer_rewrite_5
                 else
                 {
                     // if djump not used on first frame and sjump not availble, remove
+                    // TODO: optional
                     HasDJump = false;
                 }
             }

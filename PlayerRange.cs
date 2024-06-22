@@ -78,6 +78,38 @@ namespace old_bruteforcer_rewrite_5
             return new PlayerRange(newStartYUpper, newStartYLower, newYUpper, newYLower, newVSpeed, Frame, HasSJump, HasDJump, Released, Alive, Inputs);
         }
 
+        // assumes the new range is within the current range
+        public PlayerRange CopyRange(double newYUpper, double newYLower)
+        {
+            double newStartYUpper = StartYUpper + (newYUpper - YUpper);
+            double newStartYLower = StartYLower - (YLower - newYLower);
+            return new PlayerRange(newStartYUpper, newStartYLower, newYUpper, newYLower, VSpeed, Frame, HasSJump, HasDJump, Released, Alive, Inputs);
+        }
+
+        // assumes the lowest part of the range is stable
+        public PlayerRange GetStableRange()
+        {
+            double highestCollision = Floor - 0.5;
+            if (Math.Round(highestCollision) < Floor)
+            {
+                highestCollision = double.BitIncrement(highestCollision);
+            }
+
+            return CopyRange(Math.Max(YUpper, highestCollision - PhysicsParams.GRAVITY), YLower);
+        }
+
+        // assumes lowest part of the range can rejump
+        public PlayerRange GetRejumpRange()
+        {
+            double highestCollision = Floor - 0.5;
+            if (Math.Round(highestCollision) < Floor)
+            {
+                highestCollision = double.BitIncrement(highestCollision);
+            }
+
+            return CopyRange(Math.Max(YUpper, highestCollision - 1), YLower);
+        }
+
         public static void ClearPlayerRanges()
         {
             PlayerRanges.Clear();
@@ -103,6 +135,11 @@ namespace old_bruteforcer_rewrite_5
             return VSpeed < 0;
         }
 
+        public bool CanRejump()
+        {
+            return Math.Round(YLower + 1) >= Floor;
+        }
+
         // to make the two ranges disjoint after splitting, one of the ranges needs to be adjusted
         enum BitShift
         {
@@ -114,8 +151,7 @@ namespace old_bruteforcer_rewrite_5
         {
             // split off lower range
             PlayerRange lower = Copy(StartYLower - YLower + split, StartYLower, split, YLower, VSpeed);
-
-
+            
             // update current range to exclude split off range (both contain the split point)
             YLower = split;
             StartYLower = StartYUpper - YUpper + split;

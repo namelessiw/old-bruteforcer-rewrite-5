@@ -27,6 +27,13 @@ namespace old_bruteforcer_rewrite_5
             {
                 p = activeRanges.Peek();
 
+                // result condition
+                if (p.CanRejump())
+                {
+                    results.Add(p.GetRejumpRange());
+                }
+
+                // end condition
                 if (p.IsStable())
                 {
                     PlayerRange stable = p.SplitOffStable();
@@ -34,12 +41,7 @@ namespace old_bruteforcer_rewrite_5
                     if (p == stable)
                     {
                         activeRanges.Pop();
-                        results.Add(p);
                         continue;
-                    }
-                    else
-                    {
-                        results.Add(stable);
                     }
                 }
 
@@ -107,10 +109,16 @@ namespace old_bruteforcer_rewrite_5
             {
                 p = activePlayers.Peek();
 
+                // result condition
+                if (p.CanRejump())
+                {
+                    results.Add(p.Copy());
+                }
+
+                // end condition
                 if (p.IsStable())
                 {
                     activePlayers.Pop();
-                    results.Add(p);
                     continue;
                 }
 
