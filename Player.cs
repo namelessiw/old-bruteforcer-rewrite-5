@@ -15,6 +15,14 @@ namespace old_bruteforcer_rewrite_5
         Release = 2,
     }
 
+    [Flags]
+    enum State
+    {
+        None = 0,
+        Dead = 1,
+        Landed = 2,
+    }
+
     internal class Player
     {
         const int MAX_LENGTH = 1000; // TODO: global setting
@@ -81,11 +89,11 @@ namespace old_bruteforcer_rewrite_5
             return Math.Round(Y + 1) >= Floor; // TODO: floor type matters
         }
 
-        public bool Step(Input input) // TODO: killers, return, debug log?
+        public State Step(Input input) // TODO: killers, return, debug log?
         {
             if (Frame >= MAX_LENGTH)
             {
-                return false;
+                return State.Dead;
             }
 
             bool press = (input & Input.Press) == Input.Press;
@@ -157,6 +165,8 @@ namespace old_bruteforcer_rewrite_5
             double yPrevious = Y;
             Y += VSpeed;
 
+            State state = State.None;
+
             // one-way floor/ceiling
             if (VSpeed < 0)
             {
@@ -200,13 +210,15 @@ namespace old_bruteforcer_rewrite_5
                         }
                         VSpeed = 0;
                     }
+
+                    state |= State.Landed;
                 }
             }
 
             // finalize
             Inputs.Add(input);
             Frame++;
-            return true;
+            return state;
         }
 
         public bool DoStrat(string strat)

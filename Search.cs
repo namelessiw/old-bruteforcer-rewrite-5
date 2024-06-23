@@ -99,6 +99,7 @@ namespace old_bruteforcer_rewrite_5
 
             List<Player> results = [];
             Player p, temp;
+            State state;
 
             // first frame
             p = activePlayers.Peek();
@@ -125,27 +126,44 @@ namespace old_bruteforcer_rewrite_5
                 SimulateStep(p);
             }
 
+            // simulate step with all possible inputs
             void SimulateStep(Player p)
             {
                 if (p.CanPress())
                 {
-                    temp = p.Copy();
-                    temp.Step(Input.Press);
-                    activePlayers.Push(temp);
-
-                    temp = p.Copy();
-                    temp.Step(Input.Press | Input.Release);
-                    activePlayers.Push(temp);
+                    Step(p, Input.Press);
+                    Step(p, Input.Press | Input.Release);
                 }
 
                 if (p.CanRelease())
                 {
-                    temp = p.Copy();
-                    temp.Step(Input.Release);
-                    activePlayers.Push(temp);
+                    Step(p, Input.Release);
                 }
 
-                p.Step(Input.None);
+                // avoid copying player here
+                Step(p, Input.None, false);
+            }
+
+            // simulate step with specific input
+            void Step(Player p, Input input, bool copy = true)
+            {
+                temp = copy ? p.Copy() : p;
+                state = temp.Step(input);
+
+                // dont consider dead player for results
+                if ((state & State.Dead) == State.Dead)
+                {
+                    if (!copy)
+                    {
+                        activePlayers.Pop();
+                    }
+                    return;
+                }
+
+                if (copy)
+                {
+                    activePlayers.Push(temp);
+                }
             }
 
             return results;
