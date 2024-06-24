@@ -48,20 +48,39 @@ namespace old_bruteforcer_rewrite_5
                 SimulateStep(p);
             }
 
+            // simulate step with all possible inputs until stable
             void SimulateStep(PlayerRange p)
             {
-                if (p.CanPress())
-                {
-                    Step(p.Copy(), Input.Press);
-                    Step(p.Copy(), Input.Press | Input.Release);
-                }
+                bool canPress = p.CanPress(), canRelease = p.CanRelease();
 
-                if (p.CanRelease())
+                // avoid copying the range unnecessarily
+                if (canPress || canRelease)
                 {
-                    Step(p.Copy(), Input.Release);
-                }
+                    PlayerRange copy = p.Copy();
 
-                Step(p, Input.None, false);
+                    // the non-copy one needs to be done first to avoid unnecessary stack manipulation
+                    // non-input variation first since it requires the least amount of extra logic
+                    Step(p, Input.None, false);
+
+                    if (canPress)
+                    {
+                        if (canRelease)
+                        {
+                            Step(copy.Copy(), Input.Release);
+                        }
+                        Step(copy.Copy(), Input.Press | Input.Release);
+                        Step(copy, Input.Press);
+                    }
+                    else
+                    {
+                        Step(copy, Input.Release);
+                    }
+                }
+                else
+                {
+                    // no need to copy the range here
+                    Step(p, Input.None, false);
+                }
             }
 
             void Step(PlayerRange p, Input input, bool isCopy = true)
@@ -112,8 +131,8 @@ namespace old_bruteforcer_rewrite_5
                         {
                             Step(copy.Copy(), Input.Release);
                         }
-                        Step(copy.Copy(), Input.Press);
-                        Step(copy, Input.Press | Input.Release);
+                        Step(copy.Copy(), Input.Press | Input.Release);
+                        Step(copy, Input.Press);
                     }
                     else
                     {
