@@ -16,41 +16,11 @@ namespace old_bruteforcer_rewrite_5
             Stack<PlayerRange> activeRanges = new([new(yUpper, yLower, vspeed, sjump, djump)]);
 
             List<PlayerRange> results = [], ranges;
-            PlayerRange p;
-
-            // first frame
-            p = activeRanges.Peek();
-            SimulateStep(p);
 
             // simulate until stable
             while (activeRanges.Count > 0)
             {
-                p = activeRanges.Peek();
-
-                // result condition
-                if (p.CanRejump())
-                {
-                    results.Add(p.GetRejumpRange());
-                }
-
-                // end condition
-                if (p.IsStable())
-                {
-                    PlayerRange stable = p.SplitOffStable();
-
-                    if (p == stable)
-                    {
-                        activeRanges.Pop();
-                        continue;
-                    }
-                }
-
-                SimulateStep(p);
-            }
-
-            // simulate step with all possible inputs until stable
-            void SimulateStep(PlayerRange p)
-            {
+                PlayerRange p = activeRanges.Peek();
                 bool canPress = p.CanPress(), canRelease = p.CanRelease();
 
                 // avoid copying the range unnecessarily
@@ -83,18 +53,52 @@ namespace old_bruteforcer_rewrite_5
                 }
             }
 
+            // simulate step with specific input
             void Step(PlayerRange p, Input input, bool isCopy = true)
             {
                 ranges = p.Step(input);
 
+                ConditionalPush(p);
+
                 foreach (PlayerRange range in ranges)
                 {
-                    activeRanges.Push(range);
+                    ConditionalPush(range);
                 }
 
-                if (isCopy)
+                void ConditionalPush(PlayerRange range)
                 {
-                    activeRanges.Push(p);
+                    // result condition
+                    if (range.GetCurrentState() == State.Landed)
+                    {
+                        results.Add(range.Copy());
+                    }
+
+                    // end condition
+                    if (range.IsStable())
+                    {
+                        PlayerRange stable = range.SplitOffStable();
+
+                        if (range == stable)
+                        {
+                            if (range == p)
+                            {
+                                activeRanges.Pop();
+                            }
+                            return;
+                        }
+                    }
+
+                    if (range == p)
+                    {
+                        if (isCopy)
+                        {
+                            activeRanges.Push(range);
+                        }
+                    }
+                    else
+                    {
+                        activeRanges.Push(range);
+                    }
                 }
             }
 

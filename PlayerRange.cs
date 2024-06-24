@@ -111,6 +111,11 @@ namespace old_bruteforcer_rewrite_5
             return CopyRange(Math.Max(YUpper, highestCollision - 1), YLower);
         }
 
+        public State GetCurrentState()
+        {
+            return CurrentState;
+        }
+
         public static void ClearPlayerRanges()
         {
             PlayerRanges.Clear();
