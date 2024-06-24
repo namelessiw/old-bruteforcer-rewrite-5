@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.AxHost;
 
 namespace old_bruteforcer_rewrite_5
 {
@@ -67,6 +68,15 @@ namespace old_bruteforcer_rewrite_5
 
                 void ConditionalPush(PlayerRange range)
                 {
+                    if ((range.GetCurrentState() & State.Dead) == State.Dead)
+                    {
+                        if (range == p)
+                        {
+                            activeRanges.Pop();
+                        }
+                        return;
+                    }
+
                     // result condition
                     if (range.GetCurrentState() == State.Landed)
                     {
