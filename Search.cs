@@ -16,7 +16,7 @@ namespace old_bruteforcer_rewrite_5
             Stack<PlayerRange> activeRanges = new([new(yUpper, yLower, vspeed, sjump, djump)]);
 
             List<PlayerRange> results = [], ranges;
-            PlayerRange p, temp;
+            PlayerRange p;
 
             // first frame
             p = activeRanges.Peek();
@@ -52,38 +52,30 @@ namespace old_bruteforcer_rewrite_5
             {
                 if (p.CanPress())
                 {
-                    temp = p.Copy();
-                    ranges = temp.Step(Input.Press);
-                    foreach (PlayerRange range in ranges)
-                    {
-                        activeRanges.Push(range);
-                    }
-                    activeRanges.Push(temp);
-
-                    temp = p.Copy();
-                    ranges = temp.Step(Input.Press | Input.Release);
-                    foreach (PlayerRange range in ranges)
-                    {
-                        activeRanges.Push(range);
-                    }
-                    activeRanges.Push(temp);
+                    Step(p.Copy(), Input.Press);
+                    Step(p.Copy(), Input.Press | Input.Release);
                 }
 
                 if (p.CanRelease())
                 {
-                    temp = p.Copy();
-                    ranges = temp.Step(Input.Release);
-                    foreach (PlayerRange range in ranges)
-                    {
-                        activeRanges.Push(range);
-                    }
-                    activeRanges.Push(temp);
+                    Step(p.Copy(), Input.Release);
                 }
 
-                ranges = p.Step(Input.None);
+                Step(p, Input.None, false);
+            }
+
+            void Step(PlayerRange p, Input input, bool isCopy = true)
+            {
+                ranges = p.Step(input);
+
                 foreach (PlayerRange range in ranges)
                 {
                     activeRanges.Push(range);
+                }
+
+                if (isCopy)
+                {
+                    activeRanges.Push(p);
                 }
             }
 

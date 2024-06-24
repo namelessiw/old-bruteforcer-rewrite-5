@@ -21,7 +21,8 @@ namespace old_bruteforcer_rewrite_5
         static Stack<PlayerRange> PlayerRanges = new();
         double StartYUpper, StartYLower, YUpper, YLower, VSpeed;
         public int Frame;
-        bool HasSJump, HasDJump, Released, Alive;
+        bool HasSJump, HasDJump, Released;
+        State CurrentState; // TODO: i dont think this is something that needs copying
         List<Input> Inputs;
 
         public PlayerRange(double yUpper, double yLower, double vspeed, bool hasSJump, bool hasDJump)
@@ -31,7 +32,7 @@ namespace old_bruteforcer_rewrite_5
                 (yUpper, yLower) = (yLower, yUpper);
             }
 
-            Alive = true;
+            CurrentState = State.None;
             StartYUpper = YUpper = yUpper;
             StartYLower = YLower = yLower;
             VSpeed = vspeed;
@@ -42,7 +43,7 @@ namespace old_bruteforcer_rewrite_5
             Inputs = [];
         }
 
-        public PlayerRange(double startYUpper, double startYLower, double yUpper, double yLower, double vspeed, int frame, bool hasSJump, bool hasDJump, bool released, bool alive, List<Input> inputs)
+        public PlayerRange(double startYUpper, double startYLower, double yUpper, double yLower, double vspeed, int frame, bool hasSJump, bool hasDJump, bool released, State currentState, List<Input> inputs)
         {
             if (startYUpper > startYLower)
             {
@@ -53,7 +54,7 @@ namespace old_bruteforcer_rewrite_5
                 (yUpper, yLower) = (yLower, yUpper);
             }
 
-            Alive = alive;
+            CurrentState = currentState;
             StartYUpper = startYUpper;
             StartYLower = startYLower;
             YUpper = yUpper;
@@ -69,13 +70,13 @@ namespace old_bruteforcer_rewrite_5
         // create a copy of this PlayerRange
         public PlayerRange Copy()
         {
-            return new PlayerRange(StartYUpper, StartYLower, YUpper, YLower, VSpeed, Frame, HasSJump, HasDJump, Released, Alive, Inputs);
+            return new PlayerRange(StartYUpper, StartYLower, YUpper, YLower, VSpeed, Frame, HasSJump, HasDJump, Released, CurrentState, Inputs);
         }
 
         // create a copy of this PlayerRange with a different range
         public PlayerRange Copy(double newStartYUpper, double newStartYLower, double newYUpper, double newYLower, double newVSpeed)
         {
-            return new PlayerRange(newStartYUpper, newStartYLower, newYUpper, newYLower, newVSpeed, Frame, HasSJump, HasDJump, Released, Alive, Inputs);
+            return new PlayerRange(newStartYUpper, newStartYLower, newYUpper, newYLower, newVSpeed, Frame, HasSJump, HasDJump, Released, CurrentState, Inputs);
         }
 
         // assumes the new range is within the current range
@@ -83,7 +84,7 @@ namespace old_bruteforcer_rewrite_5
         {
             double newStartYUpper = StartYUpper + (newYUpper - YUpper);
             double newStartYLower = StartYLower - (YLower - newYLower);
-            return new PlayerRange(newStartYUpper, newStartYLower, newYUpper, newYLower, VSpeed, Frame, HasSJump, HasDJump, Released, Alive, Inputs);
+            return new PlayerRange(newStartYUpper, newStartYLower, newYUpper, newYLower, VSpeed, Frame, HasSJump, HasDJump, Released, CurrentState, Inputs);
         }
 
         // assumes the lowest part of the range is stable
@@ -231,8 +232,11 @@ namespace old_bruteforcer_rewrite_5
         {
             if (Frame >= MAX_LENGTH)
             {
+                CurrentState = State.Dead;
                 return [];
             }
+
+            CurrentState = State.None;
 
             bool press = (input & Input.Press) == Input.Press;
             // shift press
@@ -337,12 +341,14 @@ namespace old_bruteforcer_rewrite_5
                     // partially stuck
                     PlayerRange lower = SplitOffLowerAt(highestCollision, BitShift.UpperRange);
                     lower.VSpeed = 0;
+                    lower.CurrentState = State.Landed;
                     ranges.Add(lower);
                 }
                 else
                 {
                     // full range stuck
                     VSpeed = 0;
+                    CurrentState = State.Landed;
                     return ranges;
                 }
             }
@@ -375,6 +381,7 @@ namespace old_bruteforcer_rewrite_5
 
             // the remaining range will land => vspeed = 0
             VSpeed = 0;
+            CurrentState = State.Landed;
 
             // move_contact_solid
             double highestFloorReject = highestCollision - 1;
