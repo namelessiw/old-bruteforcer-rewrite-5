@@ -98,13 +98,11 @@ namespace old_bruteforcer_rewrite_5
             Stack<Player> activePlayers = new([new(y, vspeed, sjump, djump)]);
 
             List<Player> results = [];
-            Player p;
-            State state;
 
             // simulate step with all possible inputs until stable
             while (activePlayers.Count > 0)
             {
-                p = activePlayers.Peek();
+                Player p = activePlayers.Peek();
                 bool canPress = p.CanPress(), canRelease = p.CanRelease();
 
                 // avoid copying the player unnecessarily
@@ -140,7 +138,7 @@ namespace old_bruteforcer_rewrite_5
             // simulate step with specific input
             void Step(Player p, Input input, bool isCopy = true)
             {
-                state = p.Step(input);
+                State state = p.Step(input);
 
                 // dont consider dead player for results
                 if ((state & State.Dead) == State.Dead)
