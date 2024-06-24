@@ -101,34 +101,10 @@ namespace old_bruteforcer_rewrite_5
             Player p;
             State state;
 
-            // first frame
-            p = activePlayers.Peek();
-            SimulateStep(p);
-
-            // simulate until stable
+            // simulate step with all possible inputs until stable
             while (activePlayers.Count > 0)
             {
                 p = activePlayers.Peek();
-
-                // result condition
-                if (p.CanRejump())
-                {
-                    results.Add(p.Copy());
-                }
-
-                // end condition
-                if (p.IsStable())
-                {
-                    activePlayers.Pop();
-                    continue;
-                }
-
-                SimulateStep(p);
-            }
-
-            // simulate step with all possible inputs
-            void SimulateStep(Player p)
-            {
                 bool canPress = p.CanPress(), canRelease = p.CanRelease();
 
                 // avoid copying the player unnecessarily
@@ -168,6 +144,22 @@ namespace old_bruteforcer_rewrite_5
 
                 // dont consider dead player for results
                 if ((state & State.Dead) == State.Dead)
+                {
+                    if (!isCopy)
+                    {
+                        activePlayers.Pop();
+                    }
+                    return;
+                }
+
+                // result condition
+                if ((state & State.Landed) == State.Landed)
+                {
+                    results.Add(p.Copy());
+                }
+
+                // end condition
+                if (p.IsStable())
                 {
                     if (!isCopy)
                     {
