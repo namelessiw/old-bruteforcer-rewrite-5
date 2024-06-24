@@ -98,7 +98,7 @@ namespace old_bruteforcer_rewrite_5
             Stack<Player> activePlayers = new([new(y, vspeed, sjump, djump)]);
 
             List<Player> results = [];
-            Player p, temp;
+            Player p;
             State state;
 
             // first frame
@@ -129,40 +129,56 @@ namespace old_bruteforcer_rewrite_5
             // simulate step with all possible inputs
             void SimulateStep(Player p)
             {
-                if (p.CanPress())
-                {
-                    Step(p, Input.Press);
-                    Step(p, Input.Press | Input.Release);
-                }
+                bool canPress = p.CanPress(), canRelease = p.CanRelease();
 
-                if (p.CanRelease())
+                // avoid copying the player unnecessarily
+                if (canPress || canRelease)
                 {
-                    Step(p, Input.Release);
-                }
+                    Player copy = p.Copy();
 
-                // avoid copying player here
-                Step(p, Input.None, false);
+                    // the non-copy one needs to be done first to avoid unnecessary stack manipulation
+                    // non-input variation first since it requires the least amount of extra logic
+                    Step(p, Input.None, false);
+
+                    if (canPress)
+                    {
+                        if (canRelease)
+                        {
+                            Step(copy.Copy(), Input.Release);
+                        }
+                        Step(copy.Copy(), Input.Press);
+                        Step(copy, Input.Press | Input.Release);
+                    }
+                    else
+                    {
+                        Step(copy, Input.Release);
+                    }
+                }
+                else
+                {
+                    // no need to copy the player here
+                    Step(p, Input.None, false);
+                }
             }
 
             // simulate step with specific input
-            void Step(Player p, Input input, bool copy = true)
+            void Step(Player p, Input input, bool isCopy = true)
             {
-                temp = copy ? p.Copy() : p;
-                state = temp.Step(input);
+                state = p.Step(input);
 
                 // dont consider dead player for results
                 if ((state & State.Dead) == State.Dead)
                 {
-                    if (!copy)
+                    if (!isCopy)
                     {
                         activePlayers.Pop();
                     }
                     return;
                 }
 
-                if (copy)
+                if (isCopy)
                 {
-                    activePlayers.Push(temp);
+                    activePlayers.Push(p);
                 }
             }
 
