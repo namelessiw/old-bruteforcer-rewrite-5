@@ -48,6 +48,8 @@
             ChkSinglejump = new CheckBox();
             ChkDoublejump = new CheckBox();
             Chk1fConvention = new CheckBox();
+            CmbSolutionCondition = new ComboBox();
+            label2 = new Label();
             SuspendLayout();
             // 
             // LblInfo
@@ -233,11 +235,32 @@
             Chk1fConvention.Text = "1f Convention";
             Chk1fConvention.UseVisualStyleBackColor = true;
             // 
+            // CmbSolutionCondition
+            // 
+            CmbSolutionCondition.DropDownStyle = ComboBoxStyle.DropDownList;
+            CmbSolutionCondition.FormattingEnabled = true;
+            CmbSolutionCondition.Items.AddRange(new object[] { "Can Rejump", "Landing", "Stable", "Exact Y", "Y Range" });
+            CmbSolutionCondition.Location = new Point(414, 71);
+            CmbSolutionCondition.Name = "CmbSolutionCondition";
+            CmbSolutionCondition.Size = new Size(121, 23);
+            CmbSolutionCondition.TabIndex = 30;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(414, 53);
+            label2.Name = "label2";
+            label2.Size = new Size(107, 15);
+            label2.TabIndex = 31;
+            label2.Text = "Solution Condition";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
+            Controls.Add(label2);
+            Controls.Add(CmbSolutionCondition);
             Controls.Add(Chk1fConvention);
             Controls.Add(ChkDoublejump);
             Controls.Add(ChkSinglejump);
@@ -287,5 +310,7 @@
         private CheckBox ChkSinglejump;
         private CheckBox ChkDoublejump;
         private CheckBox Chk1fConvention;
+        private ComboBox CmbSolutionCondition;
+        private Label label2;
     }
 }

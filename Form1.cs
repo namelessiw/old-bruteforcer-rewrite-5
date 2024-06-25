@@ -4,6 +4,15 @@ using System.Numerics;
 
 namespace old_bruteforcer_rewrite_5
 {
+    enum SolutionCondition
+    {
+        CanRejump,
+        Landed,
+        Stable,
+        ExactY,
+        YRange,
+    }
+
     public partial class Form1 : Form
     {
         public Form1()
@@ -13,7 +22,7 @@ namespace old_bruteforcer_rewrite_5
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            CmbSolutionCondition.SelectedIndex = 0;
         }
 
         private double Parse(string s) => double.Parse(s, CultureInfo.InvariantCulture);
@@ -26,7 +35,7 @@ namespace old_bruteforcer_rewrite_5
             double y = Parse(TxtPlayerY.Text);
             double vspeed = Parse(TxtVSpeed.Text);
 
-            List<Player> results = Search.SearchExact(TxtFloorY.Text, TxtCeiling.Text, y, vspeed, ChkSinglejump.Checked, ChkDoublejump.Checked);
+            List<Player> results = Search.SearchExact(TxtFloorY.Text, TxtCeiling.Text, y, vspeed, ChkSinglejump.Checked, ChkDoublejump.Checked, (SolutionCondition)CmbSolutionCondition.SelectedIndex);
 
             sw.Stop();
 
@@ -52,7 +61,7 @@ namespace old_bruteforcer_rewrite_5
             double yLower = Parse(TxtYLower.Text);
             double vspeed = Parse(TxtVSpeed.Text);
 
-            List<PlayerRange> results = Search.SearchRange(TxtFloorY.Text, TxtCeiling.Text, yUpper, yLower, vspeed, ChkSinglejump.Checked, ChkDoublejump.Checked);
+            List<PlayerRange> results = Search.SearchRange(TxtFloorY.Text, TxtCeiling.Text, yUpper, yLower, vspeed, ChkSinglejump.Checked, ChkDoublejump.Checked, (SolutionCondition)CmbSolutionCondition.SelectedIndex);
 
             sw.Stop();
 
