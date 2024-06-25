@@ -324,7 +324,7 @@
             Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             Name = "Form1";
-            Text = "Form1";
+            Text = "old bruteforcer rewrite 5";
             Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
