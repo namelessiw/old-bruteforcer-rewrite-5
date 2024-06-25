@@ -17,7 +17,7 @@ namespace old_bruteforcer_rewrite_5
     internal class PlayerRange
     {
         const int MAX_LENGTH = 1000; // TODO: global setting
-        static double Floor = 408, Ceiling = 0;
+        static double Floor = 408, Ceiling = 0, SolutionYUpper = 0, SolutionYLower = 0;
         static Stack<PlayerRange> PlayerRanges = new();
         double StartYUpper, StartYLower, YUpper, YLower, VSpeed;
         public int Frame;
@@ -111,6 +111,12 @@ namespace old_bruteforcer_rewrite_5
             return CopyRange(Math.Max(YUpper, highestCollision - 1), YLower);
         }
 
+        // assumes this range intersects solution range
+        public PlayerRange GetIntersectingSolutionRange()
+        {
+            return CopyRange(Math.Max(YUpper, SolutionYUpper), Math.Min(YLower, SolutionYLower));
+        }
+
         public State GetCurrentState()
         {
             return CurrentState;
@@ -131,6 +137,16 @@ namespace old_bruteforcer_rewrite_5
             Ceiling = Math.Round(double.Parse(ceilingY, CultureInfo.InvariantCulture));
         }
 
+        public static void SetSolutionYUpper(double y)
+        {
+            SolutionYUpper = y;
+        }
+
+        public static void SetSolutionYLower(double y)
+        {
+            SolutionYLower = y;
+        }
+
         public bool CanPress()
         {
             return HasSJump || HasDJump;
@@ -144,6 +160,16 @@ namespace old_bruteforcer_rewrite_5
         public bool CanRejump()
         {
             return Math.Round(YLower + 1) >= Floor;
+        }
+
+        public bool ContainsExactYSolution()
+        {
+            return SolutionYUpper >= YUpper && SolutionYUpper <= YLower;
+        }
+
+        public bool IntersectsYSolutionRange()
+        {
+            return !(SolutionYLower < YUpper || SolutionYUpper > YLower);
         }
 
         // to make the two ranges disjoint after splitting, one of the ranges needs to be adjusted

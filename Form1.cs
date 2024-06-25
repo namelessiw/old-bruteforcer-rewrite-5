@@ -64,6 +64,8 @@ namespace old_bruteforcer_rewrite_5
             SearchParams.PlayerYUpper = TxtYUpper.Text;
             SearchParams.PlayerYLower = TxtYLower.Text;
             SearchParams.PlayerVSpeed = TxtVSpeed.Text;
+            SearchParams.FloorY = TxtFloorY.Text;
+            SearchParams.CeilingY = TxtCeilingY.Text;
             if (SearchParams.SolutionCondition == SolutionCondition.ExactY)
             {
                 SearchParams.SolutionYUpper = TxtSolutionY.Text;

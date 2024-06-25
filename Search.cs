@@ -25,8 +25,14 @@ namespace old_bruteforcer_rewrite_5
             {
                 Player.SetFloorY(SearchParams.FloorY);
                 Player.SetCeilingY(SearchParams.CeilingY);
-                Player.SetSolutionYUpper(ParseDouble(SearchParams.SolutionYUpper));
-                Player.SetSolutionYLower(ParseDouble(SearchParams.SolutionYLower));
+                double solutionYUpper = ParseDouble(SearchParams.SolutionYUpper);
+                double solutionYLower = ParseDouble(SearchParams.SolutionYLower);
+                if (solutionYUpper > solutionYLower)
+                {
+                    (solutionYUpper, solutionYLower) = (solutionYLower, solutionYUpper);
+                }
+                Player.SetSolutionYUpper(solutionYUpper);
+                Player.SetSolutionYLower(solutionYLower);
                 double y = ParseDouble(SearchParams.PlayerYLower);
                 double vspeed = ParseDouble(SearchParams.PlayerVSpeed);
                 activePlayers = new([new(y, vspeed, sjump, djump)]);
@@ -157,6 +163,14 @@ namespace old_bruteforcer_rewrite_5
             {
                 PlayerRange.SetFloorY(SearchParams.FloorY);
                 PlayerRange.SetCeilingY(SearchParams.CeilingY);
+                double solutionYUpper = ParseDouble(SearchParams.SolutionYUpper);
+                double solutionYLower = ParseDouble(SearchParams.SolutionYLower);
+                if (solutionYUpper > solutionYLower)
+                {
+                    (solutionYUpper, solutionYLower) = (solutionYLower, solutionYUpper);
+                }
+                PlayerRange.SetSolutionYUpper(solutionYUpper);
+                PlayerRange.SetSolutionYLower(solutionYLower);
                 double yLower = ParseDouble(SearchParams.PlayerYLower);
                 double yUpper = ParseDouble(SearchParams.PlayerYUpper);
                 double vspeed = ParseDouble(SearchParams.PlayerVSpeed);
@@ -175,6 +189,8 @@ namespace old_bruteforcer_rewrite_5
                 SolutionCondition.CanRejump => CheckCanRejump,
                 SolutionCondition.Landed => CheckLanded,
                 SolutionCondition.Stable => CheckStable,
+                SolutionCondition.ExactY => CheckContainsExactYSolution,
+                SolutionCondition.YRange => CheckIntersectsYSolutionRange,
                 _ => throw new Exception($"unimplemented solution condition {SearchParams.SolutionCondition}")
             };
 
@@ -291,6 +307,22 @@ namespace old_bruteforcer_rewrite_5
                 if (p.CanRejump())
                 {
                     results.Add(p.GetRejumpRange());
+                }
+            }
+
+            void CheckContainsExactYSolution(PlayerRange p, State state)
+            {
+                if (p.ContainsExactYSolution())
+                {
+                    results.Add(p.GetIntersectingSolutionRange());
+                }
+            }
+
+            void CheckIntersectsYSolutionRange(PlayerRange p, State state)
+            {
+                if (p.IntersectsYSolutionRange())
+                {
+                    results.Add(p.GetIntersectingSolutionRange());
                 }
             }
 
