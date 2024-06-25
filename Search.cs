@@ -11,10 +11,11 @@ namespace old_bruteforcer_rewrite_5
 {
     internal static class Search
     {
+        static float ParseFloat(string s) => float.Parse(s, CultureInfo.InvariantCulture);
         static double ParseDouble(string s) => double.Parse(s, CultureInfo.InvariantCulture);
 
         delegate bool ResultConditionExact(Player p, State state);
-        delegate bool ResultConditionRange(PlayerRange p, State state);
+        delegate void ResultConditionRange(PlayerRange p, State state);
 
         // TODO: take string arguments and forward to first player instance for parsing, then do error handling
         public static List<Player> SearchExact(bool sjump, bool djump, SolutionCondition solutionCondition)
@@ -34,6 +35,8 @@ namespace old_bruteforcer_rewrite_5
                 return [];
             }
 
+            List<Player> results = [];
+
             ResultConditionExact CheckResultCondition = solutionCondition switch
             {
                 SolutionCondition.CanRejump => CheckCanRejump,
@@ -41,8 +44,6 @@ namespace old_bruteforcer_rewrite_5
                 SolutionCondition.Stable => CheckStable,
                 _ => throw new Exception($"unimplemented solution condition {solutionCondition}")
             };
-
-            List<Player> results = [];
 
             // simulate step with all possible inputs until stable
             while (activePlayers.Count > 0)
@@ -117,22 +118,22 @@ namespace old_bruteforcer_rewrite_5
                 }
             }
 
+            static bool CheckLanded(Player p, State state)
+            {
+                return (state & State.Landed) == State.Landed;
+            }
+
+            static bool CheckStable(Player p, State state)
+            {
+                return p.IsStable();
+            }
+
+            static bool CheckCanRejump(Player p, State state)
+            {
+                return p.CanRejump();
+            }
+
             return results;
-        }
-
-        static bool CheckLanded(Player p, State state)
-        {
-            return (state & State.Landed) == State.Landed;
-        }
-
-        static bool CheckStable(Player p, State state)
-        {
-            return p.IsStable();
-        }
-
-        static bool CheckCanRejump(Player p, State state)
-        {
-            return p.CanRejump();
         }
 
         public static List<PlayerRange> SearchRange(bool sjump, bool djump, SolutionCondition solutionCondition)
@@ -153,6 +154,8 @@ namespace old_bruteforcer_rewrite_5
                 return [];
             }
 
+            List<PlayerRange> results = [], ranges;
+
             ResultConditionRange CheckResultCondition = solutionCondition switch
             {
                 SolutionCondition.CanRejump => CheckCanRejump,
@@ -160,8 +163,6 @@ namespace old_bruteforcer_rewrite_5
                 SolutionCondition.Stable => CheckStable,
                 _ => throw new Exception($"unimplemented solution condition {solutionCondition}")
             };
-
-            List<PlayerRange> results = [], ranges;
 
             // simulate until stable
             while (activeRanges.Count > 0)
@@ -224,10 +225,7 @@ namespace old_bruteforcer_rewrite_5
                     }
 
                     // result condition
-                    if (CheckResultCondition(p, state))
-                    {
-                        results.Add(range.Copy());
-                    }
+                    CheckResultCondition(range, state);
 
                     // end condition
                     if (range.IsStable())
@@ -258,22 +256,31 @@ namespace old_bruteforcer_rewrite_5
                 }
             }
 
+            void CheckLanded(PlayerRange p, State state)
+            {
+                if ((state & State.Landed) == State.Landed)
+                {
+                    results.Add(p.Copy());
+                }
+            }
+
+            void CheckStable(PlayerRange p, State state)
+            {
+                if (p.IsStable())
+                {
+                    results.Add(p.GetStableRange());
+                }
+            }
+
+            void CheckCanRejump(PlayerRange p, State state)
+            {
+                if (p.CanRejump())
+                {
+                    results.Add(p.GetRejumpRange());
+                }
+            }
+
             return results;
-        }
-
-        static bool CheckLanded(PlayerRange p, State state)
-        {
-            return (state & State.Landed) == State.Landed;
-        }
-
-        static bool CheckStable(PlayerRange p, State state)
-        {
-            return p.IsStable();
-        }
-
-        static bool CheckCanRejump(PlayerRange p, State state)
-        {
-            return p.CanRejump();
         }
     }
 }
