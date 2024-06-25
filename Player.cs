@@ -26,7 +26,7 @@ namespace old_bruteforcer_rewrite_5
     internal class Player
     {
         const int MAX_LENGTH = 1000; // TODO: global setting
-        static double Floor = 408, Ceiling = 0;
+        static double Floor = 408, Ceiling = 0, SolutionYUpper = 0, SolutionYLower = 0;
         double Y, VSpeed;
         public int Frame;
         bool HasSJump, HasDJump, Released;
@@ -69,6 +69,16 @@ namespace old_bruteforcer_rewrite_5
             Ceiling = Math.Round(double.Parse(ceilingY, CultureInfo.InvariantCulture));
         }
 
+        public static void SetSolutionYUpper(double y)
+        {
+            SolutionYUpper = y;
+        }
+
+        public static void SetSolutionYLower(double y)
+        {
+            SolutionYLower = y;
+        }
+
         public bool CanPress()
         {
             return HasSJump || HasDJump; // TODO: state variable?
@@ -87,6 +97,16 @@ namespace old_bruteforcer_rewrite_5
         public bool CanRejump()
         {
             return Math.Round(Y + 1) >= Floor; // TODO: floor type matters
+        }
+
+        public bool IsExactYSolution()
+        {
+            return Y == SolutionYUpper;
+        }
+
+        public bool IsInYSolutionRange()
+        {
+            return Y >= SolutionYUpper && Y <= SolutionYLower;
         }
 
         public State Step(Input input) // TODO: killers, return, debug log?

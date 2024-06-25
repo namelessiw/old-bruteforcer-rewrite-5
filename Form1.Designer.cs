@@ -50,6 +50,12 @@
             Chk1fConvention = new CheckBox();
             CmbSolutionCondition = new ComboBox();
             label2 = new Label();
+            label9 = new Label();
+            TxtSolutionY = new TextBox();
+            TxtSolutionYUpper = new TextBox();
+            label10 = new Label();
+            TxtSolutionYLower = new TextBox();
+            label11 = new Label();
             SuspendLayout();
             // 
             // LblInfo
@@ -254,11 +260,68 @@
             label2.TabIndex = 31;
             label2.Text = "Solution Condition";
             // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(541, 53);
+            label9.Name = "label9";
+            label9.Size = new Size(61, 15);
+            label9.TabIndex = 32;
+            label9.Text = "Solution Y";
+            // 
+            // TxtSolutionY
+            // 
+            TxtSolutionY.Location = new Point(541, 71);
+            TxtSolutionY.Name = "TxtSolutionY";
+            TxtSolutionY.Size = new Size(100, 23);
+            TxtSolutionY.TabIndex = 33;
+            TxtSolutionY.Text = "406.5";
+            // 
+            // TxtSolutionYUpper
+            // 
+            TxtSolutionYUpper.Location = new Point(414, 115);
+            TxtSolutionYUpper.Name = "TxtSolutionYUpper";
+            TxtSolutionYUpper.Size = new Size(100, 23);
+            TxtSolutionYUpper.TabIndex = 35;
+            TxtSolutionYUpper.Text = "406.5";
+            // 
+            // label10
+            // 
+            label10.AutoSize = true;
+            label10.Location = new Point(414, 97);
+            label10.Name = "label10";
+            label10.Size = new Size(96, 15);
+            label10.TabIndex = 34;
+            label10.Text = "Solution Y Upper";
+            // 
+            // TxtSolutionYLower
+            // 
+            TxtSolutionYLower.Location = new Point(541, 115);
+            TxtSolutionYLower.Name = "TxtSolutionYLower";
+            TxtSolutionYLower.Size = new Size(100, 23);
+            TxtSolutionYLower.TabIndex = 37;
+            TxtSolutionYLower.Text = "407.5";
+            // 
+            // label11
+            // 
+            label11.AutoSize = true;
+            label11.Location = new Point(541, 97);
+            label11.Name = "label11";
+            label11.Size = new Size(96, 15);
+            label11.TabIndex = 36;
+            label11.Text = "Solution Y Lower";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(700, 338);
+            Controls.Add(TxtSolutionYLower);
+            Controls.Add(label11);
+            Controls.Add(TxtSolutionYUpper);
+            Controls.Add(label10);
+            Controls.Add(TxtSolutionY);
+            Controls.Add(label9);
             Controls.Add(label2);
             Controls.Add(CmbSolutionCondition);
             Controls.Add(Chk1fConvention);
@@ -312,5 +375,11 @@
         private CheckBox Chk1fConvention;
         private ComboBox CmbSolutionCondition;
         private Label label2;
+        private Label label9;
+        private TextBox TxtSolutionY;
+        private TextBox TxtSolutionYUpper;
+        private Label label10;
+        private TextBox TxtSolutionYLower;
+        private Label label11;
     }
 }

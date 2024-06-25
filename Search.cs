@@ -18,13 +18,15 @@ namespace old_bruteforcer_rewrite_5
         delegate void ResultConditionRange(PlayerRange p, State state);
 
         // TODO: take string arguments and forward to first player instance for parsing, then do error handling
-        public static List<Player> SearchExact(bool sjump, bool djump, SolutionCondition solutionCondition)
+        public static List<Player> SearchExact(bool sjump, bool djump)
         {
             Stack<Player> activePlayers;
             try
             {
                 Player.SetFloorY(SearchParams.FloorY);
                 Player.SetCeilingY(SearchParams.CeilingY);
+                Player.SetSolutionYUpper(ParseDouble(SearchParams.SolutionYUpper));
+                Player.SetSolutionYLower(ParseDouble(SearchParams.SolutionYLower));
                 double y = ParseDouble(SearchParams.PlayerYLower);
                 double vspeed = ParseDouble(SearchParams.PlayerVSpeed);
                 activePlayers = new([new(y, vspeed, sjump, djump)]);
@@ -37,12 +39,14 @@ namespace old_bruteforcer_rewrite_5
 
             List<Player> results = [];
 
-            ResultConditionExact CheckResultCondition = solutionCondition switch
+            ResultConditionExact CheckResultCondition = SearchParams.SolutionCondition switch
             {
                 SolutionCondition.CanRejump => CheckCanRejump,
                 SolutionCondition.Landed => CheckLanded,
                 SolutionCondition.Stable => CheckStable,
-                _ => throw new Exception($"unimplemented solution condition {solutionCondition}")
+                SolutionCondition.ExactY => CheckExactSolution,
+                SolutionCondition.YRange => CheckInSolutionRange,
+                _ => throw new Exception($"unimplemented solution condition {SearchParams.SolutionCondition}")
             };
 
             // simulate step with all possible inputs until stable
@@ -133,10 +137,20 @@ namespace old_bruteforcer_rewrite_5
                 return p.CanRejump();
             }
 
+            static bool CheckExactSolution(Player p, State state)
+            {
+                return p.IsExactYSolution();
+            }
+
+            static bool CheckInSolutionRange(Player p, State state)
+            {
+                return p.IsInYSolutionRange();
+            }
+
             return results;
         }
 
-        public static List<PlayerRange> SearchRange(bool sjump, bool djump, SolutionCondition solutionCondition)
+        public static List<PlayerRange> SearchRange(bool sjump, bool djump)
         {
             Stack<PlayerRange> activeRanges;
             try
@@ -156,12 +170,12 @@ namespace old_bruteforcer_rewrite_5
 
             List<PlayerRange> results = [], ranges;
 
-            ResultConditionRange CheckResultCondition = solutionCondition switch
+            ResultConditionRange CheckResultCondition = SearchParams.SolutionCondition switch
             {
                 SolutionCondition.CanRejump => CheckCanRejump,
                 SolutionCondition.Landed => CheckLanded,
                 SolutionCondition.Stable => CheckStable,
-                _ => throw new Exception($"unimplemented solution condition {solutionCondition}")
+                _ => throw new Exception($"unimplemented solution condition {SearchParams.SolutionCondition}")
             };
 
             // simulate until stable

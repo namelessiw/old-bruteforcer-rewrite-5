@@ -21,13 +21,24 @@ namespace old_bruteforcer_rewrite_5
             Stopwatch sw = new();
             sw.Start();
 
-            SearchParams.PlayerYLower = TxtPlayerY.Text;
+            SearchParams.SolutionCondition = (SolutionCondition)CmbSolutionCondition.SelectedIndex;
             SearchParams.PlayerYUpper = TxtPlayerY.Text;
+            SearchParams.PlayerYLower = TxtPlayerY.Text;
             SearchParams.PlayerVSpeed = TxtVSpeed.Text;
             SearchParams.FloorY = TxtFloorY.Text;
             SearchParams.CeilingY = TxtCeilingY.Text;
+            if (SearchParams.SolutionCondition == SolutionCondition.ExactY)
+            {
+                SearchParams.SolutionYUpper = TxtSolutionY.Text;
+                SearchParams.SolutionYLower = TxtSolutionY.Text;
+            }
+            else
+            {
+                SearchParams.SolutionYUpper = TxtSolutionYUpper.Text;
+                SearchParams.SolutionYLower = TxtSolutionYLower.Text;
+            }
 
-            List<Player> results = Search.SearchExact(ChkSinglejump.Checked, ChkDoublejump.Checked, (SolutionCondition)CmbSolutionCondition.SelectedIndex);
+            List<Player> results = Search.SearchExact(ChkSinglejump.Checked, ChkDoublejump.Checked);
 
             sw.Stop();
 
@@ -49,13 +60,22 @@ namespace old_bruteforcer_rewrite_5
             Stopwatch sw = new();
             sw.Start();
 
-            SearchParams.PlayerYLower = TxtYLower.Text;
+            SearchParams.SolutionCondition = (SolutionCondition)CmbSolutionCondition.SelectedIndex;
             SearchParams.PlayerYUpper = TxtYUpper.Text;
+            SearchParams.PlayerYLower = TxtYLower.Text;
             SearchParams.PlayerVSpeed = TxtVSpeed.Text;
-            SearchParams.FloorY = TxtFloorY.Text;
-            SearchParams.CeilingY = TxtCeilingY.Text;
+            if (SearchParams.SolutionCondition == SolutionCondition.ExactY)
+            {
+                SearchParams.SolutionYUpper = TxtSolutionY.Text;
+                SearchParams.SolutionYLower = TxtSolutionY.Text;
+            }
+            else
+            {
+                SearchParams.SolutionYUpper = TxtSolutionYUpper.Text;
+                SearchParams.SolutionYLower = TxtSolutionYLower.Text;
+            }
 
-            List<PlayerRange> results = Search.SearchRange(ChkSinglejump.Checked, ChkDoublejump.Checked, (SolutionCondition)CmbSolutionCondition.SelectedIndex);
+            List<PlayerRange> results = Search.SearchRange(ChkSinglejump.Checked, ChkDoublejump.Checked);
 
             sw.Stop();
 
