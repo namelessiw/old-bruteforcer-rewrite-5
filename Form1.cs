@@ -4,15 +4,6 @@ using System.Numerics;
 
 namespace old_bruteforcer_rewrite_5
 {
-    enum SolutionCondition
-    {
-        CanRejump,
-        Landed,
-        Stable,
-        ExactY,
-        YRange,
-    }
-
     public partial class Form1 : Form
     {
         public Form1()
@@ -25,17 +16,18 @@ namespace old_bruteforcer_rewrite_5
             CmbSolutionCondition.SelectedIndex = 0;
         }
 
-        private double Parse(string s) => double.Parse(s, CultureInfo.InvariantCulture);
-
         private void BtnSearchExact_Click(object sender, EventArgs e)
         {
             Stopwatch sw = new();
             sw.Start();
 
-            double y = Parse(TxtPlayerY.Text);
-            double vspeed = Parse(TxtVSpeed.Text);
+            SearchParams.PlayerYLower = TxtPlayerY.Text;
+            SearchParams.PlayerYUpper = TxtPlayerY.Text;
+            SearchParams.PlayerVSpeed = TxtVSpeed.Text;
+            SearchParams.FloorY = TxtFloorY.Text;
+            SearchParams.CeilingY = TxtCeilingY.Text;
 
-            List<Player> results = Search.SearchExact(TxtFloorY.Text, TxtCeiling.Text, y, vspeed, ChkSinglejump.Checked, ChkDoublejump.Checked, (SolutionCondition)CmbSolutionCondition.SelectedIndex);
+            List<Player> results = Search.SearchExact(ChkSinglejump.Checked, ChkDoublejump.Checked, (SolutionCondition)CmbSolutionCondition.SelectedIndex);
 
             sw.Stop();
 
@@ -57,11 +49,13 @@ namespace old_bruteforcer_rewrite_5
             Stopwatch sw = new();
             sw.Start();
 
-            double yUpper = Parse(TxtYUpper.Text);
-            double yLower = Parse(TxtYLower.Text);
-            double vspeed = Parse(TxtVSpeed.Text);
+            SearchParams.PlayerYLower = TxtYLower.Text;
+            SearchParams.PlayerYUpper = TxtYUpper.Text;
+            SearchParams.PlayerVSpeed = TxtVSpeed.Text;
+            SearchParams.FloorY = TxtFloorY.Text;
+            SearchParams.CeilingY = TxtCeilingY.Text;
 
-            List<PlayerRange> results = Search.SearchRange(TxtFloorY.Text, TxtCeiling.Text, yUpper, yLower, vspeed, ChkSinglejump.Checked, ChkDoublejump.Checked, (SolutionCondition)CmbSolutionCondition.SelectedIndex);
+            List<PlayerRange> results = Search.SearchRange(ChkSinglejump.Checked, ChkDoublejump.Checked, (SolutionCondition)CmbSolutionCondition.SelectedIndex);
 
             sw.Stop();
 

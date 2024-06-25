@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,15 +11,29 @@ namespace old_bruteforcer_rewrite_5
 {
     internal static class Search
     {
+        static double ParseDouble(string s) => double.Parse(s, CultureInfo.InvariantCulture);
+
         delegate bool ResultConditionExact(Player p, State state);
         delegate bool ResultConditionRange(PlayerRange p, State state);
 
         // TODO: take string arguments and forward to first player instance for parsing, then do error handling
-        public static List<Player> SearchExact(string floor, string ceiling, double y, double vspeed, bool sjump, bool djump, SolutionCondition solutionCondition)
+        public static List<Player> SearchExact(bool sjump, bool djump, SolutionCondition solutionCondition)
         {
-            Player.SetFloorY(floor);
-            Player.SetCeilingY(ceiling);
-            Stack<Player> activePlayers = new([new(y, vspeed, sjump, djump)]);
+            Stack<Player> activePlayers;
+            try
+            {
+                Player.SetFloorY(SearchParams.FloorY);
+                Player.SetCeilingY(SearchParams.CeilingY);
+                double y = ParseDouble(SearchParams.PlayerYLower);
+                double vspeed = ParseDouble(SearchParams.PlayerVSpeed);
+                activePlayers = new([new(y, vspeed, sjump, djump)]);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return [];
+            }
+
             ResultConditionExact CheckResultCondition = solutionCondition switch
             {
                 SolutionCondition.CanRejump => CheckCanRejump,
@@ -120,11 +135,24 @@ namespace old_bruteforcer_rewrite_5
             return p.CanRejump();
         }
 
-        public static List<PlayerRange> SearchRange(string floor, string ceiling, double yUpper, double yLower, double vspeed, bool sjump, bool djump, SolutionCondition solutionCondition)
+        public static List<PlayerRange> SearchRange(bool sjump, bool djump, SolutionCondition solutionCondition)
         {
-            PlayerRange.SetFloorY(floor);
-            PlayerRange.SetCeilingY(ceiling);
-            Stack<PlayerRange> activeRanges = new([new(yUpper, yLower, vspeed, sjump, djump)]);
+            Stack<PlayerRange> activeRanges;
+            try
+            {
+                PlayerRange.SetFloorY(SearchParams.FloorY);
+                PlayerRange.SetCeilingY(SearchParams.CeilingY);
+                double yLower = ParseDouble(SearchParams.PlayerYLower);
+                double yUpper = ParseDouble(SearchParams.PlayerYUpper);
+                double vspeed = ParseDouble(SearchParams.PlayerVSpeed);
+                activeRanges = new([new(yUpper, yLower, vspeed, sjump, djump)]);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return [];
+            }
+
             ResultConditionRange CheckResultCondition = solutionCondition switch
             {
                 SolutionCondition.CanRejump => CheckCanRejump,

@@ -33,7 +33,7 @@
             label1 = new Label();
             label3 = new Label();
             TxtFloorY = new TextBox();
-            TxtCeiling = new TextBox();
+            TxtCeilingY = new TextBox();
             label4 = new Label();
             label5 = new Label();
             label6 = new Label();
@@ -95,13 +95,13 @@
             TxtFloorY.TabIndex = 12;
             TxtFloorY.Text = "408";
             // 
-            // TxtCeiling
+            // TxtCeilingY
             // 
-            TxtCeiling.Location = new Point(12, 115);
-            TxtCeiling.Name = "TxtCeiling";
-            TxtCeiling.Size = new Size(100, 23);
-            TxtCeiling.TabIndex = 13;
-            TxtCeiling.Text = "363";
+            TxtCeilingY.Location = new Point(12, 115);
+            TxtCeilingY.Name = "TxtCeilingY";
+            TxtCeilingY.Size = new Size(100, 23);
+            TxtCeilingY.TabIndex = 13;
+            TxtCeilingY.Text = "363";
             // 
             // label4
             // 
@@ -275,7 +275,7 @@
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(label4);
-            Controls.Add(TxtCeiling);
+            Controls.Add(TxtCeilingY);
             Controls.Add(TxtFloorY);
             Controls.Add(label3);
             Controls.Add(label1);
@@ -295,7 +295,7 @@
         private Label label1;
         private Label label3;
         private TextBox TxtFloorY;
-        private TextBox TxtCeiling;
+        private TextBox TxtCeilingY;
         private Label label4;
         private Label label5;
         private Label label6;
