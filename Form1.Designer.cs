@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             LblInfo = new Label();
-            TxtPlayerY = new TextBox();
-            label1 = new Label();
             label3 = new Label();
             TxtFloorY = new TextBox();
             TxtCeilingY = new TextBox();
@@ -43,51 +41,33 @@
             TxtVSpeed = new TextBox();
             LstResults = new ListBox();
             label8 = new Label();
-            BtnSearchExact = new Button();
-            BtnSearchRange = new Button();
+            BtnSearch = new Button();
             ChkSinglejump = new CheckBox();
             ChkDoublejump = new CheckBox();
             Chk1fConvention = new CheckBox();
             CmbSolutionCondition = new ComboBox();
             label2 = new Label();
-            label9 = new Label();
-            TxtSolutionY = new TextBox();
             TxtSolutionYUpper = new TextBox();
             label10 = new Label();
             TxtSolutionYLower = new TextBox();
             label11 = new Label();
+            ChkPlayerYRange = new CheckBox();
+            ChkSolutionYRange = new CheckBox();
             SuspendLayout();
             // 
             // LblInfo
             // 
             LblInfo.AutoSize = true;
-            LblInfo.Location = new Point(224, 9);
+            LblInfo.Location = new Point(345, 53);
             LblInfo.Name = "LblInfo";
             LblInfo.Size = new Size(31, 15);
             LblInfo.TabIndex = 5;
             LblInfo.Text = "Info:";
             // 
-            // TxtPlayerY
-            // 
-            TxtPlayerY.Location = new Point(12, 27);
-            TxtPlayerY.Name = "TxtPlayerY";
-            TxtPlayerY.Size = new Size(100, 23);
-            TxtPlayerY.TabIndex = 8;
-            TxtPlayerY.Text = "407.4";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(12, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(14, 15);
-            label1.TabIndex = 9;
-            label1.Text = "Y";
-            // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(12, 53);
+            label3.Location = new Point(113, 97);
             label3.Name = "label3";
             label3.Size = new Size(34, 15);
             label3.TabIndex = 11;
@@ -95,7 +75,7 @@
             // 
             // TxtFloorY
             // 
-            TxtFloorY.Location = new Point(12, 71);
+            TxtFloorY.Location = new Point(113, 115);
             TxtFloorY.Name = "TxtFloorY";
             TxtFloorY.Size = new Size(100, 23);
             TxtFloorY.TabIndex = 12;
@@ -103,7 +83,7 @@
             // 
             // TxtCeilingY
             // 
-            TxtCeilingY.Location = new Point(12, 115);
+            TxtCeilingY.Location = new Point(7, 115);
             TxtCeilingY.Name = "TxtCeilingY";
             TxtCeilingY.Size = new Size(100, 23);
             TxtCeilingY.TabIndex = 13;
@@ -112,7 +92,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(12, 97);
+            label4.Location = new Point(7, 97);
             label4.Name = "label4";
             label4.Size = new Size(44, 15);
             label4.TabIndex = 14;
@@ -121,7 +101,7 @@
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(118, 9);
+            label5.Location = new Point(7, 9);
             label5.Name = "label5";
             label5.Size = new Size(49, 15);
             label5.TabIndex = 15;
@@ -130,7 +110,7 @@
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(118, 53);
+            label6.Location = new Point(113, 9);
             label6.Name = "label6";
             label6.Size = new Size(49, 15);
             label6.TabIndex = 16;
@@ -138,7 +118,7 @@
             // 
             // TxtYUpper
             // 
-            TxtYUpper.Location = new Point(118, 27);
+            TxtYUpper.Location = new Point(7, 27);
             TxtYUpper.Name = "TxtYUpper";
             TxtYUpper.Size = new Size(100, 23);
             TxtYUpper.TabIndex = 17;
@@ -146,7 +126,7 @@
             // 
             // TxtYLower
             // 
-            TxtYLower.Location = new Point(118, 71);
+            TxtYLower.Location = new Point(113, 27);
             TxtYLower.Name = "TxtYLower";
             TxtYLower.Size = new Size(100, 23);
             TxtYLower.TabIndex = 18;
@@ -155,7 +135,7 @@
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(118, 97);
+            label7.Location = new Point(219, 97);
             label7.Name = "label7";
             label7.Size = new Size(46, 15);
             label7.TabIndex = 21;
@@ -163,7 +143,7 @@
             // 
             // TxtVSpeed
             // 
-            TxtVSpeed.Location = new Point(118, 115);
+            TxtVSpeed.Location = new Point(219, 115);
             TxtVSpeed.Name = "TxtVSpeed";
             TxtVSpeed.Size = new Size(100, 23);
             TxtVSpeed.TabIndex = 22;
@@ -187,32 +167,22 @@
             label8.TabIndex = 24;
             label8.Text = "Results";
             // 
-            // BtnSearchExact
+            // BtnSearch
             // 
-            BtnSearchExact.Location = new Point(224, 115);
-            BtnSearchExact.Name = "BtnSearchExact";
-            BtnSearchExact.Size = new Size(89, 23);
-            BtnSearchExact.TabIndex = 25;
-            BtnSearchExact.Text = "Search Exact";
-            BtnSearchExact.UseVisualStyleBackColor = true;
-            BtnSearchExact.Click += BtnSearchExact_Click;
-            // 
-            // BtnSearchRange
-            // 
-            BtnSearchRange.Location = new Point(319, 115);
-            BtnSearchRange.Name = "BtnSearchRange";
-            BtnSearchRange.Size = new Size(89, 23);
-            BtnSearchRange.TabIndex = 26;
-            BtnSearchRange.Text = "Search Range";
-            BtnSearchRange.UseVisualStyleBackColor = true;
-            BtnSearchRange.Click += BtnSearchRange_Click;
+            BtnSearch.Location = new Point(613, 119);
+            BtnSearch.Name = "BtnSearch";
+            BtnSearch.Size = new Size(75, 23);
+            BtnSearch.TabIndex = 26;
+            BtnSearch.Text = "Search";
+            BtnSearch.UseVisualStyleBackColor = true;
+            BtnSearch.Click += BtnSearch_Click;
             // 
             // ChkSinglejump
             // 
             ChkSinglejump.AutoSize = true;
             ChkSinglejump.Checked = true;
             ChkSinglejump.CheckState = CheckState.Checked;
-            ChkSinglejump.Location = new Point(224, 90);
+            ChkSinglejump.Location = new Point(219, 6);
             ChkSinglejump.Name = "ChkSinglejump";
             ChkSinglejump.Size = new Size(86, 19);
             ChkSinglejump.TabIndex = 27;
@@ -224,7 +194,7 @@
             ChkDoublejump.AutoSize = true;
             ChkDoublejump.Checked = true;
             ChkDoublejump.CheckState = CheckState.Checked;
-            ChkDoublejump.Location = new Point(316, 90);
+            ChkDoublejump.Location = new Point(219, 31);
             ChkDoublejump.Name = "ChkDoublejump";
             ChkDoublejump.Size = new Size(92, 19);
             ChkDoublejump.TabIndex = 28;
@@ -234,7 +204,7 @@
             // Chk1fConvention
             // 
             Chk1fConvention.AutoSize = true;
-            Chk1fConvention.Location = new Point(224, 65);
+            Chk1fConvention.Location = new Point(587, 94);
             Chk1fConvention.Name = "Chk1fConvention";
             Chk1fConvention.Size = new Size(101, 19);
             Chk1fConvention.TabIndex = 29;
@@ -245,8 +215,8 @@
             // 
             CmbSolutionCondition.DropDownStyle = ComboBoxStyle.DropDownList;
             CmbSolutionCondition.FormattingEnabled = true;
-            CmbSolutionCondition.Items.AddRange(new object[] { "Can Rejump", "Landing", "Stable", "Exact Y", "Y Range" });
-            CmbSolutionCondition.Location = new Point(414, 71);
+            CmbSolutionCondition.Items.AddRange(new object[] { "Can Rejump", "Landing", "Stable", "Y position" });
+            CmbSolutionCondition.Location = new Point(219, 71);
             CmbSolutionCondition.Name = "CmbSolutionCondition";
             CmbSolutionCondition.Size = new Size(121, 23);
             CmbSolutionCondition.TabIndex = 30;
@@ -254,32 +224,15 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(414, 53);
+            label2.Location = new Point(219, 53);
             label2.Name = "label2";
             label2.Size = new Size(107, 15);
             label2.TabIndex = 31;
             label2.Text = "Solution Condition";
             // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Location = new Point(541, 53);
-            label9.Name = "label9";
-            label9.Size = new Size(61, 15);
-            label9.TabIndex = 32;
-            label9.Text = "Solution Y";
-            // 
-            // TxtSolutionY
-            // 
-            TxtSolutionY.Location = new Point(541, 71);
-            TxtSolutionY.Name = "TxtSolutionY";
-            TxtSolutionY.Size = new Size(100, 23);
-            TxtSolutionY.TabIndex = 33;
-            TxtSolutionY.Text = "406.5";
-            // 
             // TxtSolutionYUpper
             // 
-            TxtSolutionYUpper.Location = new Point(414, 115);
+            TxtSolutionYUpper.Location = new Point(7, 71);
             TxtSolutionYUpper.Name = "TxtSolutionYUpper";
             TxtSolutionYUpper.Size = new Size(100, 23);
             TxtSolutionYUpper.TabIndex = 35;
@@ -288,7 +241,7 @@
             // label10
             // 
             label10.AutoSize = true;
-            label10.Location = new Point(414, 97);
+            label10.Location = new Point(7, 53);
             label10.Name = "label10";
             label10.Size = new Size(96, 15);
             label10.TabIndex = 34;
@@ -296,7 +249,7 @@
             // 
             // TxtSolutionYLower
             // 
-            TxtSolutionYLower.Location = new Point(541, 115);
+            TxtSolutionYLower.Location = new Point(113, 71);
             TxtSolutionYLower.Name = "TxtSolutionYLower";
             TxtSolutionYLower.Size = new Size(100, 23);
             TxtSolutionYLower.TabIndex = 37;
@@ -305,30 +258,55 @@
             // label11
             // 
             label11.AutoSize = true;
-            label11.Location = new Point(541, 97);
+            label11.Location = new Point(113, 53);
             label11.Name = "label11";
             label11.Size = new Size(96, 15);
             label11.TabIndex = 36;
             label11.Text = "Solution Y Lower";
             // 
+            // ChkPlayerYRange
+            // 
+            ChkPlayerYRange.AutoSize = true;
+            ChkPlayerYRange.Checked = true;
+            ChkPlayerYRange.CheckState = CheckState.Checked;
+            ChkPlayerYRange.Location = new Point(345, 6);
+            ChkPlayerYRange.Name = "ChkPlayerYRange";
+            ChkPlayerYRange.Size = new Size(104, 19);
+            ChkPlayerYRange.TabIndex = 38;
+            ChkPlayerYRange.Text = "Player Y Range";
+            ChkPlayerYRange.UseVisualStyleBackColor = true;
+            ChkPlayerYRange.CheckedChanged += ChkPlayerYRange_CheckedChanged;
+            // 
+            // ChkSolutionYRange
+            // 
+            ChkSolutionYRange.AutoSize = true;
+            ChkSolutionYRange.Checked = true;
+            ChkSolutionYRange.CheckState = CheckState.Checked;
+            ChkSolutionYRange.Location = new Point(345, 31);
+            ChkSolutionYRange.Name = "ChkSolutionYRange";
+            ChkSolutionYRange.Size = new Size(116, 19);
+            ChkSolutionYRange.TabIndex = 39;
+            ChkSolutionYRange.Text = "Solution Y Range";
+            ChkSolutionYRange.UseVisualStyleBackColor = true;
+            ChkSolutionYRange.CheckedChanged += ChkSolutionYRange_CheckedChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(700, 338);
+            ClientSize = new Size(697, 338);
+            Controls.Add(ChkSolutionYRange);
+            Controls.Add(ChkPlayerYRange);
             Controls.Add(TxtSolutionYLower);
             Controls.Add(label11);
             Controls.Add(TxtSolutionYUpper);
             Controls.Add(label10);
-            Controls.Add(TxtSolutionY);
-            Controls.Add(label9);
             Controls.Add(label2);
             Controls.Add(CmbSolutionCondition);
             Controls.Add(Chk1fConvention);
             Controls.Add(ChkDoublejump);
             Controls.Add(ChkSinglejump);
-            Controls.Add(BtnSearchRange);
-            Controls.Add(BtnSearchExact);
+            Controls.Add(BtnSearch);
             Controls.Add(label8);
             Controls.Add(LstResults);
             Controls.Add(TxtVSpeed);
@@ -341,10 +319,10 @@
             Controls.Add(TxtCeilingY);
             Controls.Add(TxtFloorY);
             Controls.Add(label3);
-            Controls.Add(label1);
-            Controls.Add(TxtPlayerY);
             Controls.Add(LblInfo);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
             Margin = new Padding(3, 2, 3, 2);
+            MaximizeBox = false;
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
@@ -354,8 +332,6 @@
 
         #endregion
         private Label LblInfo;
-        private TextBox TxtPlayerY;
-        private Label label1;
         private Label label3;
         private TextBox TxtFloorY;
         private TextBox TxtCeilingY;
@@ -368,18 +344,17 @@
         private TextBox TxtVSpeed;
         private ListBox LstResults;
         private Label label8;
-        private Button BtnSearchExact;
-        private Button BtnSearchRange;
+        private Button BtnSearch;
         private CheckBox ChkSinglejump;
         private CheckBox ChkDoublejump;
         private CheckBox Chk1fConvention;
         private ComboBox CmbSolutionCondition;
         private Label label2;
-        private Label label9;
-        private TextBox TxtSolutionY;
         private TextBox TxtSolutionYUpper;
         private Label label10;
         private TextBox TxtSolutionYLower;
         private Label label11;
+        private CheckBox ChkPlayerYRange;
+        private CheckBox ChkSolutionYRange;
     }
 }

@@ -11,6 +11,7 @@ namespace old_bruteforcer_rewrite_5
         CanRejump,
         Landed,
         Stable,
+        YPosition,
         ExactY,
         YRange,
     }
