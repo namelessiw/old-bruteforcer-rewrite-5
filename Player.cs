@@ -423,5 +423,10 @@ namespace old_bruteforcer_rewrite_5
 
             return sb.ToString();
         }
+
+        public static int Compare(Player a, Player b)
+        {
+            return a.Frame - b.Frame;
+        }
     }
 }

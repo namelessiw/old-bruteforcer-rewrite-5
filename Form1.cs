@@ -52,7 +52,7 @@ namespace old_bruteforcer_rewrite_5
 
                 LblInfo.Text = "Info:\n" + $"{results.Count} results in {sw.Elapsed}";
 
-                results.Sort(new Comparison<PlayerRange>((a, b) => a.Frame == b.Frame ? 0 : a.Frame - b.Frame));
+                results.Sort(PlayerRange.Compare);
 
                 LstResults.Items.Clear();
 
@@ -72,7 +72,7 @@ namespace old_bruteforcer_rewrite_5
 
                 LblInfo.Text = "Info:\n" + $"{results.Count} results in {sw.Elapsed}";
 
-                results.Sort(new Comparison<Player>((a, b) => a.Frame == b.Frame ? 0 : a.Frame - b.Frame));
+                results.Sort(Player.Compare);
 
                 LstResults.Items.Clear();
 
