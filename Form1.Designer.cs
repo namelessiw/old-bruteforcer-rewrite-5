@@ -184,7 +184,7 @@
             ChkSinglejump.AutoSize = true;
             ChkSinglejump.Checked = true;
             ChkSinglejump.CheckState = CheckState.Checked;
-            ChkSinglejump.Location = new Point(219, 6);
+            ChkSinglejump.Location = new Point(341, 4);
             ChkSinglejump.Name = "ChkSinglejump";
             ChkSinglejump.Size = new Size(86, 19);
             ChkSinglejump.TabIndex = 27;
@@ -196,7 +196,7 @@
             ChkDoublejump.AutoSize = true;
             ChkDoublejump.Checked = true;
             ChkDoublejump.CheckState = CheckState.Checked;
-            ChkDoublejump.Location = new Point(219, 31);
+            ChkDoublejump.Location = new Point(341, 29);
             ChkDoublejump.Name = "ChkDoublejump";
             ChkDoublejump.Size = new Size(92, 19);
             ChkDoublejump.TabIndex = 28;
@@ -271,7 +271,7 @@
             ChkPlayerYRange.AutoSize = true;
             ChkPlayerYRange.Checked = true;
             ChkPlayerYRange.CheckState = CheckState.Checked;
-            ChkPlayerYRange.Location = new Point(345, 6);
+            ChkPlayerYRange.Location = new Point(219, 6);
             ChkPlayerYRange.Name = "ChkPlayerYRange";
             ChkPlayerYRange.Size = new Size(104, 19);
             ChkPlayerYRange.TabIndex = 38;
@@ -284,7 +284,7 @@
             ChkSolutionYRange.AutoSize = true;
             ChkSolutionYRange.Checked = true;
             ChkSolutionYRange.CheckState = CheckState.Checked;
-            ChkSolutionYRange.Location = new Point(345, 31);
+            ChkSolutionYRange.Location = new Point(219, 31);
             ChkSolutionYRange.Name = "ChkSolutionYRange";
             ChkSolutionYRange.Size = new Size(116, 19);
             ChkSolutionYRange.TabIndex = 39;
@@ -297,7 +297,7 @@
             ChkAllowCactus.AutoSize = true;
             ChkAllowCactus.Checked = true;
             ChkAllowCactus.CheckState = CheckState.Checked;
-            ChkAllowCactus.Location = new Point(467, 6);
+            ChkAllowCactus.Location = new Point(439, 6);
             ChkAllowCactus.Name = "ChkAllowCactus";
             ChkAllowCactus.Size = new Size(112, 19);
             ChkAllowCactus.TabIndex = 40;
@@ -309,7 +309,7 @@
             ChkAllowWindowTrick.AutoSize = true;
             ChkAllowWindowTrick.Checked = true;
             ChkAllowWindowTrick.CheckState = CheckState.Checked;
-            ChkAllowWindowTrick.Location = new Point(467, 31);
+            ChkAllowWindowTrick.Location = new Point(439, 31);
             ChkAllowWindowTrick.Name = "ChkAllowWindowTrick";
             ChkAllowWindowTrick.Size = new Size(130, 19);
             ChkAllowWindowTrick.TabIndex = 41;
