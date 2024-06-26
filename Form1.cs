@@ -46,7 +46,7 @@ namespace old_bruteforcer_rewrite_5
 
             if (ChkPlayerYRange.Checked)
             {
-                List<PlayerRange> results = Search.SearchRange(ChkSinglejump.Checked, ChkDoublejump.Checked);
+                List<PlayerRange> results = Search.SearchRange(ChkSinglejump.Checked, ChkDoublejump.Checked, ChkAllowCactus.Checked, ChkAllowWindowTrick.Checked);
 
                 sw.Stop();
 
@@ -66,7 +66,7 @@ namespace old_bruteforcer_rewrite_5
             {
                 SearchParams.PlayerYLower = TxtYUpper.Text;
 
-                List<Player> results = Search.SearchExact(ChkSinglejump.Checked, ChkDoublejump.Checked);
+                List<Player> results = Search.SearchExact(ChkSinglejump.Checked, ChkDoublejump.Checked, ChkAllowCactus.Checked, ChkAllowWindowTrick.Checked);
 
                 sw.Stop();
 

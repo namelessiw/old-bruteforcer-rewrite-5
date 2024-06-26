@@ -53,6 +53,8 @@
             label11 = new Label();
             ChkPlayerYRange = new CheckBox();
             ChkSolutionYRange = new CheckBox();
+            ChkAllowCactus = new CheckBox();
+            ChkAllowWindowTrick = new CheckBox();
             SuspendLayout();
             // 
             // LblInfo
@@ -290,11 +292,37 @@
             ChkSolutionYRange.UseVisualStyleBackColor = true;
             ChkSolutionYRange.CheckedChanged += ChkSolutionYRange_CheckedChanged;
             // 
+            // ChkAllowCactus
+            // 
+            ChkAllowCactus.AutoSize = true;
+            ChkAllowCactus.Checked = true;
+            ChkAllowCactus.CheckState = CheckState.Checked;
+            ChkAllowCactus.Location = new Point(467, 6);
+            ChkAllowCactus.Name = "ChkAllowCactus";
+            ChkAllowCactus.Size = new Size(112, 19);
+            ChkAllowCactus.TabIndex = 40;
+            ChkAllowCactus.Text = "Allow Cactusing";
+            ChkAllowCactus.UseVisualStyleBackColor = true;
+            // 
+            // ChkAllowWindowTrick
+            // 
+            ChkAllowWindowTrick.AutoSize = true;
+            ChkAllowWindowTrick.Checked = true;
+            ChkAllowWindowTrick.CheckState = CheckState.Checked;
+            ChkAllowWindowTrick.Location = new Point(467, 31);
+            ChkAllowWindowTrick.Name = "ChkAllowWindowTrick";
+            ChkAllowWindowTrick.Size = new Size(130, 19);
+            ChkAllowWindowTrick.TabIndex = 41;
+            ChkAllowWindowTrick.Text = "Allow Window Trick";
+            ChkAllowWindowTrick.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(697, 338);
+            Controls.Add(ChkAllowWindowTrick);
+            Controls.Add(ChkAllowCactus);
             Controls.Add(ChkSolutionYRange);
             Controls.Add(ChkPlayerYRange);
             Controls.Add(TxtSolutionYLower);
@@ -356,5 +384,7 @@
         private Label label11;
         private CheckBox ChkPlayerYRange;
         private CheckBox ChkSolutionYRange;
+        private CheckBox ChkAllowCactus;
+        private CheckBox ChkAllowWindowTrick;
     }
 }

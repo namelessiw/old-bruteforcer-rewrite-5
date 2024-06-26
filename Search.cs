@@ -14,11 +14,11 @@ namespace old_bruteforcer_rewrite_5
         static float ParseFloat(string s) => float.Parse(s, CultureInfo.InvariantCulture);
         static double ParseDouble(string s) => double.Parse(s, CultureInfo.InvariantCulture);
 
-        delegate bool ResultConditionExact(Player p, State state);
-        delegate void ResultConditionRange(PlayerRange p, State state);
+        delegate bool ResultConditionExact(Player p, Event state);
+        delegate void ResultConditionRange(PlayerRange p, Event state);
 
         // TODO: take string arguments and forward to first player instance for parsing, then do error handling
-        public static List<Player> SearchExact(bool sjump, bool djump)
+        public static List<Player> SearchExact(bool sjump, bool djump, bool allowCactus, bool allowWindowTrick)
         {
             Stack<Player> activePlayers;
             try
@@ -54,6 +54,16 @@ namespace old_bruteforcer_rewrite_5
                 SolutionCondition.YRange => CheckInSolutionRange,
                 _ => throw new Exception($"unimplemented solution condition {SearchParams.SolutionCondition}")
             };
+
+            Event filter = Event.Dead;
+            if (!allowCactus)
+            {
+                filter |= Event.Cactus;
+            }
+            if (!allowWindowTrick)
+            {
+                filter |= Event.WindowTrick;
+            }
 
             // simulate step with all possible inputs until stable
             while (activePlayers.Count > 0)
@@ -94,10 +104,10 @@ namespace old_bruteforcer_rewrite_5
             // simulate step with specific input
             void Step(Player p, Input input, bool isCopy = true)
             {
-                State state = p.Step(input);
+                Event events = p.Step(input);
 
                 // dont consider dead player for results
-                if ((state & State.Dead) == State.Dead)
+                if ((events & filter) != Event.None)
                 {
                     if (!isCopy)
                     {
@@ -107,7 +117,7 @@ namespace old_bruteforcer_rewrite_5
                 }
 
                 // result condition
-                if (CheckResultCondition(p, state))
+                if (CheckResultCondition(p, events))
                 {
                     results.Add(p.Copy());
                 }
@@ -128,27 +138,27 @@ namespace old_bruteforcer_rewrite_5
                 }
             }
 
-            static bool CheckLanded(Player p, State state)
+            static bool CheckLanded(Player p, Event state)
             {
-                return (state & State.Landed) == State.Landed;
+                return (state & Event.Landed) == Event.Landed;
             }
 
-            static bool CheckStable(Player p, State state)
+            static bool CheckStable(Player p, Event state)
             {
                 return p.IsStable();
             }
 
-            static bool CheckCanRejump(Player p, State state)
+            static bool CheckCanRejump(Player p, Event state)
             {
                 return p.CanRejump();
             }
 
-            static bool CheckExactSolution(Player p, State state)
+            static bool CheckExactSolution(Player p, Event state)
             {
                 return p.IsExactYSolution();
             }
 
-            static bool CheckInSolutionRange(Player p, State state)
+            static bool CheckInSolutionRange(Player p, Event state)
             {
                 return p.IsInYSolutionRange();
             }
@@ -156,7 +166,7 @@ namespace old_bruteforcer_rewrite_5
             return results;
         }
 
-        public static List<PlayerRange> SearchRange(bool sjump, bool djump)
+        public static List<PlayerRange> SearchRange(bool sjump, bool djump, bool allowCactus, bool allowWindowTrick)
         {
             Stack<PlayerRange> activeRanges;
             try
@@ -193,6 +203,16 @@ namespace old_bruteforcer_rewrite_5
                 SolutionCondition.YRange => CheckIntersectsYSolutionRange,
                 _ => throw new Exception($"unimplemented solution condition {SearchParams.SolutionCondition}")
             };
+
+            Event filter = Event.Dead;
+            if (!allowCactus)
+            {
+                filter |= Event.Cactus;
+            }
+            if (!allowWindowTrick)
+            {
+                filter |= Event.WindowTrick;
+            }
 
             // simulate until stable
             while (activeRanges.Count > 0)
@@ -244,10 +264,10 @@ namespace old_bruteforcer_rewrite_5
 
                 void ConditionalPush(PlayerRange range)
                 {
-                    State state = range.GetCurrentState();
-                    if ((state & State.Dead) == State.Dead)
+                    Event events = range.GetCurrentState();
+                    if ((events & filter) != Event.None)
                     {
-                        if (range == p)
+                        if (range == p && (events & Event.Dead) == Event.Dead)
                         {
                             activeRanges.Pop();
                         }
@@ -255,7 +275,7 @@ namespace old_bruteforcer_rewrite_5
                     }
 
                     // result condition
-                    CheckResultCondition(range, state);
+                    CheckResultCondition(range, events);
 
                     // end condition
                     if (range.IsStable())
@@ -286,15 +306,15 @@ namespace old_bruteforcer_rewrite_5
                 }
             }
 
-            void CheckLanded(PlayerRange p, State state)
+            void CheckLanded(PlayerRange p, Event state)
             {
-                if ((state & State.Landed) == State.Landed)
+                if ((state & Event.Landed) == Event.Landed)
                 {
                     results.Add(p.Copy());
                 }
             }
 
-            void CheckStable(PlayerRange p, State state)
+            void CheckStable(PlayerRange p, Event state)
             {
                 if (p.IsStable())
                 {
@@ -302,7 +322,7 @@ namespace old_bruteforcer_rewrite_5
                 }
             }
 
-            void CheckCanRejump(PlayerRange p, State state)
+            void CheckCanRejump(PlayerRange p, Event state)
             {
                 if (p.CanRejump())
                 {
@@ -310,7 +330,7 @@ namespace old_bruteforcer_rewrite_5
                 }
             }
 
-            void CheckContainsExactYSolution(PlayerRange p, State state)
+            void CheckContainsExactYSolution(PlayerRange p, Event state)
             {
                 if (p.ContainsExactYSolution())
                 {
@@ -318,7 +338,7 @@ namespace old_bruteforcer_rewrite_5
                 }
             }
 
-            void CheckIntersectsYSolutionRange(PlayerRange p, State state)
+            void CheckIntersectsYSolutionRange(PlayerRange p, Event state)
             {
                 if (p.IntersectsYSolutionRange())
                 {

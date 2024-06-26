@@ -16,11 +16,13 @@ namespace old_bruteforcer_rewrite_5
     }
 
     [Flags]
-    enum State
+    enum Event
     {
         None = 0,
         Dead = 1,
         Landed = 2,
+        Cactus = 4,
+        WindowTrick = 8,
     }
 
     internal class Player
@@ -109,17 +111,24 @@ namespace old_bruteforcer_rewrite_5
             return Y >= SolutionYUpper && Y <= SolutionYLower;
         }
 
-        public State Step(Input input) // TODO: killers, return, debug log?
+        public Event Step(Input input) // TODO: killers, return, debug log?
         {
             if (Frame >= MAX_LENGTH)
             {
-                return State.Dead;
+                return Event.Dead;
             }
 
+
+            Event events = Event.None;
             bool press = (input & Input.Press) == Input.Press;
             // shift press
             if (press)
             {
+                if (!Released)
+                {
+                    events |= Event.WindowTrick;
+                }
+
                 if (HasSJump)
                 {
                     VSpeed = PhysicsParams.SJUMP;
@@ -162,6 +171,11 @@ namespace old_bruteforcer_rewrite_5
                     throw new Exception("Cannot release on this frame"); // TODO: remove
                 }
 
+                if (Released)
+                {
+                    events |= Event.Cactus;
+                }
+
                 VSpeed *= PhysicsParams.RELEASE_MULTIPLIER;
                 Released = true;
             }
@@ -184,8 +198,6 @@ namespace old_bruteforcer_rewrite_5
             // collision
             double yPrevious = Y;
             Y += VSpeed;
-
-            State state = State.None;
 
             // one-way floor/ceiling
             if (VSpeed < 0)
@@ -231,14 +243,14 @@ namespace old_bruteforcer_rewrite_5
                         VSpeed = 0;
                     }
 
-                    state |= State.Landed;
+                    events |= Event.Landed;
                 }
             }
 
             // finalize
             Inputs.Add(input);
             Frame++;
-            return state;
+            return events;
         }
 
         public bool DoStrat(string strat)
