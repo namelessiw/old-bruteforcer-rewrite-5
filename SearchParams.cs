@@ -19,6 +19,6 @@ namespace old_bruteforcer_rewrite_5
     static internal class SearchParams
     {
         public static SolutionCondition SolutionCondition = SolutionCondition.CanRejump;
-        public static string FloorY = "", CeilingY = "", PlayerYUpper = "", PlayerYLower = "", PlayerVSpeed = "", SolutionYUpper = "", SolutionYLower = "";
+        public static string FloorY = "", CeilingY = "", PlayerYUpper = "", PlayerYLower = "", PlayerVSpeed = "", SolutionYUpper = "", SolutionYLower = "", VSpeedUpper = "", VSpeedLower = "";
     }
 }

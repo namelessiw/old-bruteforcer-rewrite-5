@@ -33,6 +33,14 @@ namespace old_bruteforcer_rewrite_5
                 }
                 Player.SetSolutionYUpper(solutionYUpper);
                 Player.SetSolutionYLower(solutionYLower);
+                double vspeedLower = ParseDouble(SearchParams.VSpeedLower);
+                double vspeedUpper = ParseDouble(SearchParams.VSpeedUpper);
+                if (vspeedLower > vspeedUpper)
+                {
+                    (vspeedLower, vspeedUpper) = (vspeedUpper, vspeedLower);
+                }
+                Player.SetVSpeedLower(vspeedLower);
+                Player.SetVSpeedUpper(vspeedUpper);
                 double y = ParseDouble(SearchParams.PlayerYLower);
                 double vspeed = ParseDouble(SearchParams.PlayerVSpeed);
                 activePlayers = new([new(y, vspeed, sjump, djump)]);
@@ -117,7 +125,7 @@ namespace old_bruteforcer_rewrite_5
                 }
 
                 // result condition
-                if (CheckResultCondition(p, events))
+                if (p.IsInVSpeedRange() && CheckResultCondition(p, events))
                 {
                     results.Add(p.Copy());
                 }
@@ -181,6 +189,14 @@ namespace old_bruteforcer_rewrite_5
                 }
                 PlayerRange.SetSolutionYUpper(solutionYUpper);
                 PlayerRange.SetSolutionYLower(solutionYLower);
+                double vspeedLower = ParseDouble(SearchParams.VSpeedLower);
+                double vspeedUpper = ParseDouble(SearchParams.VSpeedUpper);
+                if (vspeedLower > vspeedUpper)
+                {
+                    (vspeedLower, vspeedUpper) = (vspeedUpper, vspeedLower);
+                }
+                PlayerRange.SetVSpeedLower(vspeedLower);
+                PlayerRange.SetVSpeedUpper(vspeedUpper);
                 double yLower = ParseDouble(SearchParams.PlayerYLower);
                 double yUpper = ParseDouble(SearchParams.PlayerYUpper);
                 double vspeed = ParseDouble(SearchParams.PlayerVSpeed);
@@ -275,7 +291,10 @@ namespace old_bruteforcer_rewrite_5
                     }
 
                     // result condition
-                    CheckResultCondition(range, events);
+                    if (range.IsInVSpeedRange())
+                    {
+                        CheckResultCondition(range, events);
+                    }
 
                     // end condition
                     if (range.IsStable())

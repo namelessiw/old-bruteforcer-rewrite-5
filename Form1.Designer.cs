@@ -55,6 +55,10 @@
             ChkSolutionYRange = new CheckBox();
             ChkAllowCactus = new CheckBox();
             ChkAllowWindowTrick = new CheckBox();
+            TxtVSpeedLower = new TextBox();
+            TxtVSpeedUpper = new TextBox();
+            label1 = new Label();
+            label9 = new Label();
             SuspendLayout();
             // 
             // LblInfo
@@ -311,16 +315,54 @@
             ChkAllowWindowTrick.CheckState = CheckState.Checked;
             ChkAllowWindowTrick.Location = new Point(439, 31);
             ChkAllowWindowTrick.Name = "ChkAllowWindowTrick";
-            ChkAllowWindowTrick.Size = new Size(130, 19);
+            ChkAllowWindowTrick.Size = new Size(131, 19);
             ChkAllowWindowTrick.TabIndex = 41;
             ChkAllowWindowTrick.Text = "Allow Window Trick";
             ChkAllowWindowTrick.UseVisualStyleBackColor = true;
+            // 
+            // TxtVSpeedLower
+            // 
+            TxtVSpeedLower.Location = new Point(451, 115);
+            TxtVSpeedLower.Name = "TxtVSpeedLower";
+            TxtVSpeedLower.Size = new Size(100, 23);
+            TxtVSpeedLower.TabIndex = 45;
+            TxtVSpeedLower.Text = "-8.1";
+            // 
+            // TxtVSpeedUpper
+            // 
+            TxtVSpeedUpper.Location = new Point(345, 115);
+            TxtVSpeedUpper.Name = "TxtVSpeedUpper";
+            TxtVSpeedUpper.Size = new Size(100, 23);
+            TxtVSpeedUpper.TabIndex = 44;
+            TxtVSpeedUpper.Text = "9.4";
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(451, 97);
+            label1.Name = "label1";
+            label1.Size = new Size(81, 15);
+            label1.TabIndex = 43;
+            label1.Text = "VSpeed Lower";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Location = new Point(345, 97);
+            label9.Name = "label9";
+            label9.Size = new Size(81, 15);
+            label9.TabIndex = 42;
+            label9.Text = "VSpeed Upper";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(697, 338);
+            Controls.Add(TxtVSpeedLower);
+            Controls.Add(TxtVSpeedUpper);
+            Controls.Add(label1);
+            Controls.Add(label9);
             Controls.Add(ChkAllowWindowTrick);
             Controls.Add(ChkAllowCactus);
             Controls.Add(ChkSolutionYRange);
@@ -386,5 +428,9 @@
         private CheckBox ChkSolutionYRange;
         private CheckBox ChkAllowCactus;
         private CheckBox ChkAllowWindowTrick;
+        private TextBox TxtVSpeedLower;
+        private TextBox TxtVSpeedUpper;
+        private Label label1;
+        private Label label9;
     }
 }

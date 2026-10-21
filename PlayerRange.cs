@@ -17,7 +17,7 @@ namespace old_bruteforcer_rewrite_5
     internal class PlayerRange
     {
         const int MAX_LENGTH = 1000; // TODO: global setting
-        static double Floor = 408, Ceiling = 0, SolutionYUpper = 0, SolutionYLower = 0;
+        static double Floor = 408, Ceiling = 0, SolutionYUpper = 0, SolutionYLower = 0, VSpeedUpper = 0, VSpeedLower = 0;
         static Stack<PlayerRange> PlayerRanges = new();
         double StartYUpper, StartYLower, YUpper, YLower, VSpeed;
         public int Frame;
@@ -147,6 +147,16 @@ namespace old_bruteforcer_rewrite_5
             SolutionYLower = y;
         }
 
+        public static void SetVSpeedLower(double vspeed)
+        {
+            VSpeedLower = vspeed;
+        }
+
+        public static void SetVSpeedUpper(double vspeed)
+        {
+            VSpeedUpper = vspeed;
+        }
+
         public bool CanPress()
         {
             return HasSJump || HasDJump;
@@ -170,6 +180,11 @@ namespace old_bruteforcer_rewrite_5
         public bool IntersectsYSolutionRange()
         {
             return !(SolutionYLower < YUpper || SolutionYUpper > YLower);
+        }
+
+        public bool IsInVSpeedRange()
+        {
+            return VSpeed <= VSpeedUpper && VSpeed >= VSpeedLower;
         }
 
         // to make the two ranges disjoint after splitting, one of the ranges needs to be adjusted

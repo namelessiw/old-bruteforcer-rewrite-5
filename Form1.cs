@@ -27,6 +27,8 @@ namespace old_bruteforcer_rewrite_5
             SearchParams.PlayerVSpeed = TxtVSpeed.Text;
             SearchParams.FloorY = TxtFloorY.Text;
             SearchParams.CeilingY = TxtCeilingY.Text;
+            SearchParams.VSpeedUpper = TxtVSpeedUpper.Text;
+            SearchParams.VSpeedLower = TxtVSpeedLower.Text;
 
             if (SearchParams.SolutionCondition == SolutionCondition.YPosition)
             {
