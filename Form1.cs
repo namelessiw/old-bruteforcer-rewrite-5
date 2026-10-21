@@ -13,7 +13,7 @@ namespace old_bruteforcer_rewrite_5
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            CmbSolutionCondition.SelectedIndex = 3;
+            CmbSolutionCondition.SelectedIndex = 0;
         }
 
         private void BtnSearch_Click(object sender, EventArgs e)

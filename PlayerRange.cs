@@ -17,16 +17,15 @@ namespace old_bruteforcer_rewrite_5
     internal class PlayerRange
     {
         const int MAX_LENGTH = 1000; // TODO: global setting
-        static float Floor = 408, Ceiling = 0, SolutionYUpper = 0, SolutionYLower = 0;
+        static double Floor = 408, Ceiling = 0, SolutionYUpper = 0, SolutionYLower = 0;
         static Stack<PlayerRange> PlayerRanges = new();
-        float StartYUpper, StartYLower, YUpper, YLower;
-        double VSpeed;
+        double StartYUpper, StartYLower, YUpper, YLower, VSpeed;
         public int Frame;
         bool HasSJump, HasDJump, Released;
         Event CurrentEvent; // TODO: i dont think this is something that needs copying
         List<Input> Inputs;
 
-        public PlayerRange(float yUpper, float yLower, double vspeed, bool hasSJump, bool hasDJump)
+        public PlayerRange(double yUpper, double yLower, double vspeed, bool hasSJump, bool hasDJump)
         {
             if (yUpper > yLower)
             {
@@ -44,7 +43,7 @@ namespace old_bruteforcer_rewrite_5
             Inputs = [];
         }
 
-        public PlayerRange(float startYUpper, float startYLower, float yUpper, float yLower, double vspeed, int frame, bool hasSJump, bool hasDJump, bool released, Event currentState, List<Input> inputs)
+        public PlayerRange(double startYUpper, double startYLower, double yUpper, double yLower, double vspeed, int frame, bool hasSJump, bool hasDJump, bool released, Event currentState, List<Input> inputs)
         {
             if (startYUpper > startYLower)
             {
@@ -75,47 +74,47 @@ namespace old_bruteforcer_rewrite_5
         }
 
         // create a copy of this PlayerRange with a different range
-        public PlayerRange Copy(float newStartYUpper, float newStartYLower, float newYUpper, float newYLower, double newVSpeed)
+        public PlayerRange Copy(double newStartYUpper, double newStartYLower, double newYUpper, double newYLower, double newVSpeed)
         {
             return new PlayerRange(newStartYUpper, newStartYLower, newYUpper, newYLower, newVSpeed, Frame, HasSJump, HasDJump, Released, CurrentEvent, Inputs);
         }
 
         // assumes the new range is within the current range
-        public PlayerRange CopyRange(float newYUpper, float newYLower)
+        public PlayerRange CopyRange(double newYUpper, double newYLower)
         {
-            float newStartYUpper = StartYUpper + (newYUpper - YUpper);
-            float newStartYLower = StartYLower - (YLower - newYLower);
+            double newStartYUpper = StartYUpper + (newYUpper - YUpper);
+            double newStartYLower = StartYLower - (YLower - newYLower);
             return new PlayerRange(newStartYUpper, newStartYLower, newYUpper, newYLower, VSpeed, Frame, HasSJump, HasDJump, Released, CurrentEvent, Inputs);
         }
 
         // assumes the lowest part of the range is stable
         public PlayerRange GetStableRange()
         {
-            float highestCollision = Floor - 0.5f;
-            if (MathF.Round(highestCollision) < Floor)
+            double highestCollision = Floor - 0.5;
+            if (Math.Round(highestCollision) < Floor)
             {
-                highestCollision = float.BitIncrement(highestCollision);
+                highestCollision = double.BitIncrement(highestCollision);
             }
 
-            return CopyRange(MathF.Max(YUpper, highestCollision - (float)PhysicsParams.GRAVITY), YLower);
+            return CopyRange(Math.Max(YUpper, highestCollision - PhysicsParams.GRAVITY), YLower);
         }
 
         // assumes lowest part of the range can rejump
         public PlayerRange GetRejumpRange()
         {
-            float highestCollision = Floor - 0.5f;
-            if (MathF.Round(highestCollision) < Floor)
+            double highestCollision = Floor - 0.5;
+            if (Math.Round(highestCollision) < Floor)
             {
-                highestCollision = float.BitIncrement(highestCollision);
+                highestCollision = double.BitIncrement(highestCollision);
             }
 
-            return CopyRange(MathF.Max(YUpper, highestCollision - 1), YLower);
+            return CopyRange(Math.Max(YUpper, highestCollision - 1), YLower);
         }
 
         // assumes this range intersects solution range
         public PlayerRange GetIntersectingSolutionRange()
         {
-            return CopyRange(MathF.Max(YUpper, SolutionYUpper), MathF.Min(YLower, SolutionYLower));
+            return CopyRange(Math.Max(YUpper, SolutionYUpper), Math.Min(YLower, SolutionYLower));
         }
 
         public Event GetCurrentState()
@@ -130,20 +129,20 @@ namespace old_bruteforcer_rewrite_5
 
         public static void SetFloorY(string floorY)
         {
-            Floor = MathF.Round(float.Parse(floorY, CultureInfo.InvariantCulture));
+            Floor = Math.Round(double.Parse(floorY, CultureInfo.InvariantCulture));
         }
 
         public static void SetCeilingY(string ceilingY)
         {
-            Ceiling = MathF.Round(float.Parse(ceilingY, CultureInfo.InvariantCulture));
+            Ceiling = Math.Round(double.Parse(ceilingY, CultureInfo.InvariantCulture));
         }
 
-        public static void SetSolutionYUpper(float y)
+        public static void SetSolutionYUpper(double y)
         {
             SolutionYUpper = y;
         }
 
-        public static void SetSolutionYLower(float y)
+        public static void SetSolutionYLower(double y)
         {
             SolutionYLower = y;
         }
@@ -160,7 +159,7 @@ namespace old_bruteforcer_rewrite_5
 
         public bool CanRejump()
         {
-            return MathF.Round(YLower + 1) >= Floor;
+            return Math.Round(YLower + 1) >= Floor;
         }
 
         public bool ContainsExactYSolution()
@@ -180,7 +179,7 @@ namespace old_bruteforcer_rewrite_5
             LowerRange
         }
 
-        PlayerRange SplitOffLowerAt(float split, BitShift range)
+        PlayerRange SplitOffLowerAt(double split, BitShift range)
         {
             // split off lower range
             PlayerRange lower = Copy(StartYLower - YLower + split, StartYLower, split, YLower, VSpeed);
@@ -192,19 +191,19 @@ namespace old_bruteforcer_rewrite_5
             // make disjoint at split
             if (range == BitShift.UpperRange)
             {
-                YLower = float.BitDecrement(YLower);
-                StartYLower = float.BitDecrement(StartYLower);
+                YLower = double.BitDecrement(YLower);
+                StartYLower = double.BitDecrement(StartYLower);
             }
             else
             {
-                lower.YUpper = float.BitIncrement(lower.YUpper);
-                lower.StartYUpper = float.BitIncrement(lower.StartYUpper);
+                lower.YUpper = double.BitIncrement(lower.YUpper);
+                lower.StartYUpper = double.BitIncrement(lower.StartYUpper);
             }
 
             return lower;
         }
 
-        PlayerRange SplitOffUpperAt(float split, BitShift range)
+        PlayerRange SplitOffUpperAt(double split, BitShift range)
         {
             // split off upper range
             PlayerRange upper = Copy(StartYUpper, StartYUpper - YUpper + split, YUpper, split, VSpeed);
@@ -216,13 +215,13 @@ namespace old_bruteforcer_rewrite_5
             // make disjoint at split
             if (range == BitShift.UpperRange)
             {
-                upper.YLower = float.BitDecrement(upper.YLower);
-                upper.StartYLower = float.BitDecrement(upper.StartYLower);
+                upper.YLower = double.BitDecrement(upper.YLower);
+                upper.StartYLower = double.BitDecrement(upper.StartYLower);
             }
             else
             {
-                YUpper = float.BitIncrement(YUpper);
-                StartYUpper = float.BitIncrement(StartYUpper);
+                YUpper = double.BitIncrement(YUpper);
+                StartYUpper = double.BitIncrement(StartYUpper);
             }
 
             return upper;
@@ -230,32 +229,32 @@ namespace old_bruteforcer_rewrite_5
 
         public bool IsStable()
         {
-            return VSpeed == 0 && MathF.Round(YLower + (float)PhysicsParams.GRAVITY) >= Floor;
+            return VSpeed == 0 && Math.Round(YLower + PhysicsParams.GRAVITY) >= Floor;
         }
 
         public PlayerRange SplitOffStable()
         {
             // unstable, unnecessary if only called when IsStable is true, thus
             // TODO: make sure IsStable is used to determine whether to call this function
-            if (VSpeed != 0 || MathF.Round(YLower + (float)PhysicsParams.GRAVITY) < Floor)
+            if (VSpeed != 0 || Math.Round(YLower + PhysicsParams.GRAVITY) < Floor)
             {
                 return null;
             }
             
             // full range stable
-            if (MathF.Round(YUpper + (float)PhysicsParams.GRAVITY) >= Floor)
+            if (Math.Round(YUpper + PhysicsParams.GRAVITY) >= Floor)
             {
                 return this;
             }
 
             // partially stable
-            float highestCollision = Floor - 0.5f;
-            if (MathF.Round(highestCollision) < Floor)
+            double highestCollision = Floor - 0.5;
+            if (Math.Round(highestCollision) < Floor)
             {
-                highestCollision = float.BitIncrement(highestCollision);
+                highestCollision = double.BitIncrement(highestCollision);
             }
 
-            PlayerRange lower = SplitOffLowerAt(highestCollision - (float)PhysicsParams.GRAVITY, BitShift.UpperRange);
+            PlayerRange lower = SplitOffLowerAt(highestCollision - PhysicsParams.GRAVITY, BitShift.UpperRange);
             return lower;
         }
 
@@ -366,10 +365,10 @@ namespace old_bruteforcer_rewrite_5
 
         List<PlayerRange> FloorCollision()
         {
-            float highestCollision = Floor - 0.5f;
-            if (MathF.Round(highestCollision) < Floor)
+            double highestCollision = Floor - 0.5;
+            if (Math.Round(highestCollision) < Floor)
             {
-                highestCollision = float.BitIncrement(highestCollision);
+                highestCollision = double.BitIncrement(highestCollision);
             }
 
             List<PlayerRange> ranges = [];
@@ -395,15 +394,15 @@ namespace old_bruteforcer_rewrite_5
             }
 
             // separate between collision and no collision
-            float highestCollisionAfterVspeed = highestCollision - (float)VSpeed;
+            double highestCollisionAfterVspeed = highestCollision - VSpeed;
             if (YLower >= highestCollisionAfterVspeed)
             {
                 if (YUpper < highestCollisionAfterVspeed)
                 {
                     // partial collision after vspeed
                     PlayerRange upper = SplitOffUpperAt(highestCollisionAfterVspeed, BitShift.UpperRange);
-                    upper.YUpper += (float)upper.VSpeed;
-                    upper.YLower += (float)upper.VSpeed;
+                    upper.YUpper += upper.VSpeed;
+                    upper.YLower += upper.VSpeed;
                     ranges.Add(upper);
                 }
                 else
@@ -415,8 +414,8 @@ namespace old_bruteforcer_rewrite_5
             else
             {
                 // full range free
-                YUpper += (float)VSpeed;
-                YLower += (float)VSpeed;
+                YUpper += VSpeed;
+                YLower += VSpeed;
                 return ranges;
             }
 
@@ -425,7 +424,7 @@ namespace old_bruteforcer_rewrite_5
             CurrentEvent |= Event.Landed;
 
             // move_contact_solid
-            float highestFloorReject = highestCollision - 1;
+            double highestFloorReject = highestCollision - 1;
             while (YUpper < highestFloorReject)
             {
                 if (YLower >= highestFloorReject)
@@ -444,10 +443,10 @@ namespace old_bruteforcer_rewrite_5
 
         List<PlayerRange> CeilingCollision()
         {
-            float lowestCollision = Ceiling + 0.5f;
-            if (MathF.Round(lowestCollision) > Ceiling)
+            double lowestCollision = Ceiling + 0.5;
+            if (Math.Round(lowestCollision) > Ceiling)
             {
-                lowestCollision = float.BitDecrement(lowestCollision);
+                lowestCollision = double.BitDecrement(lowestCollision);
             }
 
             List<PlayerRange> ranges = [];
@@ -472,15 +471,15 @@ namespace old_bruteforcer_rewrite_5
             }
 
             // separate between collision and no collision
-            float lowestCollisionAfterVspeed = lowestCollision - (float)VSpeed;
+            double lowestCollisionAfterVspeed = lowestCollision - VSpeed;
             if (YUpper <= lowestCollisionAfterVspeed)
             {
                 if (YLower > lowestCollisionAfterVspeed)
                 {
                     // partial collision after vspeed
                     PlayerRange lower = SplitOffLowerAt(lowestCollisionAfterVspeed, BitShift.LowerRange);
-                    lower.YUpper += (float)lower.VSpeed;
-                    lower.YLower += (float)lower.VSpeed;
+                    lower.YUpper += lower.VSpeed;
+                    lower.YLower += lower.VSpeed;
                     ranges.Add(lower);
                 }
                 else
@@ -492,8 +491,8 @@ namespace old_bruteforcer_rewrite_5
             else
             {
                 // full range free
-                YUpper += (float)VSpeed;
-                YLower += (float)VSpeed;
+                YUpper += VSpeed;
+                YLower += VSpeed;
                 return ranges;
             }
 
@@ -501,7 +500,7 @@ namespace old_bruteforcer_rewrite_5
             VSpeed = 0;
 
             // move_contact_solid
-            float lowestCeilingReject = lowestCollision + 1;
+            double lowestCeilingReject = lowestCollision + 1;
             while (YLower > lowestCeilingReject)
             {
                 if (YUpper <= lowestCeilingReject)

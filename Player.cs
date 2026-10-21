@@ -28,14 +28,13 @@ namespace old_bruteforcer_rewrite_5
     internal class Player
     {
         const int MAX_LENGTH = 1000; // TODO: global setting
-        static float Floor = 408, Ceiling = 0, SolutionYUpper = 0, SolutionYLower = 0;
-        float Y;
-        double VSpeed;
+        static double Floor = 408, Ceiling = 0, SolutionYUpper = 0, SolutionYLower = 0;
+        double Y, VSpeed;
         public int Frame;
         bool HasSJump, HasDJump, Released;
         List<Input> Inputs;
 
-        public Player(float y, double vspeed, bool hasSJump, bool hasDJump)
+        public Player(double y, double vspeed, bool hasSJump, bool hasDJump)
         {
             Y = y;
             VSpeed = vspeed;
@@ -46,7 +45,7 @@ namespace old_bruteforcer_rewrite_5
             Inputs = new List<Input>();
         }
 
-        public Player(float y, double vspeed, int frame, bool hasSJump, bool hasDJump, bool released, List<Input> inputs)
+        public Player(double y, double vspeed, int frame, bool hasSJump, bool hasDJump, bool released, List<Input> inputs)
         {
             Y = y;
             VSpeed = vspeed;
@@ -64,20 +63,20 @@ namespace old_bruteforcer_rewrite_5
 
         public static void SetFloorY(string floorY)
         {
-            Floor = MathF.Round(float.Parse(floorY, CultureInfo.InvariantCulture));
+            Floor = Math.Round(double.Parse(floorY, CultureInfo.InvariantCulture));
         }
 
         public static void SetCeilingY(string ceilingY)
         {
-            Ceiling = MathF.Round(float.Parse(ceilingY, CultureInfo.InvariantCulture));
+            Ceiling = Math.Round(double.Parse(ceilingY, CultureInfo.InvariantCulture));
         }
 
-        public static void SetSolutionYUpper(float y)
+        public static void SetSolutionYUpper(double y)
         {
             SolutionYUpper = y;
         }
 
-        public static void SetSolutionYLower(float y)
+        public static void SetSolutionYLower(double y)
         {
             SolutionYLower = y;
         }
@@ -99,7 +98,7 @@ namespace old_bruteforcer_rewrite_5
 
         public bool CanRejump()
         {
-            return MathF.Round(Y + 1) >= Floor; // TODO: floor type matters
+            return Math.Round(Y + 1) >= Floor; // TODO: floor type matters
         }
 
         public bool IsExactYSolution()
@@ -197,25 +196,25 @@ namespace old_bruteforcer_rewrite_5
             VSpeed += PhysicsParams.GRAVITY;
 
             // collision
-            float yPrevious = Y;
-            Y += (float)VSpeed;
+            double yPrevious = Y;
+            Y += VSpeed;
 
             // one-way floor/ceiling
             if (VSpeed < 0)
             {
                 // ceiling collision
-                if (MathF.Round(Y) <= Ceiling)
+                if (Math.Round(Y) <= Ceiling)
                 {
-                    if (MathF.Round(yPrevious) <= Ceiling)
+                    if (Math.Round(yPrevious) <= Ceiling)
                     {
                         Y = yPrevious;
                         VSpeed = 0;
                     }
                     else
                     {
-                        float valign = yPrevious - MathF.Truncate(yPrevious);
+                        double valign = yPrevious - Math.Truncate(yPrevious);
                         Y = Ceiling + valign;
-                        if (MathF.Round(Y) == Ceiling)
+                        if (Math.Round(Y) == Ceiling)
                         {
                             Y++;
                         }
@@ -226,18 +225,18 @@ namespace old_bruteforcer_rewrite_5
             else
             {
                 // floor collision
-                if (MathF.Round(Y) >= Floor)
+                if (Math.Round(Y) >= Floor)
                 {
-                    if (MathF.Round(yPrevious) >= Floor)
+                    if (Math.Round(yPrevious) >= Floor)
                     {
                         Y = yPrevious;
                         VSpeed = 0;
                     }
                     else
                     {
-                        float valign = yPrevious - MathF.Truncate(yPrevious);
+                        double valign = yPrevious - Math.Truncate(yPrevious);
                         Y = Floor - 1 + valign;
-                        if (MathF.Round(Y) == Floor)
+                        if (Math.Round(Y) == Floor)
                         {
                             Y--;
                         }
