@@ -12,7 +12,7 @@ namespace old_bruteforcer_rewrite_5
     internal static class Search
     {
         static float ParseFloat(string s) => float.Parse(s, CultureInfo.InvariantCulture);
-        static double ParseDouble(string s) => double.Parse(s, CultureInfo.InvariantCulture);
+        static double ParseDouble(string s) => float.Parse(s, CultureInfo.InvariantCulture);
 
         delegate bool ResultConditionExact(Player p, Event state);
         delegate void ResultConditionRange(PlayerRange p, Event state);
@@ -25,16 +25,16 @@ namespace old_bruteforcer_rewrite_5
             {
                 Player.SetFloorY(SearchParams.FloorY);
                 Player.SetCeilingY(SearchParams.CeilingY);
-                double solutionYUpper = ParseDouble(SearchParams.SolutionYUpper);
-                double solutionYLower = ParseDouble(SearchParams.SolutionYLower);
+                float solutionYUpper = ParseFloat(SearchParams.SolutionYUpper);
+                float solutionYLower = ParseFloat(SearchParams.SolutionYLower);
                 if (solutionYUpper > solutionYLower)
                 {
                     (solutionYUpper, solutionYLower) = (solutionYLower, solutionYUpper);
                 }
                 Player.SetSolutionYUpper(solutionYUpper);
                 Player.SetSolutionYLower(solutionYLower);
-                double y = ParseDouble(SearchParams.PlayerYLower);
-                double vspeed = ParseDouble(SearchParams.PlayerVSpeed);
+                float y = ParseFloat(SearchParams.PlayerYLower);
+                float vspeed = ParseFloat(SearchParams.PlayerVSpeed);
                 activePlayers = new([new(y, vspeed, sjump, djump)]);
             }
             catch (Exception e)
@@ -117,7 +117,7 @@ namespace old_bruteforcer_rewrite_5
                 }
 
                 // result condition
-                if (CheckResultCondition(p, events))
+                if (CheckResultCondition(p, events) && p.Frame >= 47)
                 {
                     results.Add(p.Copy());
                 }
@@ -173,17 +173,17 @@ namespace old_bruteforcer_rewrite_5
             {
                 PlayerRange.SetFloorY(SearchParams.FloorY);
                 PlayerRange.SetCeilingY(SearchParams.CeilingY);
-                double solutionYUpper = ParseDouble(SearchParams.SolutionYUpper);
-                double solutionYLower = ParseDouble(SearchParams.SolutionYLower);
+                float solutionYUpper = ParseFloat(SearchParams.SolutionYUpper);
+                float solutionYLower = ParseFloat(SearchParams.SolutionYLower);
                 if (solutionYUpper > solutionYLower)
                 {
                     (solutionYUpper, solutionYLower) = (solutionYLower, solutionYUpper);
                 }
                 PlayerRange.SetSolutionYUpper(solutionYUpper);
                 PlayerRange.SetSolutionYLower(solutionYLower);
-                double yLower = ParseDouble(SearchParams.PlayerYLower);
-                double yUpper = ParseDouble(SearchParams.PlayerYUpper);
-                double vspeed = ParseDouble(SearchParams.PlayerVSpeed);
+                float yLower = ParseFloat(SearchParams.PlayerYLower);
+                float yUpper = ParseFloat(SearchParams.PlayerYUpper);
+                float vspeed = ParseFloat(SearchParams.PlayerVSpeed);
                 activeRanges = new([new(yUpper, yLower, vspeed, sjump, djump)]);
             }
             catch (Exception e)
